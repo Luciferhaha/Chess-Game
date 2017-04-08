@@ -2,6 +2,10 @@ import java.awt.Label;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JLabel;
+
+import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
+
 //处理不同棋子的算法
 //兵，后，王，车，象，马
 //兵变身，兵吃过路兵，王车短易位和长易位
@@ -9,12 +13,12 @@ import java.awt.event.MouseListener;
 //一着棋，除参与易位的车以外，任何棋子都不能越过被其他棋子占据的格子
 //一旦吃掉，必须从棋盘上拿走
 //让不同类比的棋子各司其职（执行各自的方法）
-public class Chess implements MouseListener{
-	public Label[][] chess;
-	public Chess() {
+public class Pieces extends JLabel implements MouseListener{
+	public JLabel[][] chess;
+	public Pieces() {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
-		chess =new Label[4][8];
+		chess =new JLabel[4][8];
 		JobDivision();
 	}
 	//职责划分
@@ -48,24 +52,25 @@ public class Chess implements MouseListener{
 		
 		
 	}
-	public void Pawn(Label chess){
+	public void Pawn(JLabel chess){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
+		
 	
 	} 
-	public void Queen(Label chess) {
+	public void Queen(JLabel chess) {
 		//上下左右，四个方向斜
 	}
-	public void King(Label chess) {
+	public void King(JLabel chess) {
 		//上下左右斜每次移动一步
 	}
-	public void Rook(Label chess) {
+	public void Rook(JLabel chess) {
 		//上下左右
 	}
-	public void Knight(Label chess){
+	public void Knight(JLabel chess){
 		//日子格
 	}
-	public void Bisshop(Label chess) {
+	public void Bisshop(JLabel chess) {
 		//上下左右斜
 	}
 	//兵的升变
@@ -86,7 +91,8 @@ public class Chess implements MouseListener{
 		//王往右两个或者往左两个，车换到王的里侧
 	}
 	public void Removechess(){
-		
+		//易掉被吃掉的棋子
+		//包括路过吃兵的情况
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {

@@ -21,6 +21,7 @@ public class VictoryCondition {
 	  public boolean Checkmate() {
 		return true;
 	}
+	  //判断和棋
 	  public void DrawmGame() {
 		
 	}
