@@ -13,64 +13,38 @@ import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 //一着棋，除参与易位的车以外，任何棋子都不能越过被其他棋子占据的格子
 //一旦吃掉，必须从棋盘上拿走
 //让不同类比的棋子各司其职（执行各自的方法）
-public class Pieces extends JLabel implements MouseListener{
-	public JLabel[][] chess;
-	public Pieces() {
+public class PiecesMove  implements MouseListener{
+	public JLabel[][] pieces;
+	public int start[][];
+	public int end[][];
+	public PiecesMove() {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
-		chess =new JLabel[4][8];
-		JobDivision();
+		start=new int[8][8];
+		start=new int[8][8];
+		pieces =new JLabel[4][8];
+//		JobDivision();
 	}
-	//职责划分
-	public void JobDivision() {
-		//两列士兵8*2
-		for (int i = 0; i < 8; i++) {
-			Pawn(chess[1][i]);
-			Pawn(chess[2][i]);
-		}
-		//双王
-		King(chess[0][4]);
-		King(chess[3][4]);
-		//双后
-		Queen(chess[0][3]);
-		Queen(chess[3][3]);
-		//四车
-		Rook(chess[0][0]);
-		Rook(chess[0][7]);
-		Rook(chess[3][0]);
-		Rook(chess[3][7]);
-		//四象
-		Bisshop(chess[0][2]);
-		Bisshop(chess[0][5]);
-		Bisshop(chess[3][2]);
-		Bisshop(chess[3][5]);
-		//四马
-		Knight(chess[0][1]);
-		Knight(chess[0][6]);
-		Knight(chess[3][1]);
-		Knight(chess[3][6]);
-		
-		
-	}
-	public void Pawn(JLabel chess){
+	
+	public void Pawn(JLabel pieces,int x){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
 		
 	
 	} 
-	public void Queen(JLabel chess) {
+	public void Queen(JLabel pieces) {
 		//上下左右，四个方向斜
 	}
-	public void King(JLabel chess) {
+	public void King(JLabel pieces) {
 		//上下左右斜每次移动一步
 	}
-	public void Rook(JLabel chess) {
+	public void Rook(JLabel pieces) {
 		//上下左右
 	}
-	public void Knight(JLabel chess){
+	public void Knight(JLabel pieces){
 		//日子格
 	}
-	public void Bisshop(JLabel chess) {
+	public void Bisshop(JLabel pieces) {
 		//上下左右斜
 	}
 	//兵的升变
@@ -90,7 +64,7 @@ public class Pieces extends JLabel implements MouseListener{
 		//3.王的原始格子或者将要越过的格子或者将要占据的格子正受到对方棋子的攻击
 		//王往右两个或者往左两个，车换到王的里侧
 	}
-	public void Removechess(){
+	public void Removepieces(){
 		//易掉被吃掉的棋子
 		//包括路过吃兵的情况
 	}
