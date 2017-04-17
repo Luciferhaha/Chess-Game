@@ -13,39 +13,141 @@ import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 //一着棋，除参与易位的车以外，任何棋子都不能越过被其他棋子占据的格子
 //一旦吃掉，必须从棋盘上拿走
 //让不同类比的棋子各司其职（执行各自的方法）
-public class PiecesMove  implements MouseListener{
+public class PiecesMove {
 	public JLabel[][] pieces;
 	public int start[][];
 	public int end[][];
+	public int side=85;
 	public PiecesMove() {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
 		start=new int[8][8];
-		start=new int[8][8];
+		end=new int[8][8];
 		pieces =new JLabel[4][8];
-//		JobDivision();
 	}
 	
-	public void Pawn(JLabel pieces,int x){
+	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
+		//黑棋
+		int d=Math.abs(point.col()-y);
+		int d2=point.row()-x;
+		int count =e.getClickCount();
+		char value=pieces.getName().charAt(0);
+		int values=value-'0';
+		if (d2==0&&(d==1||d==2)) {
+			switch (values) {
+			//黑棋
+			case 1:
+				if (count==1&&d==2) {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
+				}else {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
+				}
+				break;
+				//白棋
+			case 2:
+				if (count==1&&d==2) {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
+				}else {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
+				}
+				break;
+			}
+			
+		}
+			
+		}
+	
 		
 	
-	} 
-	public void Queen(JLabel pieces) {
+
+	public void Queen(JLabel pieces, int x,int y,ChessPoint point) {
 		//上下左右，四个方向斜
+		int dx=(point.row()-x);
+		int dy=(point.col()-y);
+		char c=pieces.getName().charAt(0);
+		int value=c-'0';
+		if (dx==0||dy==0||Math.abs(dx)==Math.abs(dy)) {
+			switch (value) {
+			case 1:
+					pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
+				break;
+			case 2:
+					pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				break;
+			}
+			
+		}
 	}
-	public void King(JLabel pieces) {
-		//上下左右斜每次移动一步
+	public void King(JLabel pieces, int x, int y, ChessPoint point) {
+		int dx=(point.row()-x);
+		int dy=(point.col()-y);
+		char c=pieces.getName().charAt(0);
+		int value=c-'0';
+		if (dx==0||dy==0||((Math.abs(dx)==Math.abs(dy)&&(Math.abs(dx)==1&&(Math.abs(dy)==1))))) {
+			switch (value) {
+			case 1:
+				pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
+				break;
+
+			case 2:
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				break;
+			}
+		}
 	}
-	public void Rook(JLabel pieces) {
-		//上下左右
+	public void Rook(JLabel pieces, int x, int y, ChessPoint point) {
+		//up and down and left and right
+		int dx=(point.row()-x);
+		int dy=(point.col()-y);
+		char c=pieces.getName().charAt(0);
+		int value=c-'0';
+		if (dx==0||dy==0) {
+			switch (value) {
+			case 1:
+				pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
+				break;
+			case 2:
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				break;
+			}
+		}
+		
 	}
-	public void Knight(JLabel pieces){
-		//日子格
+	
+	public void knight(JLabel pieces, int x, int y, ChessPoint point) {
+		// TODO Auto-generated method stub
+		int dx=(point.row()-x);
+		int dy=(point.col()-y);
+		char c=pieces.getName().charAt(0);
+		int value=c-'0';
+		if ((Math.abs(dx)==1&&Math.abs(dy)==2)||(Math.abs(dx)==2&&Math.abs(dy)==1)) {
+			switch (value) {
+			case 1:
+				pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
+				break;
+			case 2:
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				break;
+			}
+		}
 	}
-	public void Bisshop(JLabel pieces) {
-		//上下左右斜
+	public void Bisshop(JLabel pieces,int x,int y,ChessPoint point) {
+		int dx=(point.row()-x);
+		int dy=(point.col()-y);
+		char c=pieces.getName().charAt(0);
+		int value=c-'0';
+		if (Math.abs(dx)==Math.abs(dy)) {
+			switch (value) {
+			case 1:
+				pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
+				break;
+			case 2:
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				break;
+			}
+		}
 	}
 	//兵的升变
 	public void promotion() {
@@ -68,30 +170,6 @@ public class PiecesMove  implements MouseListener{
 		//易掉被吃掉的棋子
 		//包括路过吃兵的情况
 	}
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 }
