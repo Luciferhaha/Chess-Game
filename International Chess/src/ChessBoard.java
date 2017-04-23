@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,40 +17,41 @@ import org.omg.CORBA.portable.ValueBase;
 public class ChessBoard extends JPanel implements MouseListener{
 	public final static int width=800;
 	public final static int height=800;
-	public final static int gap=50;//实际棋盘和边框的间距
-	public  final static int side=85;//小正方形的边框
+// implement the checkerboard and frame
+	public final static int gap=50;
+// the frame of each square
+	public  final static int side=85;
 	public int row=8,column=8;
 	public int gap2=10;
 	public JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint Point;
 	public boolean excited[][]=new boolean[8][8];
-	public  PiecesMove rule;
+	public  PiecesMove  rule;
 	public JLabel text;
 	public JLabel label=null;
-	/*单击棋子**********************************/
-	/*chessManClick = true 闪烁棋子 并给线程响应*/
-	/*chessManClick = false 吃棋子 停止闪烁  并给线程响应*/
+	/*click the piece*****************
+	 when chessManClick = true ,The pieces are flashing,Start thread response
+	 chessManClick = false the pieces stop flashing*/
 	public boolean chessmanclick;
-	/*控制玩家走棋****************************/
-	/*chessPlayClick=1 黑棋走棋*/
-	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
-	/*chessPlayClick=3 双方都不能走棋*/	
+	/***Control the player to move**************************/
+	/*chessPlayClick=1 one side stop move*/
+	/*chessPlayClick=2  the other side move
+	chessPlayClick=3  both don't move*/	
 	int chessPlayClick=2;
-	//控制棋子闪烁的线程
+	//control the flashing thread of the pieces
 		thread hThread;
-		//把第一次的单击棋子给线程响应
 	static int left,right;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
 		insertimage();
 		setlocation();
-		for (int i = 0; i <4; i++) {
-			for (int j= 0; j<8; j++) {
+		for (int i = 0; i <= 3; i++) {
+			for (int j= 0; j<= 7; j++) {
 				this.add(pieces[i][j]);
 			pieces[i][j].addMouseListener(this);
 			
 			}
-		}
+		 }
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove();
@@ -85,15 +85,6 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[3][1]=new JLabel(new ImageIcon("src/Graph/Knight.png"));
 		pieces[3][1].setName("2Knighht");
 		
-		//rooks
-		pieces[0][0]=new JLabel(new ImageIcon("src/Graph/BRook.Png"));
-		pieces[0][0].setName("1Rook");
-		pieces[0][7]=new JLabel(new ImageIcon("src/Graph/BRook.Png"));
-		pieces[0][7].setName("1Rook");
-		pieces[3][0]=new JLabel(new ImageIcon("src/Graph/Rook.Png"));
-		pieces[3][0].setName("2Rook");
-		pieces[3][7]=new JLabel(new ImageIcon("src/Graph/Rook.Png"));
-		pieces[3][7].setName("2Rook");
 		//Bishops
 		pieces[0][2]=new JLabel(new ImageIcon("src/Graph/BBishop.png"));
 		pieces[0][2].setName("1Bishop");
@@ -103,6 +94,15 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[3][2].setName("2Bishop");
 		pieces[3][5]=new JLabel(new ImageIcon("src/Graph/Bishop.png"));
 		pieces[3][5].setName("2Bishop");
+		//rooks
+		pieces[0][0]=new JLabel(new ImageIcon("src/Graph/BRook.Png"));
+		pieces[0][0].setName("1Rook");
+		pieces[0][7]=new JLabel(new ImageIcon("src/Graph/BRook.Png"));
+		pieces[0][7].setName("1Rook");
+		pieces[3][0]=new JLabel(new ImageIcon("src/Graph/Rook.Png"));
+		pieces[3][0].setName("2Rook");
+		pieces[3][7]=new JLabel(new ImageIcon("src/Graph/Rook.Png"));
+		pieces[3][7].setName("2Rook");
 	}
 	public void setlocation() {
 		//initial location of pawn
@@ -121,16 +121,16 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[0][6].setBounds(gap+6*side, 0, side, side);
 		pieces[3][1].setBounds(gap+side, 7*side,side, side);
 		pieces[3][6].setBounds(gap+6*side,7*side,side, side);
-		//rooks
-		pieces[0][0].setBounds(gap, 0, side, side);
-		pieces[0][7].setBounds(gap+7*side, 0, side, side);
-		pieces[3][0].setBounds(gap, 7*side, side, side);
-		pieces[3][7].setBounds(gap+7*side, 7*side,side, side);
 		//Bishops
 		pieces[0][2].setBounds(gap+2*side, 0, side, side);
 		pieces[0][5].setBounds(gap+5*side, 0, side, side);
 		pieces[3][2].setBounds(gap+2*side, 7*side, side, side);
 		pieces[3][5].setBounds(gap+5*side, 7*side, side, side);
+		//rooks
+		pieces[0][0].setBounds(gap, 0, side, side);
+		pieces[0][7].setBounds(gap+7*side, 0, side, side);
+		pieces[3][0].setBounds(gap, 7*side, side, side);
+		pieces[3][7].setBounds(gap+7*side, 7*side,side, side);
 	}
 	public void SetChessPoint(JLabel label){
 		//pawn
@@ -144,7 +144,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//利用余数来错位
+				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//use the remainder to dislocate
 			}
 		}
 	}
@@ -152,30 +152,26 @@ public class ChessBoard extends JPanel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-//		int count=0;
+   //	int count=0;
 		chessmanclick=false;
-
-		
-//		 move pieces
-//      acquire the location		
+  //	move pieces
+  //    acquire the location		
 			x=(e.getXOnScreen()-gap)/side;
 			y=(e.getYOnScreen()-46)/side;
 	
-				
-              
-		//move pawns
-		for (int j = 0; j <8; j++) {
-			if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
-				label=(JLabel) e.getSource();
-					if (hThread!=null) {
-						hThread.end();
-					}
+//move pawns
+		for (int j = 0; j <=7; j++) {
+		if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
+			label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
 				hThread=new thread(label);
 				hThread.start();
 //				count++;
 				}
 			}
-		for (int i = 0; i <8; i++) {
+	for (int i = 0; i <=7; i++) {
 			if ((e.getSource().equals(this))&&((label.equals(pieces[1][i])||(label.equals(pieces[2][i]))))) {
 				SetChessPoint(label);
 				rule.Pawn(label, e,x,y,Point);
