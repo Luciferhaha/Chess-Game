@@ -71,12 +71,14 @@ public class Advanced_rule extends JFrame{
         
         ImageIcon background = new ImageIcon("src/Graph/timg2");   
         JLabel label = new JLabel(background);   
-        label.setBounds(0, 0, this.getWidth(), this.getHeight());   
+        label.setBounds(0, 0, this.getWidth(), this.getHeight());
+        
         JPanel imagePanel = (JPanel) this.getContentPane();  
         imagePanel.setOpaque(false); 
         
         this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
-        setVisible(true); 
+        setVisible(true);
+        
         imagePanel.add(button1);
 	}
 }

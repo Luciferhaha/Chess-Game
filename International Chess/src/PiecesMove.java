@@ -6,8 +6,9 @@ import javax.swing.JLabel;
 
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
-//处理不同棋子的算法
-//兵，后，王，车，象，马
+//handling the algorithm of different pieces
+
+//bishop king knight pawn_black pawn_white queen rook
 //兵变身，兵吃过路兵，王车短易位和长易位
 //行棋权 白棋先走，双方轮流走棋
 //一着棋，除参与易位的车以外，任何棋子都不能越过被其他棋子占据的格子
@@ -32,27 +33,30 @@ public class PiecesMove {
 		//黑棋
 		int d=Math.abs(point.col()-y);
 		int d2=point.row()-x;
+		
 		int count =e.getClickCount();
 		char value=pieces.getName().charAt(0);
 		int values=value-'0';
 		if (d2==0&&(d==1||d==2)) {
 			switch (values) {
-			//黑棋
+			//white piece
 			case 1:
-				if (count==1&&d==2) {
-					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
-				}else {
-					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
-				}
-				break;
-				//白棋
-			case 2:
 				if (count==1&&d==2) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
 				}else {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
 				}
 				break;
+				// black piece
+			case 2:
+				if (count==1&&d==2) {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
+				}else {
+					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
+				}
+				break;
+			
+			
 			}
 			
 		}
@@ -108,6 +112,7 @@ public class PiecesMove {
 			case 1:
 				pieces.setLocation(pieces.getLocation().x+dx*side, pieces.getLocation().y+dy*side);
 				break;
+
 			case 2:
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
 				break;
