@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBack{
+public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public final static int width=800;
 	public final static int height=800;
 	public final static int gap=50;//实际棋盘和边框的间距
@@ -50,9 +50,6 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove(check);
-		disappear=new Thread(this);
-		disappear.start();
-		System.out.println("www");
 	}
 	public void insertimage() {
 		//pawns
@@ -151,9 +148,6 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 //      acquire the location		
 			x=(e.getXOnScreen()-gap)/side;
 			y=(e.getYOnScreen()-46)/side;
-	
-				
-              
 		//select  pieces
 		// select pawns
 		for (int j = 0; j <8; j++) {
@@ -225,40 +219,45 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 						count++;
 						rule.Pawn(label, e,x,y,check.Point,count,check);
 						hThread.end();
+						chessPlayClick=3;
 					}
-					
 				}
 			//move white queens
 			if (label.equals(pieces[3][3])) {
 				check.findChessPoint(label);
 				rule.Queen(label,x, y,check.Point);
 				hThread.end();
+				chessPlayClick=3;
 					}
 			//move white king
 			if (label.equals(pieces[3][4])) {
 				check.findChessPoint(label);
 				rule.King(label,x,y,check.Point);
 				hThread.end();
+				chessPlayClick=3;
 				}
 			//move white rooks
 			if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
 				check.findChessPoint(label);
 				rule.Rook(label,x,y,check.Point);
 				hThread.end();
+				chessPlayClick=3;
 			}
 			// move white knights
 			if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
 				check.findChessPoint(label);
 				rule.knight(label,x,y,check.Point);
 				hThread.end();
+				chessPlayClick=3;
 			}
 			//move white bishops
 			if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
 				check.findChessPoint(label);
 				rule.Bisshop(label, x, y, check.Point);
 				hThread.end();
+				chessPlayClick=3;
 			}
-			chessPlayClick=3;
+
 			}	
 			//move black pieces
 			else if (chessPlayClick==3) {
@@ -269,6 +268,8 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 						count++;
 						rule.Pawn(label, e,x,y,check.Point,count,check);
 						hThread.end();
+						chessPlayClick=2;
+			
 					}
 				}
 				//move black queens
@@ -276,36 +277,48 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 					check.findChessPoint(label);
 					rule.Queen(label,x, y,check.Point);
 					hThread.end();
+					chessPlayClick=2;
 					}
 				//move black kings
 					if (label.equals(pieces[0][4])) {
 						check.findChessPoint(label);
 						rule.King(label,x,y,check.Point);
 						hThread.end();
+						chessPlayClick=2;
 					}
 				//move black rooks
 					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
 						check.findChessPoint(label);
 						rule.Rook(label,x,y,check.Point);
 						hThread.end();
+						chessPlayClick=2;
 					}
 				//move black knights
 					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
 						check.findChessPoint(label);
 						rule.knight(label,x,y,check.Point);
 						hThread.end();
+						chessPlayClick=2;
 					}
 				//move black bishops
 					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
 						check.findChessPoint(label);
 						rule.Bisshop(label, x, y, check.Point);
 						hThread.end();
+						chessPlayClick=2;
 					}
-				chessPlayClick=2;
 					
 				}
-			
-		}
+			}
+		//eat pieces
+				for (int i = 0; i <4; i++) {
+					for (int j = 0; j <8; j++) {
+						
+					}
+				}
+				if (e.getSource().equals(pieces)) {
+					
+				}
 	}
 			
 	@Override
@@ -327,15 +340,6 @@ public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBac
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		if (rule.hasExisted==true) {
-			System.out.println("haha");
-//			remove(pieces[rule.x][rule.y]);
-			pieces[rule.x][rule.y].setVisible(false);
-		}
 	}
 	@Override
 	public void deliver() {

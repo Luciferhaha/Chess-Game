@@ -15,7 +15,7 @@ public class PiecesMove {
 //	public int start[][];
 //	public int end[][];
 	public int side=85;
-	public boolean hasExisted=false;
+	public boolean hasExisted;
 	public Check_isexisted findPoint=new Check_isexisted();
 	public int x,y;
 	public PiecesMove(Check_isexisted check) {
@@ -34,38 +34,41 @@ public class PiecesMove {
 		int d=(point.col()-y);
 		int d1=Math.abs(d);
 		int d2=point.row()-x;
+		int d3=Math.abs(d2);
 		char value=pieces.getName().charAt(0);
 		int values=value-'0';
-		if (d2==0&&(d1==1||d1==2)) {
+		if ((d2==0&&(d1==1||d1==2))||(d1==1&&d3==1)) {
 			switch (values) {
 			//黑棋
 			case 1:
 				if (count==1&&d1==2) {
-					check.isexisted[point.row()][point.col()]=false;
+					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
 					findPoint.findChessPoint(pieces);
 					System.out.println(findPoint.x);
 					System.out.println(findPoint.y);
-					if (findPoint.isexisted[findPoint.x][findPoint.y]==true) {
+					if ((findPoint.isexisted[findPoint.x][findPoint.y]==2)&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
 //						System.out.println("hhh");
+						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
 						hasExisted=true;
 					}else {
 //						System.out.println("hah");
-						findPoint.isexisted[findPoint.x][findPoint.y]=true;
+						findPoint.isexisted[findPoint.x][findPoint.y]=1;
 					}
 					
 					
 				}//the piece can not come back
 				else if(d==-1){
-					check.isexisted[point.row()][point.col()]=false;
+					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
 					findPoint.findChessPoint(pieces);
-					if (findPoint.isexisted[findPoint.x][findPoint.y]==true) {
+					if ((pieces.getName().charAt(0)=='2')&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
 						System.out.println("hhh");
+						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
 						hasExisted=true;
 					}else {
 						System.out.println("hah");
-						findPoint.isexisted[findPoint.x][findPoint.y]=true;
+						findPoint.isexisted[findPoint.x][findPoint.y]=1;
 					}
 				}
 				break;
