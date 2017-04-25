@@ -96,7 +96,7 @@ public class MainJFrame extends JFrame {
         button2.setBounds(375, 330, 150, 60);
         button2.setContentAreaFilled(false);
         button2.setFont(new Font("Arial",Font.BOLD,26));
-        button2.setForeground(Color.WHITE);
+        button2.setForeground(Color.black);
 		button2.addMouseListener(new MouseListener()
 			{
 				@Override
@@ -141,7 +141,7 @@ public class MainJFrame extends JFrame {
         button3.setBounds(375, 400, 150, 60);
         button3.setContentAreaFilled(false);
         button3.setFont(new Font("Arial",Font.BOLD,26));
-        button3.setForeground(Color.WHITE);
+        button3.setForeground(Color.black);
         button3.addMouseListener(new MouseListener()
 		{
 			@Override
@@ -183,7 +183,7 @@ public class MainJFrame extends JFrame {
         button4.setBounds(375, 470, 150, 60);
         button4.setContentAreaFilled(false);
         button4.setFont(new Font("Arial",Font.BOLD,26));
-        button4.setForeground(Color.WHITE);
+        button4.setForeground(Color.black);
         button4.addMouseListener(new MouseListener()
 		{
 			@Override
@@ -226,7 +226,7 @@ public class MainJFrame extends JFrame {
         musicb.setBounds(600, 500, 120, 48);
         musicb.setContentAreaFilled(false);
         musicb.setFont(new Font("Arial",Font.BOLD,16));
-        musicb.setForeground(Color.WHITE);
+        musicb.setForeground(Color.black);
         musicb.addMouseListener(new MouseListener(){
 
 			@Override
