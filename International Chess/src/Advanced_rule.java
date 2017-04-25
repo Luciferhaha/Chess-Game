@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class Advanced_rule extends JFrame{
 	/**
 	 * 
@@ -24,6 +23,10 @@ public class Advanced_rule extends JFrame{
         setSize(900, 600); 
         this.setResizable(true);
         setLocation(225, 60); 
+        
+        String path0 = "icon.png";
+        ImageIcon icon = new ImageIcon(path0);
+        setIconImage(icon.getImage());
         
         Container container1 = getContentPane();
         container1.setLayout(null);
@@ -67,18 +70,16 @@ public class Advanced_rule extends JFrame{
 				// TODO Auto-generated method stub
 				
 			}});
-     
+        String path1 = "timg2.jpg";   
         
-        ImageIcon background = new ImageIcon("src/Graph/timg2");   
+        ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   
-        label.setBounds(0, 0, this.getWidth(), this.getHeight());
-        
+        label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  
         imagePanel.setOpaque(false); 
         
         this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
-        setVisible(true);
-        
+        setVisible(true); 
         imagePanel.add(button1);
 	}
 }

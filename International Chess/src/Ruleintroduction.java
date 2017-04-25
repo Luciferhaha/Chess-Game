@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;  
 import javax.swing.JLabel;  
-import javax.swing.JPanel;  
+import javax.swing.JPanel;
 
 public class Ruleintroduction extends JFrame{
 	/**
@@ -22,6 +22,10 @@ public class Ruleintroduction extends JFrame{
         setSize(900, 600); 
         this.setResizable(true);
         setLocation(225, 60); 
+        
+        String path0 = "icon.png";
+        ImageIcon icon = new ImageIcon(path0);
+        setIconImage(icon.getImage());
         
         Container container1 = getContentPane();
         container1.setLayout(null);
@@ -64,7 +68,8 @@ public class Ruleintroduction extends JFrame{
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
-			}}); 
+			}});
+        String path1 = "timg2.jpg";  
         
         Container container2 = getContentPane();
         container2.setLayout(null);
@@ -149,7 +154,7 @@ public class Ruleintroduction extends JFrame{
 				
 			}});
         
-        ImageIcon background = new ImageIcon("src/Graph/timg2.jpg");   
+        ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   
         label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  

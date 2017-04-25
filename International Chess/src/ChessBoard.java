@@ -1,61 +1,58 @@
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.tree.TreeNode;
-import javax.xml.soap.Text;
 
-import org.omg.CORBA.portable.ValueBase;
-
-public class ChessBoard extends JPanel implements MouseListener{
+public class ChessBoard extends JPanel implements MouseListener,Runnable,CallBack{
 	public final static int width=800;
 	public final static int height=800;
-// implement the checkerboard and frame
-	public final static int gap=50;
-// the frame of each square
-	public  final static int side=85;
+	public final static int gap=50;//实际棋盘和边框的间距
+	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public int gap2=10;
 	public JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint Point;
-	public boolean excited[][]=new boolean[8][8];
-	public  PiecesMove  rule;
+	public  PiecesMove rule;
 	public JLabel text;
 	public JLabel label=null;
-	/*click the piece*****************
-	 when chessManClick = true ,The pieces are flashing,Start thread response
-	 chessManClick = false the pieces stop flashing*/
+	public Check_isexisted check=new Check_isexisted();
+	public int count=0;
+	/*单击棋子**********************************/
+	/*chessManClick = true 闪烁棋子 并给线程响应*/
+	/*chessManClick = false 吃棋子 停止闪烁  并给线程响应*/
 	public boolean chessmanclick;
-	/***Control the player to move**************************/
-	/*chessPlayClick=1 one side stop move*/
-	/*chessPlayClick=2  the other side move
-	chessPlayClick=3  both don't move*/	
+	/*控制玩家走棋****************************/
+	/*chessPlayClick=1 黑棋走棋*/
+	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
+	/*chessPlayClick=3 双方都不能走棋*/	
 	int chessPlayClick=2;
-	//control the flashing thread of the pieces
+	//控制棋子闪烁的线程
 		thread hThread;
+		//把第一次的单击棋子给线程响应
+	//控制棋子消失的线程
+		Thread disappear;
 	static int left,right;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
 		insertimage();
 		setlocation();
-		for (int i = 0; i <= 3; i++) {
-			for (int j= 0; j<= 7; j++) {
+		for (int i = 0; i <4; i++) {
+			for (int j= 0; j<8; j++) {
 				this.add(pieces[i][j]);
+				check.SetChessPoint(pieces[i][j]);
 			pieces[i][j].addMouseListener(this);
 			
 			}
-		 }
+		}
 		this.addMouseListener(this);
 		this.setLayout(null);
-		rule=new PiecesMove();
-		
+		rule=new PiecesMove(check);
+		disappear=new Thread(this);
+		disappear.start();
+		System.out.println("www");
 	}
 	public void insertimage() {
 		//pawns
@@ -85,15 +82,6 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[3][1]=new JLabel(new ImageIcon("src/Graph/Knight.png"));
 		pieces[3][1].setName("2Knighht");
 		
-		//Bishops
-		pieces[0][2]=new JLabel(new ImageIcon("src/Graph/BBishop.png"));
-		pieces[0][2].setName("1Bishop");
-		pieces[0][5]=new JLabel(new ImageIcon("src/Graph/BBishop.png"));
-		pieces[0][5].setName("1Bishop");
-		pieces[3][2]=new JLabel(new ImageIcon("src/Graph/Bishop.png"));
-		pieces[3][2].setName("2Bishop");
-		pieces[3][5]=new JLabel(new ImageIcon("src/Graph/Bishop.png"));
-		pieces[3][5].setName("2Bishop");
 		//rooks
 		pieces[0][0]=new JLabel(new ImageIcon("src/Graph/BRook.Png"));
 		pieces[0][0].setName("1Rook");
@@ -103,6 +91,15 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[3][0].setName("2Rook");
 		pieces[3][7]=new JLabel(new ImageIcon("src/Graph/Rook.Png"));
 		pieces[3][7].setName("2Rook");
+		//Bishops
+		pieces[0][2]=new JLabel(new ImageIcon("src/Graph/BBishop.png"));
+		pieces[0][2].setName("1Bishop");
+		pieces[0][5]=new JLabel(new ImageIcon("src/Graph/BBishop.png"));
+		pieces[0][5].setName("1Bishop");
+		pieces[3][2]=new JLabel(new ImageIcon("src/Graph/Bishop.png"));
+		pieces[3][2].setName("2Bishop");
+		pieces[3][5]=new JLabel(new ImageIcon("src/Graph/Bishop.png"));
+		pieces[3][5].setName("2Bishop");
 	}
 	public void setlocation() {
 		//initial location of pawn
@@ -121,22 +118,16 @@ public class ChessBoard extends JPanel implements MouseListener{
 		pieces[0][6].setBounds(gap+6*side, 0, side, side);
 		pieces[3][1].setBounds(gap+side, 7*side,side, side);
 		pieces[3][6].setBounds(gap+6*side,7*side,side, side);
-		//Bishops
-		pieces[0][2].setBounds(gap+2*side, 0, side, side);
-		pieces[0][5].setBounds(gap+5*side, 0, side, side);
-		pieces[3][2].setBounds(gap+2*side, 7*side, side, side);
-		pieces[3][5].setBounds(gap+5*side, 7*side, side, side);
 		//rooks
 		pieces[0][0].setBounds(gap, 0, side, side);
 		pieces[0][7].setBounds(gap+7*side, 0, side, side);
 		pieces[3][0].setBounds(gap, 7*side, side, side);
 		pieces[3][7].setBounds(gap+7*side, 7*side,side, side);
-	}
-	public void SetChessPoint(JLabel label){
-		//pawn
-		int x=(label.getLocation().x-gap)/side;
-		int y=(label.getLocation().y)/side;
-		Point=new ChessPoint(x, y);
+		//Bishops
+		pieces[0][2].setBounds(gap+2*side, 0, side, side);
+		pieces[0][5].setBounds(gap+5*side, 0, side, side);
+		pieces[3][2].setBounds(gap+2*side, 7*side, side, side);
+		pieces[3][5].setBounds(gap+5*side, 7*side, side, side);
 	}
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
@@ -144,120 +135,179 @@ public class ChessBoard extends JPanel implements MouseListener{
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//use the remainder to dislocate
+				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//利用余数来错位
 			}
 		}
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-   //	int count=0;
 		chessmanclick=false;
-  //	move pieces
-  //    acquire the location		
+
+		
+//		 move pieces
+//      acquire the location		
 			x=(e.getXOnScreen()-gap)/side;
 			y=(e.getYOnScreen()-46)/side;
 	
-//move pawns
-		for (int j = 0; j <=7; j++) {
-		if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
-			label=(JLabel) e.getSource();
-				if (hThread!=null) {
-					hThread.end();
-				}
-				hThread=new thread(label);
-				hThread.start();
-//				count++;
-				}
-			}
-	for (int i = 0; i <=7; i++) {
-			if ((e.getSource().equals(this))&&((label.equals(pieces[1][i])||(label.equals(pieces[2][i]))))) {
-				SetChessPoint(label);
-				rule.Pawn(label, e,x,y,Point);
-				hThread.end();
-			}
-			
-		}
 				
-//			}
-				//move queens 
-			if (e.getSource().equals(pieces[0][3])||e.getSource().equals(pieces[3][3])) {
-				label=(JLabel) e.getSource();
-				if (hThread!=null) {
-					hThread.end();
+              
+		//select  pieces
+		// select pawns
+		for (int j = 0; j <8; j++) {
+			if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
+				if (e.getSource()!=label) {
+					count=0;
 				}
-				hThread=new thread(label);
-				hThread.start();
-					}
-			if (e.getSource().equals(this)&&(label.equals(pieces[0][3])||label.equals(pieces[3][3]))) {
-				SetChessPoint(label);
-				rule.Queen(label,x, y,Point);
-				hThread.end();
-			}
-	      
-				//move Kings
-					if (e.getSource().equals(pieces[0][4])||e.getSource().equals(pieces[3][4])) {
-						label=(JLabel) e.getSource();
-						if (hThread!=null) {
-							hThread.end();
-						}
-						hThread=new thread(label);
-						hThread.start();
-					}
-					if (e.getSource().equals(this)&&(label.equals(pieces[0][4])||label.equals(pieces[3][4]))) {
-						SetChessPoint(label);
-						rule.King(label,x,y,Point);
+				label=(JLabel) e.getSource();
+					if (hThread!=null) {
 						hThread.end();
 					}
-				//move rooks
-					if (e.getSource().equals(pieces[0][0])||e.getSource().equals(pieces[0][7])||e.getSource().equals(pieces[3][0])||e.getSource().equals(pieces[3][7])) {
-						label=(JLabel) e.getSource();
-						if (hThread!=null) {
-							hThread.end();
-						}
-						hThread=new thread(label);
-						hThread.start();
+				hThread=new thread(label);
+				hThread.start();
+				}
+			}
+		//select queens 
+		if (e.getSource().equals(pieces[0][3])||e.getSource().equals(pieces[3][3])) {
+			label=(JLabel) e.getSource();
+			if (hThread!=null) {
+				hThread.end();
+			}
+			hThread=new thread(label);
+			hThread.start();
+		}
+		//select kings
+		if (e.getSource().equals(pieces[0][4])||e.getSource().equals(pieces[3][4])) {
+			label=(JLabel) e.getSource();
+			if (hThread!=null) {
+				hThread.end();
+			}
+			hThread=new thread(label);
+			hThread.start();
+		}
+		//select rooks
+		if (e.getSource().equals(pieces[0][0])||e.getSource().equals(pieces[0][7])||e.getSource().equals(pieces[3][0])||e.getSource().equals(pieces[3][7])) {
+			label=(JLabel) e.getSource();
+			if (hThread!=null) {
+				hThread.end();
+			}
+			hThread=new thread(label);
+			hThread.start();
+		}
+		// select knights
+		if (e.getSource().equals(pieces[0][1])||e.getSource().equals(pieces[0][6])||e.getSource().equals(pieces[3][1])||e.getSource().equals(pieces[3][6])) {
+			label=(JLabel) e.getSource();
+			if (hThread!=null) {
+				hThread.end();
+			}
+			hThread=new thread(label);
+			hThread.start();
+		}
+		//select bishops
+		if (e.getSource().equals(pieces[0][2])||e.getSource().equals(pieces[0][5])||e.getSource().equals(pieces[3][2])||e.getSource().equals(pieces[3][5])) {
+			label=(JLabel) e.getSource();
+			if (hThread!=null) {
+				hThread.end();
+			}
+			hThread=new thread(label);
+			hThread.start();
+		}
+		
+		//move pieces
+		if (label!=null&&e.getSource().equals(this)) {
+			//move white pawn pieces
+			if (chessPlayClick==2) {
+				for (int i = 0; i <8; i++) {
+					if (label.equals(pieces[2][i])) {
+						check.findChessPoint(label);
+						count++;
+						rule.Pawn(label, e,x,y,check.Point,count,check);
+						hThread.end();
 					}
-					if (e.getSource().equals(this)&&(label.equals(pieces[0][0])||label.equals(pieces[0][7])||label.equals(pieces[3][0])||label.equals(pieces[3][7]))) {
-						SetChessPoint(label);
-						rule.Rook(label,x,y,Point);
+					
+				}
+			//move white queens
+			if (label.equals(pieces[3][3])) {
+				check.findChessPoint(label);
+				rule.Queen(label,x, y,check.Point);
+				hThread.end();
 					}
-                  
-				// move knights
-					if (e.getSource().equals(pieces[0][1])||e.getSource().equals(pieces[0][6])||e.getSource().equals(pieces[3][1])||e.getSource().equals(pieces[3][6])) {
-						label=(JLabel) e.getSource();
-						if (hThread!=null) {
-							hThread.end();
-						}
-						hThread=new thread(label);
-						hThread.start();
-					}
-					if (e.getSource().equals(this)&&label.equals(pieces[0][1])||label.equals(pieces[0][6])||label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
-						SetChessPoint(label);
-						rule.knight(label,x,y,Point);
-					}
-				
-				//move bishops
-					if (e.getSource().equals(pieces[0][2])||e.getSource().equals(pieces[0][5])||e.getSource().equals(pieces[3][2])||e.getSource().equals(pieces[3][5])) {
-						label=(JLabel) e.getSource();
-						if (hThread!=null) {
-							hThread.end();
-						}
-						hThread=new thread(label);
-						hThread.start();
-					}
-					if (e.getSource().equals(this)&&(label.equals(pieces[0][2])||label.equals(pieces[0][5])||label.equals(pieces[3][2])||label.equals(pieces[3][5]))) {
-						SetChessPoint(label);
-						rule.Bisshop(label, x, y, Point);
+			//move white king
+			if (label.equals(pieces[3][4])) {
+				check.findChessPoint(label);
+				rule.King(label,x,y,check.Point);
+				hThread.end();
+				}
+			//move white rooks
+			if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
+				check.findChessPoint(label);
+				rule.Rook(label,x,y,check.Point);
+				hThread.end();
+			}
+			// move white knights
+			if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
+				check.findChessPoint(label);
+				rule.knight(label,x,y,check.Point);
+				hThread.end();
+			}
+			//move white bishops
+			if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
+				check.findChessPoint(label);
+				rule.Bisshop(label, x, y, check.Point);
+				hThread.end();
+			}
+			chessPlayClick=3;
+			}	
+			//move black pieces
+			else if (chessPlayClick==3) {
+				// move black pawns
+				for (int i = 0; i <8; i++) {
+					if (label.equals(pieces[1][i])) {
+						check.findChessPoint(label);
+						count++;
+						rule.Pawn(label, e,x,y,check.Point,count,check);
+						hThread.end();
 					}
 				}
-//				}
-//			}
-//		}
-
-//	}
-	
+				//move black queens
+				if (label.equals(pieces[0][3])) {
+					check.findChessPoint(label);
+					rule.Queen(label,x, y,check.Point);
+					hThread.end();
+					}
+				//move black kings
+					if (label.equals(pieces[0][4])) {
+						check.findChessPoint(label);
+						rule.King(label,x,y,check.Point);
+						hThread.end();
+					}
+				//move black rooks
+					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
+						check.findChessPoint(label);
+						rule.Rook(label,x,y,check.Point);
+						hThread.end();
+					}
+				//move black knights
+					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
+						check.findChessPoint(label);
+						rule.knight(label,x,y,check.Point);
+						hThread.end();
+					}
+				//move black bishops
+					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
+						check.findChessPoint(label);
+						rule.Bisshop(label, x, y, check.Point);
+						hThread.end();
+					}
+				chessPlayClick=2;
+					
+				}
+			
+		}
+	}
+			
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -278,8 +328,17 @@ public class ChessBoard extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void actionPerformed(ActionEvent e) {
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		if (rule.hasExisted==true) {
+			System.out.println("haha");
+//			remove(pieces[rule.x][rule.y]);
+			pieces[rule.x][rule.y].setVisible(false);
+		}
+	}
+	@Override
+	public void deliver() {
 		// TODO Auto-generated method stub
 		
 	}

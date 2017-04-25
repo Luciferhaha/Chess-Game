@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-
 public class Basic_rule extends JFrame{
 	/**
 	 * 
@@ -27,6 +26,10 @@ public class Basic_rule extends JFrame{
         this.setResizable(true);
         setLocation(225, 60); 
         
+        String path0 = "icon.png";
+        ImageIcon icon = new ImageIcon(path0);
+        setIconImage(icon.getImage());
+        
         Container container1 = getContentPane();
         container1.setLayout(null);
         
@@ -34,7 +37,7 @@ public class Basic_rule extends JFrame{
         button1.setBounds(700, 475, 150, 60);
         button1.setContentAreaFilled(false);
         button1.setFont(new Font("Arial",Font.BOLD,26));
-        button1.setForeground(Color.black);
+        button1.setForeground(Color.WHITE);
         button1.addMouseListener(new MouseListener(){
 
 			@Override
@@ -70,7 +73,7 @@ public class Basic_rule extends JFrame{
 				
 			}});
         
-
+        String path1 = "timg2.jpg";   
 
         JTextArea a = new JTextArea();
         a.setOpaque(false);
@@ -79,7 +82,7 @@ public class Basic_rule extends JFrame{
         scroll.setVisible(true);
         scroll.setBounds(100, 100, 700, 300);
         
-        ImageIcon background = new ImageIcon("src/Graph/timg2.jpg");   
+        ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   
         label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  

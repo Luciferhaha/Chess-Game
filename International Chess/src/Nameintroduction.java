@@ -12,19 +12,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.awt.Container;
-// This is the class that the introduction of the name
 public class Nameintroduction extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-   
-	// constuctor of the class
+
 	public Nameintroduction(){
 		super("International Chess");   
         setSize(900, 600); 
         this.setResizable(true);
         setLocation(225, 60); 
+        
+        String path0 = "icon.png";
+        ImageIcon icon = new ImageIcon(path0);
+        setIconImage(icon.getImage());
         
         Container container1 = getContentPane();
         container1.setLayout(null);
@@ -32,9 +34,8 @@ public class Nameintroduction extends JFrame{
         JButton button1 = new JButton("BACK");
         button1.setBounds(700, 470, 150, 60);
         button1.setContentAreaFilled(false);
-        
         button1.setFont(new Font("Arial",Font.BOLD,26));
-        button1.setForeground(Color.black);
+        button1.setForeground(Color.WHITE);
         button1.addMouseListener(new MouseListener(){
 
 			@Override
@@ -43,7 +44,6 @@ public class Nameintroduction extends JFrame{
 				if(e != null){
 					dispose();
 					new MainJFrame();
-					
 				}
 			}
 
@@ -69,17 +69,16 @@ public class Nameintroduction extends JFrame{
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
-			}
-		});
-     
-         ImageIcon background = new ImageIcon("src/Graph/timg3.jpg");   
+			}});
+        String path1 = "timg3.jpg";   
+        
+        ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   
         label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  
         imagePanel.setOpaque(false); 
         
-        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));
-        
+        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
         setVisible(true); 
         imagePanel.add(button1);
 	}

@@ -3,8 +3,13 @@ import javax.swing.JLabel;
 public class pieces  extends JLabel{
 	public pieces() {
 		// TODO Auto-generated constructor stub
+		
+		
 	}
 	//white pieces
+	public void name() {
+		
+	}
 	public void WPieces() {
 		
 	}
