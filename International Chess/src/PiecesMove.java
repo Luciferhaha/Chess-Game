@@ -16,9 +16,10 @@ public class PiecesMove {
 //	public int end[][];
 	public int side=85;
 	public boolean hasExisted;
-	public Check_isexisted findPoint=new Check_isexisted();
+	public Point_Operation findPoint=new Point_Operation();
 	public int x,y;
-	public PiecesMove(Check_isexisted check) {
+	public static boolean rightmove=false;
+	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
 //		start=new int[8][8];
@@ -27,7 +28,7 @@ public class PiecesMove {
 		findPoint=check;
 	}
 	
-	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point,int count, Check_isexisted check){
+	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point,Point_Operation check){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
 		//黑棋
@@ -36,23 +37,19 @@ public class PiecesMove {
 		int d2=point.row()-x;
 		int d3=Math.abs(d2);
 		char value=pieces.getName().charAt(0);
-		int values=value-'0';
-		if ((d2==0&&(d1==1||d1==2))||(d1==1&&d3==1)) {
-			switch (values) {
+		if ((d2==0&&(d1==1||d1==2))) {
+			switch (value) {
 			//黑棋
-			case 1:
-				if (count==1&&d1==2) {
+			case '1':
+				if (point.col()==1&&d1==2) {
 					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
+					System.out.println("ha");
+					rightmove=true;
 					findPoint.findChessPoint(pieces);
-					System.out.println(findPoint.x);
-					System.out.println(findPoint.y);
-					if ((findPoint.isexisted[findPoint.x][findPoint.y]==2)&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
-//						System.out.println("hhh");
-						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
+					if ((findPoint.isexisted[findPoint.x][findPoint.y]==2)) {
 						hasExisted=true;
 					}else {
-//						System.out.println("hah");
 						findPoint.isexisted[findPoint.x][findPoint.y]=1;
 					}
 					
@@ -61,25 +58,28 @@ public class PiecesMove {
 				else if(d==-1){
 					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
+//					System.out.println("ha1");
+					rightmove=true;
 					findPoint.findChessPoint(pieces);
 					if ((pieces.getName().charAt(0)=='2')&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
-						System.out.println("hhh");
 						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
 						hasExisted=true;
 					}else {
-						System.out.println("hah");
+//						System.out.println("hah");
 						findPoint.isexisted[findPoint.x][findPoint.y]=1;
 					}
 				}
 				break;
 				//白棋
-			case 2:
-				if (count==1&&d1==2) {
+			case '2':
+				if (point.col()==6&&d1==2) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
+					rightmove=true;
 				}//the piece can not come back
 				else if (d==1) {
 	
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
+					rightmove=true;
 				}
 				break;
 			}
@@ -93,7 +93,7 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if (dx==0||dy==0||Math.abs(dx)==Math.abs(dy)) {
 					pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
-	
+					rightmove=true;
 			}
 			
 		}
@@ -102,6 +102,7 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if (dx==0||dy==0||((Math.abs(dx)==Math.abs(dy)&&(Math.abs(dx)==1&&(Math.abs(dy)==1))))) {
 			pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+			rightmove=true;
 			}
 		}
 	public void Rook(JLabel pieces, int x, int y, ChessPoint point) {
@@ -110,6 +111,7 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if (dx==0||dy==0) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				rightmove=true;
 			}
 		}
 	public void knight(JLabel pieces, int x, int y, ChessPoint point) {
@@ -118,6 +120,7 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if ((Math.abs(dx)==1&&Math.abs(dy)==2)||(Math.abs(dx)==2&&Math.abs(dy)==1)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				rightmove=true;
 		}
 	}
 	public void Bisshop(JLabel pieces,int x,int y,ChessPoint point) {
@@ -125,10 +128,23 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if (Math.abs(dx)==Math.abs(dy)) {
 		pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
-
+		rightmove=true;
 			}
 		}
-	
+	public void PawnEatRule(JLabel label, JLabel label2){
+		char c=label.getName().charAt(0);
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		switch (c) {
+		case '1':
+			
+			break;
+
+		case '2':
+			break;
+		}
+	}
 	//兵的升变
 	public void promotion() {
 		//当兵子走至对方底线，玩家可选择把该兵升级成车，马，象或后。
@@ -153,7 +169,14 @@ public class PiecesMove {
 //			
 //		}
 //	}
-
+	public boolean judgemovehaspieces() {
+		
+		return true;
+	}
+	public boolean judgeeathaspieces() {
+		
+		return true;
+	}
 	public void Kingprotections(){
 		
 	}

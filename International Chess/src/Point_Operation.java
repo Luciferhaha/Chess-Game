@@ -1,13 +1,13 @@
 
 
 import javax.swing.JLabel;
-public class Check_isexisted {
+public class Point_Operation {
 	public final static int gap=50;//实际棋盘和边框的间距
 	public  final static int side=85;//小正方形的边框
 	public ChessPoint Point;
 	public int x,y;
 	public int isexisted[][]=new int[8][8];
-	public Check_isexisted() {
+	public Point_Operation() {
 		// TODO Auto-generated constructor stub
 		//初始化位置
 		for (int i = 0; i <8; i++) {
@@ -30,7 +30,7 @@ public class Check_isexisted {
 	public void findChessPoint (JLabel label) {
 		 x=(label.getLocation().x-gap)/side;
 		 y=(label.getLocation().y)/side;
-		Point=new ChessPoint(x, y);
+		 Point=new ChessPoint(x, y);
 	}
 
 }

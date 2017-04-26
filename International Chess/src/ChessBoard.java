@@ -18,7 +18,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public  PiecesMove rule;
 	public JLabel text;
 	public JLabel label=null;
-	public Check_isexisted check=new Check_isexisted();
+	public JLabel label2=null;
+	public Point_Operation check=new Point_Operation();
 	public int count=0;
 	/*单击棋子**********************************/
 	/*chessManClick = true 闪烁棋子 并给线程响应*/
@@ -32,8 +33,6 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	//控制棋子闪烁的线程
 		thread hThread;
 		//把第一次的单击棋子给线程响应
-	//控制棋子消失的线程
-		Thread disappear;
 	static int left,right;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
@@ -141,7 +140,6 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-		chessmanclick=false;
 
 		
 //		 move pieces
@@ -152,9 +150,9 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 		// select pawns
 		for (int j = 0; j <8; j++) {
 			if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
-				if (e.getSource()!=label) {
-					count=0;
-				}
+//				if (e.getSource()!=label) {
+//					co
+//				}
 				label=(JLabel) e.getSource();
 					if (hThread!=null) {
 						hThread.end();
@@ -216,109 +214,151 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 				for (int i = 0; i <8; i++) {
 					if (label.equals(pieces[2][i])) {
 						check.findChessPoint(label);
-						count++;
-						rule.Pawn(label, e,x,y,check.Point,count,check);
-						hThread.end();
-						chessPlayClick=3;
+						rule.Pawn(label, e,x,y,check.Point,check);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
 					}
 				}
 			//move white queens
-			if (label.equals(pieces[3][3])) {
-				check.findChessPoint(label);
-				rule.Queen(label,x, y,check.Point);
-				hThread.end();
-				chessPlayClick=3;
+					if (label.equals(pieces[3][3])) {
+						check.findChessPoint(label);
+						System.out.println(Point);
+						rule.Queen(label,x, y,check.Point);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
 					}
 			//move white king
-			if (label.equals(pieces[3][4])) {
-				check.findChessPoint(label);
-				rule.King(label,x,y,check.Point);
-				hThread.end();
-				chessPlayClick=3;
+					if (label.equals(pieces[3][4])) {
+						check.findChessPoint(label);
+						rule.King(label,x,y,check.Point);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
 				}
 			//move white rooks
-			if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
-				check.findChessPoint(label);
-				rule.Rook(label,x,y,check.Point);
-				hThread.end();
-				chessPlayClick=3;
-			}
+					if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
+						check.findChessPoint(label);
+						rule.Rook(label,x,y,check.Point);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
+				}
 			// move white knights
-			if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
-				check.findChessPoint(label);
-				rule.knight(label,x,y,check.Point);
-				hThread.end();
-				chessPlayClick=3;
+					if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
+						check.findChessPoint(label);
+						rule.knight(label,x,y,check.Point);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
 			}
 			//move white bishops
-			if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
-				check.findChessPoint(label);
-				rule.Bisshop(label, x, y, check.Point);
-				hThread.end();
-				chessPlayClick=3;
-			}
+					if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
+						check.findChessPoint(label);
+						rule.Bisshop(label, x, y, check.Point);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=3;
+							rule.rightmove=false;
+						}
+					}
 
 			}	
-			//move black pieces
-			else if (chessPlayClick==3) {
+				//move black pieces
+					else if (chessPlayClick==3) {
 				// move black pawns
-				for (int i = 0; i <8; i++) {
-					if (label.equals(pieces[1][i])) {
+						for (int i = 0; i <8; i++) {
+						if (label.equals(pieces[1][i])) {
 						check.findChessPoint(label);
-						count++;
-						rule.Pawn(label, e,x,y,check.Point,count,check);
-						hThread.end();
-						chessPlayClick=2;
-			
+						rule.Pawn(label, e,x,y,check.Point,check);
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=2;
+							rule.rightmove=false;
+						}
 					}
 				}
 				//move black queens
 				if (label.equals(pieces[0][3])) {
 					check.findChessPoint(label);
 					rule.Queen(label,x, y,check.Point);
-					hThread.end();
-					chessPlayClick=2;
+						if (rule.rightmove==true) {
+						hThread.end();
+						chessPlayClick=2;
+						rule.rightmove=false;
+						}
 					}
 				//move black kings
 					if (label.equals(pieces[0][4])) {
 						check.findChessPoint(label);
 						rule.King(label,x,y,check.Point);
-						hThread.end();
-						chessPlayClick=2;
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=2;
+							rule.rightmove=false;
+						}
 					}
 				//move black rooks
 					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
 						check.findChessPoint(label);
 						rule.Rook(label,x,y,check.Point);
-						hThread.end();
-						chessPlayClick=2;
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=2;
+							rule.rightmove=false;
+						}
 					}
 				//move black knights
 					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
 						check.findChessPoint(label);
 						rule.knight(label,x,y,check.Point);
-						hThread.end();
-						chessPlayClick=2;
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=2;
+							rule.rightmove=false;
+						}
 					}
 				//move black bishops
 					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
 						check.findChessPoint(label);
 						rule.Bisshop(label, x, y, check.Point);
-						hThread.end();
-						chessPlayClick=2;
+						if (rule.rightmove==true) {
+							hThread.end();
+							chessPlayClick=2;
+							rule.rightmove=false;
+						}
 					}
 					
 				}
 			}
 		//eat pieces
+			if (label!=null&&e.getSource().equals(pieces)) {
 				for (int i = 0; i <4; i++) {
 					for (int j = 0; j <8; j++) {
-						
+						if (e.getSource().equals(pieces[i][j])) {
+							label2=pieces[i][j];
+						}
 					}
 				}
-				if (e.getSource().equals(pieces)) {
-					
+				//judge the piece is  pawn or not 
+			for (int i = 0; i <8; i++) {
+				if (label.equals(pieces[1][i])||label.equals(pieces[2][i])) {
+					rule.PawnEatRule(label, label2);
 				}
+			}
+				System.out.println("hah");
+			}
 	}
 			
 	@Override
