@@ -9,16 +9,17 @@ public class thread extends Thread{
 		// TODO Auto-generated constructor stub
 		this.label=label;
 	}
+	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		isrunning=true;
 		while (isrunning) {
-			//单击棋子第一下开始闪烁
+			//鍗曞嚮妫嬪瓙绗竴涓嬪紑濮嬮棯鐑�
 			if (label!=null) {
 				label.setVisible(false);
 					try {
-						this.sleep(500);
+						this.sleep(400);
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
