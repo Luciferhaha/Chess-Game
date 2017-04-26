@@ -12,7 +12,6 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public final static int gap=50;//实际棋盘和边框的间距
 	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
-	public int gap2=10;
 	public JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint Point;
 	public  PiecesMove rule;
@@ -100,8 +99,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public void setlocation() {
 		//initial location of pawn
 		for (int i = 0; i <8; i++) {
-			pieces[1][i].setBounds(gap+gap2+i*side, side,65, 80);
-			pieces[2][i].setBounds(gap+gap2+i*side, 6*side,65, 80);
+			pieces[1][i].setBounds(gap+i*side, side,side, side);
+			pieces[2][i].setBounds(gap+i*side, 6*side,side, side);
 		}
 		//kings
 		pieces[0][4].setBounds(gap+4*side, 0, side, side);
@@ -140,77 +139,14 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-
-		
-//		 move pieces
 //      acquire the location		
 			x=(e.getXOnScreen()-gap)/side;
 			y=(e.getYOnScreen()-46)/side;
-		//select  pieces
-		// select pawns
-		for (int j = 0; j <8; j++) {
-			if (e.getSource().equals(pieces[1][j])||e.getSource().equals(pieces[2][j])) {
-//				if (e.getSource()!=label) {
-//					co
-//				}
-				label=(JLabel) e.getSource();
-					if (hThread!=null) {
-						hThread.end();
-					}
-				hThread=new thread(label);
-				hThread.start();
-				}
-			}
-		//select queens 
-		if (e.getSource().equals(pieces[0][3])||e.getSource().equals(pieces[3][3])) {
-			label=(JLabel) e.getSource();
-			if (hThread!=null) {
-				hThread.end();
-			}
-			hThread=new thread(label);
-			hThread.start();
-		}
-		//select kings
-		if (e.getSource().equals(pieces[0][4])||e.getSource().equals(pieces[3][4])) {
-			label=(JLabel) e.getSource();
-			if (hThread!=null) {
-				hThread.end();
-			}
-			hThread=new thread(label);
-			hThread.start();
-		}
-		//select rooks
-		if (e.getSource().equals(pieces[0][0])||e.getSource().equals(pieces[0][7])||e.getSource().equals(pieces[3][0])||e.getSource().equals(pieces[3][7])) {
-			label=(JLabel) e.getSource();
-			if (hThread!=null) {
-				hThread.end();
-			}
-			hThread=new thread(label);
-			hThread.start();
-		}
-		// select knights
-		if (e.getSource().equals(pieces[0][1])||e.getSource().equals(pieces[0][6])||e.getSource().equals(pieces[3][1])||e.getSource().equals(pieces[3][6])) {
-			label=(JLabel) e.getSource();
-			if (hThread!=null) {
-				hThread.end();
-			}
-			hThread=new thread(label);
-			hThread.start();
-		}
-		//select bishops
-		if (e.getSource().equals(pieces[0][2])||e.getSource().equals(pieces[0][5])||e.getSource().equals(pieces[3][2])||e.getSource().equals(pieces[3][5])) {
-			label=(JLabel) e.getSource();
-			if (hThread!=null) {
-				hThread.end();
-			}
-			hThread=new thread(label);
-			hThread.start();
-		}
-		
-		//move pieces
-		if (label!=null&&e.getSource().equals(this)) {
+	//move pieces
 			//move white pawn pieces
 			if (chessPlayClick==2) {
+				selectPiece(e,chessPlayClick);
+				if (label!=null&&e.getSource().equals(this)) {
 				for (int i = 0; i <8; i++) {
 					if (label.equals(pieces[2][i])) {
 						check.findChessPoint(label);
@@ -273,10 +209,13 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							rule.rightmove=false;
 						}
 					}
-
+				}
 			}	
 				//move black pieces
 					else if (chessPlayClick==3) {
+					//select black pieces
+						selectPiece(e,chessPlayClick);
+						if (label!=null&&e.getSource().equals(this)) {
 				// move black pawns
 						for (int i = 0; i <8; i++) {
 						if (label.equals(pieces[1][i])) {
@@ -340,27 +279,172 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 						}
 					}
 					
-				}
-			}
-		//eat pieces
-			if (label!=null&&e.getSource().equals(pieces)) {
-				for (int i = 0; i <4; i++) {
-					for (int j = 0; j <8; j++) {
-						if (e.getSource().equals(pieces[i][j])) {
-							label2=pieces[i][j];
-						}
 					}
 				}
-				//judge the piece is  pawn or not 
-			for (int i = 0; i <8; i++) {
-				if (label.equals(pieces[1][i])||label.equals(pieces[2][i])) {
-					rule.PawnEatRule(label, label2);
+		//find eat pieces
+		if (label!=null&&!e.getSource().equals(label)&&!e.getSource().equals(this)) {
+				for (int i = 0; i <4; i++) {
+					for (int j = 0; j <8; j++) {
+					if (e.getSource().equals(pieces[i][j])) {
+						label2=pieces[i][j];
+					}
 				}
 			}
-				System.out.println("hah");
-			}
+		}
+			// make a judgment 
+				//judge the piece is  pawn or not 
+				if (label2!=null) {
+					//white pawn eat pieces
+					for (int i = 0; i <8; i++) {
+						if (label.equals(pieces[2][i])) {
+							rule.PawnEatRule(label, label2);
+							if (rule.haseaten) {
+								remove(label2);
+								label2=null;
+								hThread.end();
+								rule.haseaten=false;
+								chessPlayClick=3;
+							}
+						}
+					}
+				//black pawn eat pieces
+					for (int i = 0; i <8; i++) {
+						if (label.equals(pieces[1][i])) {
+							rule.PawnEatRule(label, label2);
+							if (rule.haseaten) {
+								remove(label2);
+								label2=null;
+								hThread.end();
+								rule.haseaten=false;
+								chessPlayClick=2;
+							}
+						}
+					}
+					for (int i = 0; i < pieces.length; i++) {
+						
+					}
+				}
+				System.out.println(label);
+				System.out.println(label2);
 	}
-			
+	public void selectPiece(MouseEvent e,int i) {
+		if (i==2) {
+			//select pawns
+			for (int j = 0; j <8; j++) {
+				if (e.getSource().equals(pieces[2][j])) {
+					label=(JLabel) e.getSource();
+					if (hThread!=null) {
+						hThread.end();
+					}
+					hThread=new thread(label);
+					hThread.start();
+				}
+			}
+			//select queens 
+			if (e.getSource().equals(pieces[3][3])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select kings
+			if (e.getSource().equals(pieces[3][4])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select rooks
+			if (e.getSource().equals(pieces[3][0])||e.getSource().equals(pieces[3][7])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			// select knights
+			if (e.getSource().equals(pieces[3][1])||e.getSource().equals(pieces[3][6])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select bishops
+			if (e.getSource().equals(pieces[3][2])||e.getSource().equals(pieces[3][5])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+		}else if (i==3) {
+			for (int j = 0; j <8; j++) {
+				if (e.getSource().equals(pieces[1][j])) {
+					label=(JLabel) e.getSource();
+					if (hThread!=null) {
+						hThread.end();
+					}
+					hThread=new thread(label);
+					hThread.start();
+				}
+			}
+			//select queens 
+			if (e.getSource().equals(pieces[0][3])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select kings
+			if (e.getSource().equals(pieces[0][4])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select rooks
+			if (e.getSource().equals(pieces[0][0])||e.getSource().equals(pieces[0][7])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			// select knights
+			if (e.getSource().equals(pieces[0][1])||e.getSource().equals(pieces[0][6])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+			//select bishops
+			if (e.getSource().equals(pieces[0][2])||e.getSource().equals(pieces[0][5])) {
+				label=(JLabel) e.getSource();
+				if (hThread!=null) {
+					hThread.end();
+				}
+				hThread=new thread(label);
+				hThread.start();
+			}
+		}
+		
+		
+	}
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub

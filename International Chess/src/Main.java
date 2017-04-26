@@ -79,7 +79,7 @@ public class Main extends JFrame implements ActionListener{
 //		showSave.addActionListener(this);
 
 		this.setTitle("INTERNETIONAL CHESS");
-		this.setSize(900, 900);
+		this.setBounds(0, 0,900,900);
 		jpanel=new ChessBoard();
 		this.add(jpanel);
 		this.setVisible(true);

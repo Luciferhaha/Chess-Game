@@ -18,7 +18,8 @@ public class PiecesMove {
 	public boolean hasExisted;
 	public Point_Operation findPoint=new Point_Operation();
 	public int x,y;
-	public static boolean rightmove=false;
+	public static boolean rightmove;
+	public static boolean  haseaten;
 	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
@@ -44,7 +45,6 @@ public class PiecesMove {
 				if (point.col()==1&&d1==2) {
 					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
-					System.out.println("ha");
 					rightmove=true;
 					findPoint.findChessPoint(pieces);
 					if ((findPoint.isexisted[findPoint.x][findPoint.y]==2)) {
@@ -58,14 +58,12 @@ public class PiecesMove {
 				else if(d==-1){
 					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
-//					System.out.println("ha1");
 					rightmove=true;
 					findPoint.findChessPoint(pieces);
 					if ((pieces.getName().charAt(0)=='2')&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
 						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
 						hasExisted=true;
 					}else {
-//						System.out.println("hah");
 						findPoint.isexisted[findPoint.x][findPoint.y]=1;
 					}
 				}
@@ -136,12 +134,26 @@ public class PiecesMove {
 		findPoint.SetChessPoint(label2);
 		int x=findPoint.x;
 		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y2=findPoint.y;
+		int d=x-x1;
+		int d1=y-y2;
 		switch (c) {
 		case '1':
-			
+			if (d1==1&&(d==1||d==-1)) {
+				label.setLocation(label2.getLocation().x, label2.getLocation().y);
+				System.out.println("www");
+				haseaten=true;
+			}
 			break;
 
 		case '2':
+			if (d1==-1&&(d==-1||d==1)) {
+				label.setLocation(label2.getLocation().x, label2.getLocation().y);
+				System.out.println("qwe");
+				haseaten=true;
+			}
 			break;
 		}
 	}
