@@ -12,23 +12,22 @@ import javax.swing.JLabel;
 //让不同类比的棋子各司其职（执行各自的方法）
 public class PiecesMove {
 	public JLabel[][] pieces;
-//	public int start[][];
-//	public int end[][];
+	public int start[][];
+	public int end[][];
 	public int side=85;
 	public boolean hasExisted;
 	public Point_Operation findPoint=new Point_Operation();
-	public int x,y;
 	public static boolean rightmove;
 	public static boolean  haseaten;
 	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
-//		start=new int[8][8];
-//		end=new int[8][8];
+		start=new int[8][8];
+		end=new int[8][8];
 //		pieces =new JLabel[4][8];
 		findPoint=check;
 	}
-	
+	//move rule 
 	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point,Point_Operation check){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
@@ -36,47 +35,38 @@ public class PiecesMove {
 		int d=(point.col()-y);
 		int d1=Math.abs(d);
 		int d2=point.row()-x;
-		int d3=Math.abs(d2);
 		char value=pieces.getName().charAt(0);
 		if ((d2==0&&(d1==1||d1==2))) {
 			switch (value) {
 			//黑棋
 			case '1':
 				if (point.col()==1&&d1==2) {
-					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
+					findPoint.isexisted[point.row()][point.col()]=0;
+					findPoint.isexisted[x][y]=1;
 					rightmove=true;
-					findPoint.findChessPoint(pieces);
-					if ((findPoint.isexisted[findPoint.x][findPoint.y]==2)) {
-						hasExisted=true;
-					}else {
-						findPoint.isexisted[findPoint.x][findPoint.y]=1;
-					}
 					
 					
 				}//the piece can not come back
 				else if(d==-1){
-					check.isexisted[point.row()][point.col()]=0;
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+side);
+					findPoint.isexisted[point.row()][point.col()]=0;
+					findPoint.isexisted[x][y]=1;
 					rightmove=true;
-					findPoint.findChessPoint(pieces);
-					if ((pieces.getName().charAt(0)=='2')&&((d==-1&&d2==-1)||(d==-1&&d2==1))) {
-						pieces.setLocation(pieces.getLocation().x+d2*side, pieces.getLocation().y+d*side);
-						hasExisted=true;
-					}else {
-						findPoint.isexisted[findPoint.x][findPoint.y]=1;
-					}
 				}
 				break;
 				//白棋
 			case '2':
 				if (point.col()==6&&d1==2) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
+					findPoint.isexisted[point.row()][point.col()]=0;
+					findPoint.isexisted[x][y]=1;
 					rightmove=true;
 				}//the piece can not come back
 				else if (d==1) {
-	
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
+					findPoint.isexisted[point.row()][point.col()]=0;
+					findPoint.isexisted[x][y]=1;
 					rightmove=true;
 				}
 				break;
@@ -90,8 +80,12 @@ public class PiecesMove {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
 		if (dx==0||dy==0||Math.abs(dx)==Math.abs(dy)) {
-					pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
-					rightmove=true;
+			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				findPoint.isexisted[point.row()][point.col()]=0;
+				findPoint.isexisted[x][y]=1;
+				rightmove=true;
+				}
 			}
 			
 		}
@@ -99,8 +93,12 @@ public class PiecesMove {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
 		if (dx==0||dy==0||((Math.abs(dx)==Math.abs(dy)&&(Math.abs(dx)==1&&(Math.abs(dy)==1))))) {
+				if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 			pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+			findPoint.isexisted[point.row()][point.col()]=0;
+			findPoint.isexisted[x][y]=1;
 			rightmove=true;
+				}
 			}
 		}
 	public void Rook(JLabel pieces, int x, int y, ChessPoint point) {
@@ -108,8 +106,12 @@ public class PiecesMove {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
 		if (dx==0||dy==0) {
+			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				findPoint.isexisted[point.row()][point.col()]=0;
+				findPoint.isexisted[x][y]=1;
 				rightmove=true;
+				}
 			}
 		}
 	public void knight(JLabel pieces, int x, int y, ChessPoint point) {
@@ -118,6 +120,8 @@ public class PiecesMove {
 		int dy=(point.col()-y);
 		if ((Math.abs(dx)==1&&Math.abs(dy)==2)||(Math.abs(dx)==2&&Math.abs(dy)==1)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				findPoint.isexisted[point.row()][point.col()]=0;
+				findPoint.isexisted[x][y]=1;
 				rightmove=true;
 		}
 	}
@@ -125,10 +129,15 @@ public class PiecesMove {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
 		if (Math.abs(dx)==Math.abs(dy)) {
-		pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
-		rightmove=true;
+			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
+				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+				findPoint.isexisted[point.row()][point.col()]=0;
+				findPoint.isexisted[x][y]=1;
+				rightmove=true;
+				}
 			}
 		}
+    //	eat rule 
 	public void PawnEatRule(JLabel label, JLabel label2){
 		char c=label.getName().charAt(0);
 		findPoint.SetChessPoint(label2);
@@ -136,14 +145,15 @@ public class PiecesMove {
 		int y=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
-		int y2=findPoint.y;
+		int y1=findPoint.y;
 		int d=x-x1;
-		int d1=y-y2;
+		int d1=y-y1;
 		switch (c) {
 		case '1':
 			if (d1==1&&(d==1||d==-1)) {
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
-				System.out.println("www");
+				findPoint.isexisted[x1][y1]=0;
+				findPoint.isexisted[x][y]=1;
 				haseaten=true;
 			}
 			break;
@@ -151,13 +161,96 @@ public class PiecesMove {
 		case '2':
 			if (d1==-1&&(d==-1||d==1)) {
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
-				System.out.println("qwe");
+				findPoint.isexisted[x1][y1]=0;
+				findPoint.isexisted[x][y]=1;
 				haseaten=true;
 			}
 			break;
 		}
 	}
-	//兵的升变
+	public void QueenEatRule(JLabel label, JLabel label2) {
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
+			if (!Judgehaspieces(x1,y1,x,y)) {
+
+				label.setLocation(label2.getLocation().x, label2.getLocation().y);
+				haseaten=true;
+			}
+		}
+		
+	}
+	public void KingEatRule(JLabel label, JLabel label2) {
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
+			 if (!Judgehaspieces(x1,y1,x,y)) {
+			label.setLocation(label2.getLocation().x, label2.getLocation().y);
+			haseaten=true;
+			  }
+			}
+		
+	}
+	public void RookEatRule(JLabel label, JLabel label2) {
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if (d==0||d1==0) {
+			 if (Judgehaspieces(x1,y1,x,y)) {
+			label.setLocation(label2.getLocation().x, label2.getLocation().y);
+			haseaten=true;
+			 }
+		}
+	}
+	public void knightEatRule(JLabel label, JLabel label2) {
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
+			
+			label.setLocation(label2.getLocation().x, label2.getLocation().y);
+			haseaten=true;
+		}
+	}
+	public void BisshopEatRule(JLabel label, JLabel label2) {
+		findPoint.SetChessPoint(label2);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if (Math.abs(d)==Math.abs(d1)) {
+			 if (!Judgehaspieces(x1,y1,x,y)) {
+			label.setLocation(label2.getLocation().x, label2.getLocation().y);
+			haseaten=true;
+			 }
+		}
+	}
+	
 	public void promotion() {
 		//当兵子走至对方底线，玩家可选择把该兵升级成车，马，象或后。
 	}
@@ -174,20 +267,81 @@ public class PiecesMove {
 		//3.王的原始格子或者将要越过的格子或者将要占据的格子正受到对方棋子的攻击
 		//王往右两个或者往左两个，车换到王的里侧
 	}
-//	public void removepieces(Check_isexisted check,JLabel label){
-//		//易掉被吃掉的棋子
-//		//包括路过吃兵的情况
-//		if (check.isexisted[findPoint.x][findPoint.y]=true) {
-//			
-//		}
-//	}
-	public boolean judgemovehaspieces() {
-		
-		return true;
-	}
-	public boolean judgeeathaspieces() {
-		
-		return true;
+
+	public boolean Judgehaspieces(int x1,int y1, int x2, int y2) {
+		int d1=x2-x1;
+		int d2=y2-y1;
+		if (Math.abs(d1)>1&&Math.abs(d2)>1) {
+			if(d1>0&&d2<0){
+				for (int i = 1; i < d1; i++) {
+						if (findPoint.isexisted[x1+i][y1-i]!=0) {
+							return true;
+					
+				}
+			   }
+			return false;
+			}else if (d1>0&&d2>0) {
+				for (int i = 1; i < d1; ++i) {
+					
+						if (findPoint.isexisted[x1+i][y1+i]!=0) {
+							return true;
+						}
+					
+				}
+				return false;
+			}else if(d1<0&&d2<0){
+				for (int i = -1; i >d1; --i) {
+					
+						if (findPoint.isexisted[x1+i][y1+i]!=0) {
+							return true;
+						}
+					
+				}
+				return false;
+			}else if (d1<0&&d2>0) {
+				for (int i = -1; i > d1; --i) {
+				
+						if (findPoint.isexisted[x1+i][y1-i]!=0) {
+							
+							return true;
+						}
+					
+				}
+			}
+			return false;
+		}else if((Math.abs(d2)==0&&Math.abs(d1)==1)||(Math.abs(d2)==1&&Math.abs(d1)==0)||((Math.abs(d2)==Math.abs(d1)&&(Math.abs(d2)==1&&(Math.abs(d1)==1))))){
+			return false;
+		}else if (d1==0&&d2>0) {
+			for (int i = 1; i <d2; i++) {
+				if (findPoint.isexisted[x1][y1+i]!=0) {
+					return true;
+				}
+			}
+			return false;
+		}else if (d1==0&&d2<0) {
+			for (int i = -1; i > d2; i--) {
+				if (findPoint.isexisted[x1][y1+i]!=0) {
+					return true;
+				}
+			}
+			return false;
+		}else if (d1>0&&d2==0) {
+			for (int i = 1; i <d1; i++) {
+				if (findPoint.isexisted[x1+d1][y1]!=0) {
+					return true;
+				}
+			}
+			return false;
+		}else if (d1<0&&d2==0) {
+			for (int i = -1; i > d2; i--) {
+				if (findPoint.isexisted[x1+i][y1]!=0) {
+					return true;
+				}
+			}
+			return false;
+		}else {
+			return false;
+		}
 	}
 	public void Kingprotections(){
 		

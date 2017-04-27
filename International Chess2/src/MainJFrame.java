@@ -31,7 +31,6 @@ public class MainJFrame extends JFrame {
         setSize(900, 600); 
         this.setResizable(false);
         setLocation(225, 60); 
-        
         try{
         	url = f1.toURL();
         }catch (MalformedURLException e){
