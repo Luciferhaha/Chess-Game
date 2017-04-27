@@ -213,7 +213,7 @@ public class PiecesMove {
 		int d=x-x1;
 		int d1=y-y1;
 		if (d==0||d1==0) {
-			 if (!Judgehaspieces(x1,y1,x,y)) {
+			 if (Judgehaspieces(x1,y1,x,y)) {
 			label.setLocation(label2.getLocation().x, label2.getLocation().y);
 			haseaten=true;
 			 }

@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import java.awt.Container;
-@SuppressWarnings("unused")
 public class Nameintroduction extends JFrame{
 	/**
 	 * 
