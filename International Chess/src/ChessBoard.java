@@ -139,26 +139,30 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-//      acquire the location		
-			x=(e.getXOnScreen()-gap)/side;
-			y=(e.getYOnScreen()-46)/side;
-	//move pieces
+
+		//acquire location
+		x=(e.getXOnScreen()-gap)/side;
+		y=(e.getYOnScreen()-46)/side;
+		
+		
+		if (x>=0&&x<8&&y>=0&&y<8) {
+			//move pieces
 			//move white pawn pieces
 			if (chessPlayClick==2) {
 				selectPiece(e,chessPlayClick);
 				if (label!=null&&e.getSource().equals(this)) {
-				for (int i = 0; i <8; i++) {
-					if (label.equals(pieces[2][i])) {
-						check.findChessPoint(label);
-						rule.Pawn(label, e,x,y,check.Point,check);
-						if (rule.rightmove==true) {
-							hThread.end();
-							chessPlayClick=3;
-							rule.rightmove=false;
+					for (int i = 0; i <8; i++) {
+						if (label.equals(pieces[2][i])) {
+							check.findChessPoint(label);
+							rule.Pawn(label, e,x,y,check.Point,check);
+							if (rule.rightmove==true) {
+								hThread.end();
+								chessPlayClick=3;
+								rule.rightmove=false;
+							}
 						}
 					}
-				}
-			//move white queens
+					//move white queens
 					if (label.equals(pieces[3][3])) {
 						check.findChessPoint(label);
 						rule.Queen(label,x, y,check.Point);
@@ -168,7 +172,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							rule.rightmove=false;
 						}
 					}
-			//move white king
+					//move white king
 					if (label.equals(pieces[3][4])) {
 						check.findChessPoint(label);
 						rule.King(label,x,y,check.Point);
@@ -177,8 +181,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							chessPlayClick=3;
 							rule.rightmove=false;
 						}
-				}
-			//move white rooks
+					}
+					//move white rooks
 					if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
 						check.findChessPoint(label);
 						rule.Rook(label,x,y,check.Point);
@@ -187,8 +191,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							chessPlayClick=3;
 							rule.rightmove=false;
 						}
-				}
-			// move white knights
+					}
+					// move white knights
 					if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
 						check.findChessPoint(label);
 						rule.knight(label,x,y,check.Point);
@@ -197,8 +201,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							chessPlayClick=3;
 							rule.rightmove=false;
 						}
-			}
-			//move white bishops
+					}
+					//move white bishops
 					if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
 						check.findChessPoint(label);
 						rule.Bisshop(label, x, y, check.Point);
@@ -210,34 +214,34 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 					}
 				}
 			}	
-				//move black pieces
-					else if (chessPlayClick==3) {
-					//select black pieces
-						selectPiece(e,chessPlayClick);
-						if (label!=null&&e.getSource().equals(this)) {
-				// move black pawns
-						for (int i = 0; i <8; i++) {
+			//move black pieces
+			else if (chessPlayClick==3) {
+				//select black pieces
+				selectPiece(e,chessPlayClick);
+				if (label!=null&&e.getSource().equals(this)) {
+					// move black pawns
+					for (int i = 0; i <8; i++) {
 						if (label.equals(pieces[1][i])) {
+							check.findChessPoint(label);
+							rule.Pawn(label, e,x,y,check.Point,check);
+							if (rule.rightmove==true) {
+								hThread.end();
+								chessPlayClick=2;
+								rule.rightmove=false;
+							}
+						}
+					}
+					//move black queens
+					if (label.equals(pieces[0][3])) {
 						check.findChessPoint(label);
-						rule.Pawn(label, e,x,y,check.Point,check);
+						rule.Queen(label,x, y,check.Point);
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
 							rule.rightmove=false;
 						}
 					}
-				}
-				//move black queens
-				if (label.equals(pieces[0][3])) {
-					check.findChessPoint(label);
-					rule.Queen(label,x, y,check.Point);
-						if (rule.rightmove==true) {
-						hThread.end();
-						chessPlayClick=2;
-						rule.rightmove=false;
-						}
-					}
-				//move black kings
+					//move black kings
 					if (label.equals(pieces[0][4])) {
 						check.findChessPoint(label);
 						rule.King(label,x,y,check.Point);
@@ -247,7 +251,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							rule.rightmove=false;
 						}
 					}
-				//move black rooks
+					//move black rooks
 					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
 						check.findChessPoint(label);
 						rule.Rook(label,x,y,check.Point);
@@ -257,7 +261,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							rule.rightmove=false;
 						}
 					}
-				//move black knights
+					//move black knights
 					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
 						check.findChessPoint(label);
 						rule.knight(label,x,y,check.Point);
@@ -267,7 +271,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 							rule.rightmove=false;
 						}
 					}
-				//move black bishops
+					//move black bishops
 					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
 						check.findChessPoint(label);
 						rule.Bisshop(label, x, y, check.Point);
@@ -278,90 +282,90 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 						}
 					}
 					
-					}
 				}
-		//find eat pieces
-		if (label!=null&&!e.getSource().equals(label)&&!e.getSource().equals(this)) {
+			}
+			//find eat pieces
+			if (label!=null&&!e.getSource().equals(label)&&!e.getSource().equals(this)) {
 				for (int i = 0; i <4; i++) {
 					for (int j = 0; j <8; j++) {
-					if (e.getSource().equals(pieces[i][j])) {
-						label2=pieces[i][j];
+						if (e.getSource().equals(pieces[i][j])) {
+							label2=pieces[i][j];
+						}
 					}
 				}
 			}
-		}
 			// make a judgment 
-				//judge the piece is  pawn or not 
-				if (label2!=null&&label2.getName().charAt(0)!=label.getName().charAt(0)) {
-					//white pawn eat pieces
-					for (int i = 0; i <8; i++) {
-						if (label.equals(pieces[2][i])) {
-							rule.PawnEatRule(label, label2);
-							if (rule.haseaten) {
-								remove(label2);
-								label2=null;
-								hThread.end();
-								rule.haseaten=false;
-								chessPlayClick=3;
-							}
+			//judge the piece is  pawn or not 
+			if (label2!=null&&label2.getName().charAt(0)!=label.getName().charAt(0)) {
+				//white pawn eat pieces
+				for (int i = 0; i <8; i++) {
+					if (label.equals(pieces[2][i])) {
+						rule.PawnEatRule(label, label2);
+						if (rule.haseaten) {
+							remove(label2);
+							label2=null;
+							hThread.end();
+							rule.haseaten=false;
+							chessPlayClick=3;
 						}
 					}
+				}
 				//black pawn eat pieces
-					for (int i = 0; i <8; i++) {
-						if (label.equals(pieces[1][i])) {
-							rule.PawnEatRule(label, label2);
-							if (rule.haseaten) {
-								remove(label2);
-								label2=null;
-								hThread.end();
-								rule.haseaten=false;
-								chessPlayClick=2;
-							}
+				for (int i = 0; i <8; i++) {
+					if (label.equals(pieces[1][i])) {
+						rule.PawnEatRule(label, label2);
+						if (rule.haseaten) {
+							remove(label2);
+							label2=null;
+							hThread.end();
+							rule.haseaten=false;
+							chessPlayClick=2;
 						}
 					}
+				}
 				// white queen eat pieces
-					if (label.equals(pieces[3][3])) {
-						rule.QueenEatRule(label, label2);
-						if (rule.haseaten) {
-							remove(label2);
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-							chessPlayClick=3;
-						}
+				if (label.equals(pieces[3][3])) {
+					rule.QueenEatRule(label, label2);
+					if (rule.haseaten) {
+						remove(label2);
+						label2=null;
+						hThread.end();
+						rule.haseaten=false;
+						chessPlayClick=3;
 					}
+				}
 				//black queen eat pieces
-					if (label.equals(pieces[0][3])) {
-						rule.QueenEatRule(label, label2);
-						if (rule.haseaten) {
-							remove(label2);
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-							chessPlayClick=2;
-						}
+				if (label.equals(pieces[0][3])) {
+					rule.QueenEatRule(label, label2);
+					if (rule.haseaten) {
+						remove(label2);
+						label2=null;
+						hThread.end();
+						rule.haseaten=false;
+						chessPlayClick=2;
 					}
+				}
 				//white king eat pieces
-					if (label.equals(pieces[3][4])) {
-						rule.KingEatRule(label, label2);
-						if (rule.haseaten) {
-							remove(label2);
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-							chessPlayClick=3;
-						}
-					}//black
-					if (label.equals(pieces[0][4])) {
-						rule.KingEatRule(label, label2);
-						if (rule.haseaten) {
-							remove(label2);
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-							chessPlayClick=2;
-						}
-					}//white rook eat 
+				if (label.equals(pieces[3][4])) {
+					rule.KingEatRule(label, label2);
+					if (rule.haseaten) {
+						remove(label2);
+						label2=null;
+						hThread.end();
+						rule.haseaten=false;
+						chessPlayClick=3;
+					}
+				}//black
+				if (label.equals(pieces[0][4])) {
+					rule.KingEatRule(label, label2);
+					if (rule.haseaten) {
+						remove(label2);
+						label2=null;
+						hThread.end();
+						rule.haseaten=false;
+						chessPlayClick=2;
+					}
+				}//white rook eat 
 				if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
 					rule.RookEatRule(label, label2);
 					if (rule.haseaten) {
@@ -423,8 +427,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack{
 					}
 				}
 			}
-//				System.out.println(label);
-//				System.out.println(label2);
+		}
+	
+			
+
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {

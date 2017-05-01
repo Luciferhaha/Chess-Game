@@ -79,7 +79,7 @@ public class PiecesMove {
 		//上下左右，四个方向斜
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
-		if (dx==0||dy==0||Math.abs(dx)==Math.abs(dy)) {
+		if ((dx==0||dy==0||Math.abs(dx)==Math.abs(dy))&&(dx!=0&&dy!=0)) {
 			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
 				findPoint.isexisted[point.row()][point.col()]=0;
@@ -105,7 +105,7 @@ public class PiecesMove {
 		//up and down and left and right
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
-		if (dx==0||dy==0) {
+		if ((dx==0||dy==0)&&(dx!=0&&dy!=0)) {
 			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
 				findPoint.isexisted[point.row()][point.col()]=0;
@@ -128,7 +128,7 @@ public class PiecesMove {
 	public void Bisshop(JLabel pieces,int x,int y,ChessPoint point) {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
-		if (Math.abs(dx)==Math.abs(dy)) {
+		if ((Math.abs(dx)==Math.abs(dy))&&(dx!=0&&dy!=0)) {
 			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
 				findPoint.isexisted[point.row()][point.col()]=0;
@@ -213,7 +213,7 @@ public class PiecesMove {
 		int d=x-x1;
 		int d1=y-y1;
 		if (d==0||d1==0) {
-			 if (Judgehaspieces(x1,y1,x,y)) {
+			 if (!Judgehaspieces(x1,y1,x,y)) {
 			label.setLocation(label2.getLocation().x, label2.getLocation().y);
 			haseaten=true;
 			 }
