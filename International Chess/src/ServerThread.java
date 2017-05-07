@@ -289,7 +289,7 @@ public class ServerThread extends Thread
 			clientNameHash.remove(clientSocket);
 		}
 		sendPublicMsg(getUserList());
-		serverMsgPanel.statusLabel.setText("当前连接数:" + clientDataHash.size());
+		serverMsgPanel.statusLabel.setText("The current number of connections:" + clientDataHash.size());
 		try
 		{
 			clientSocket.close();

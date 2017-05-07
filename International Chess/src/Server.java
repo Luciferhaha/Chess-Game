@@ -83,7 +83,7 @@ public class Server extends Frame implements ActionListener
 				clientDataHash.put(clientSocket, outputData);
 				// Bind the client socket to the client name
 				clientNameHash
-						.put(clientSocket, ("new player" + clientAccessNumber++));
+						.put(clientSocket, ("player" + clientAccessNumber++));
 				// Create and run server threads
 				ServerThread thread = new ServerThread(clientSocket,
 						clientDataHash, clientNameHash, chessPeerHash, serverMsgPanel);
