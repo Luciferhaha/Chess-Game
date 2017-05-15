@@ -1,6 +1,8 @@
 package Model_Chess;
 
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -80,10 +82,18 @@ public class Main extends JFrame implements ActionListener{
 //		showSave.addActionListener(this);
 
 		this.setTitle("INTERNETIONAL CHESS");
+		//acquire the size of screen.
+		Dimension   screensize   =   Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int)screensize.getWidth();
+		int height = (int)screensize.getHeight();
+//		System.out.println(width);
+//		System.out.println(height);
 		this.setBounds(0, 0,900,900);
 		jpanel=new ChessBoard();
 		this.add(jpanel);
 		this.setVisible(true);
+		// fix the size first
+		this.setResizable(false);
 		//System out
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {

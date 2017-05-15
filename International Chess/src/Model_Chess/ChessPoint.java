@@ -21,14 +21,6 @@ package Model_Chess;
 		public boolean ispiece(ChessPoint l) {
 			return ((row == l.row()) && (col == l.col()));
 		}
-		public void removepiece() {
-			
+		
 		}
-		public void getpiece(){
-			
-		}
-		public void setpiece() {
-			
-		}
-	}
-
+	

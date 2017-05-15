@@ -42,5 +42,9 @@ public class Point_Operation {
 		 y=(label.getLocation().y)/side;
 		 Point=new ChessPoint(x, y);
 	}
-
+	public void findlocation(int x1,int y2) {
+		x=(x1*side)+gap;
+		y=y2*side;
+		Point =new ChessPoint(x, y);
+	}
 }

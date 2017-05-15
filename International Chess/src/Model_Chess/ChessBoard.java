@@ -1,6 +1,7 @@
 package Model_Chess;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Label;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
@@ -8,34 +9,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnable{
-	public final static int width=800;
-	public final static int height=800;
+//	public final static int width=800;
+//	public final static int height=800;
 	public final static int gap=50;//实际棋盘和边框的间距
 	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
-	public JLabel pieces[][]=new JLabel[4][8];
+	public JLabel pieces[][]=new JLabel[6][8];
 	public ChessPoint Point;
 	public  PiecesMove rule;
 	public JLabel text;
 	public JLabel label=null;
 	public JLabel label2=null;
+	// label3 for casting
+	public JLabel label3=null;
 	public Point_Operation check=new Point_Operation();
 	public int count=0;
-	/*单击棋子**********************************/
-	/*chessManClick = true 闪烁棋子 并给线程响应*/
-	/*chessManClick = false 吃棋子 停止闪烁  并给线程响应*/
-	public boolean chessmanclick;
-	/*控制玩家走棋****************************/
 	/*chessPlayClick=1 黑棋走棋*/
 	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
 	/*chessPlayClick=3 双方都不能走棋*/	
 	int chessPlayClick=2;
-	//控制棋子闪烁的线程
+	//The thread which could control the chess to flash
 		thread hThread;
-		//把第一次的单击棋子给线程响应
 		//monitor the position of pawn
 	Thread pawnPromotion;
-	
 	static int left,right;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
@@ -52,8 +48,8 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove(check);
-		pawnPromotion=new Thread();
-		pawnPromotion.start();
+		pawnPromotion=new Thread(this);
+//		pawnPromotion.start();
 	}
 	public void insertimage() {
 		//pawns
@@ -67,7 +63,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		pieces[0][4]=new JLabel(new ImageIcon("src/Graph/BKing.png"));
 		pieces[0][4].setName("1King");
 		pieces[3][4]=new JLabel(new ImageIcon("src/Graph/King.png"));
-		pieces[3][4].setName("2KIng");
+		pieces[3][4].setName("2King");
 		//queens
 		pieces[0][3]=new JLabel(new ImageIcon("src/Graph/BQueen.png"));
 		pieces[0][3].setName("1Queen");
@@ -144,11 +140,9 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int x,y;
-
 		//acquire location
 		x=(e.getXOnScreen()-gap)/side;
 		y=(e.getYOnScreen()-46)/side;
-		
 		
 		if (x>=0&&x<8&&y>=0&&y<8) {
 			//move pieces
@@ -162,22 +156,23 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							rule.Pawn(label, e,x,y,check.Point,check);
 							if (rule.rightmove==true) {
 								hThread.end();
+								PawnPromotion();
 								chessPlayClick=3;
 								rule.rightmove=false;
 							}
 						}
 					}
-					//move white queens
-					if (label.equals(pieces[3][3])) {
-						check.findChessPoint(label);
-						rule.Queen(label,x, y,check.Point);
+			//move white queens
+				if (label.equals(pieces[3][3])) {
+					check.findChessPoint(label);
+					rule.Queen(label,x, y,check.Point);
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
 							rule.rightmove=false;
 						}
 					}
-					//move white king
+			//move white king
 					if (label.equals(pieces[3][4])) {
 						check.findChessPoint(label);
 						rule.King(label,x,y,check.Point);
@@ -187,7 +182,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							rule.rightmove=false;
 						}
 					}
-					//move white rooks
+			//move white rooks
 					if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
 						check.findChessPoint(label);
 						rule.Rook(label,x,y,check.Point);
@@ -197,7 +192,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							rule.rightmove=false;
 						}
 					}
-					// move white knights
+			// move white knights
 					if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
 						check.findChessPoint(label);
 						rule.knight(label,x,y,check.Point);
@@ -207,7 +202,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							rule.rightmove=false;
 						}
 					}
-					//move white bishops
+			//move white bishops
 					if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
 						check.findChessPoint(label);
 						rule.Bisshop(label, x, y, check.Point);
@@ -231,6 +226,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							rule.Pawn(label, e,x,y,check.Point,check);
 							if (rule.rightmove==true) {
 								hThread.end();
+								PawnPromotion();
 								chessPlayClick=2;
 								rule.rightmove=false;
 							}
@@ -290,19 +286,23 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 				}
 			}
 			//find eat pieces
-			if (label!=null&&!e.getSource().equals(label)&&!e.getSource().equals(this)) {
+			if (label!=null&&!e.getSource().equals(this)) {
 				for (int i = 0; i <4; i++) {
 					for (int j = 0; j <8; j++) {
 						if (e.getSource().equals(pieces[i][j])) {
-							label2=pieces[i][j];
-							if (label2.getName().charAt(0)==label.getName().charAt(0)) {
-								label2=null;
+							if (pieces[i][j].getName()!=label.getName()) {
+								label2=pieces[i][j];
+								if (label2.getName().charAt(0)==label.getName().charAt(0)) {
+									// casting
+										label2=null;
+									}
 							}
 						}
 					}
 				}
-//				System.out.println(chessPlayClick);
 			}
+//			System.out.println(label.getName());
+//			System.out.println(label2);
 			// make a judgment 
 			//judge the piece is  pawn or not 
 
@@ -316,6 +316,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							if (rule.haseaten) {
 								remove(label2);
 								label2=null;
+								PawnPromotion();
 								hThread.end();
 								rule.haseaten=false;
 								chessPlayClick=2;
@@ -386,6 +387,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							if (rule.haseaten) {
 								remove(label2);
 								label2=null;
+								PawnPromotion();
 								hThread.end();
 								rule.haseaten=false;
 								chessPlayClick=3;
@@ -451,8 +453,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 				}
 			}
 		}
-//					System.out.println(label);
-//					System.out.println(label2);
+
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {
@@ -487,7 +488,18 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 			}
 			//select rooks
 			if (e.getSource().equals(pieces[3][0])||e.getSource().equals(pieces[3][7])) {
-				label=(JLabel) e.getSource();
+				
+				if (label.getName()=="2King") {
+					label3=(JLabel) e.getSource();
+						rule.Castling(label,label3);
+						if (!rule.hascasting) {
+							label=label3;
+						}else {
+							chessPlayClick=3;
+						}
+				}else {
+					label=(JLabel) e.getSource();
+				}
 				if (hThread!=null) {
 					hThread.end();
 				}
@@ -543,7 +555,17 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 			}
 			//select rooks
 			if (e.getSource().equals(pieces[0][0])||e.getSource().equals(pieces[0][7])) {
-				label=(JLabel) e.getSource();
+				if (label.getName()=="1King") {
+					label3=(JLabel) e.getSource();
+						rule.Castling(label,label3);
+						if (!rule.hascasting) {
+							label=label3;
+						}else {
+							chessPlayClick=2;
+						}
+				}else {
+					label=(JLabel) e.getSource();
+				}
 				if (hThread!=null) {
 					hThread.end();
 				}
@@ -599,12 +621,38 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	}
 	public void PawnPromotion() {
 		//when a pawn moving to the last line ,it will be turn to queen.
-		
+		for (int i = 0; i <8; i++) {
+			int record =pieces[1][i].getLocation().y/side;
+			int record2=pieces[2][i].getLocation().y/side;
+			System.out.println(record2);
+				if (record==7) {
+					pieces[1][i]=new JLabel(new ImageIcon("src/Graph/BQueen.png"));
+				}
+				if (record2==0) {
+					int x3=pieces[2][i].getLocation().x;
+					int y3=pieces[2][i].getLocation().y;
+					System.out.println(x3);
+					System.out.println(y3);
+					System.out.println(pieces[2][i]);
+//					remove(pieces[2][i]);
+					pieces[2][i].setVisible(false);
+					pieces[2][i]=null;
+					
+					pieces[4][i]=new JLabel(new ImageIcon("src/Graph/Queen.png"));
+					pieces[4][i].setName("3NewQueen");
+					pieces[4][i].setBounds(x3, y3, side, side);
+					this.add(pieces[4][i]);
+					System.out.println(pieces[4][i]);
+					pieces[4][i].addMouseListener(this);
+					System.out.println(796);
+					
+				}
+			}
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("hha");
+		// TODO Auto-generated method stu
+	
 	}
 	
 }

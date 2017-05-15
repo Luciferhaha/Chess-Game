@@ -1,6 +1,8 @@
 package Model_Chess;
 //不能连续同一方走棋按照count和getname来解决
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+
 import javax.swing.JLabel;
 
 
@@ -18,8 +20,9 @@ public class PiecesMove {
 	public int side=85;
 	public boolean hasExisted;
 	public Point_Operation findPoint=new Point_Operation();
-	public static boolean rightmove;
-	public static boolean  haseaten;
+	public  boolean rightmove;
+	public  boolean  haseaten;
+	public boolean hascasting;
 	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
@@ -73,9 +76,9 @@ public class PiecesMove {
 				break;
 			}
 			
-		}
-			
-		}
+			}
+	}
+
 	public void Queen(JLabel pieces, int x,int y,ChessPoint point) {
 		//上下左右，四个方向斜
 		int dx=(point.row()-x);
@@ -91,27 +94,27 @@ public class PiecesMove {
 					
 				}
 			}
-			
-			
-		
-			
 		}
 	public void King(JLabel pieces, int x, int y, ChessPoint point) {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
-		if (dx==0||dy==0||((Math.abs(dx)==Math.abs(dy)&&(Math.abs(dx)==1&&(Math.abs(dy)==1))))) {
+		if (!(dx==0&&dy==0)) {
+			if ((dx==0&&Math.abs(dy)==1)||(dy==0&&Math.abs(dx)==1)||((Math.abs(dx)==Math.abs(dy)&&(Math.abs(dx)==1&&(Math.abs(dy)==1))))) {
+				
 				if (!Judgehaspieces(point.row(), point.col(), x, y)) {
-			pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
-			findPoint.isexisted[point.row()][point.col()]=0;
-			findPoint.isexisted[x][y]=1;
-			rightmove=true;
+					pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
+					findPoint.isexisted[point.row()][point.col()]=0;
+					findPoint.isexisted[x][y]=1;
+					rightmove=true;
 				}
 			}
 		}
+	}
 	public void Rook(JLabel pieces, int x, int y, ChessPoint point) {
 		//up and down and left and right
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
+		if (!(dx==0&&dy==0)) {
 		if ((dx==0||dy==0)&&(!(dx==0&&dy==0))) {
 			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
@@ -121,20 +124,24 @@ public class PiecesMove {
 				}
 			}
 		}
+	}
 	public void knight(JLabel pieces, int x, int y, ChessPoint point) {
 		// TODO Auto-generated method stub
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
+		
 		if ((Math.abs(dx)==1&&Math.abs(dy)==2)||(Math.abs(dx)==2&&Math.abs(dy)==1)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
 				findPoint.isexisted[point.row()][point.col()]=0;
 				findPoint.isexisted[x][y]=1;
 				rightmove=true;
+		
 		}
 	}
 	public void Bisshop(JLabel pieces,int x,int y,ChessPoint point) {
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
+		if (!(dx==0&&dy==0)) {
 		if ((Math.abs(dx)==Math.abs(dy))&&(!(dx==0&&dy==0))) {
 			if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 				pieces.setLocation(pieces.getLocation().x-dx*side, pieces.getLocation().y-dy*side);
@@ -144,23 +151,24 @@ public class PiecesMove {
 				}
 			}
 		}
+		}
     //	eat rule 
 	public void PawnEatRule(JLabel label, JLabel label2){
 		char c=label.getName().charAt(0);
 		findPoint.SetChessPoint(label2);
-		int x=findPoint.x;
-		int y=findPoint.y;
+		int x2=findPoint.x;
+		int y2=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;
-		int d=x-x1;
-		int d1=y-y1;
+		int d=x2-x1;
+		int d1=y2-y1;
 		switch (c) {
 		case '1':
 			if (d1==1&&(d==1||d==-1)) {
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
 				findPoint.isexisted[x1][y1]=0;
-				findPoint.isexisted[x][y]=1;
+				findPoint.isexisted[x2][y2]=1;
 				haseaten=true;
 			}
 			break;
@@ -169,7 +177,7 @@ public class PiecesMove {
 			if (d1==-1&&(d==-1||d==1)) {
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
 				findPoint.isexisted[x1][y1]=0;
-				findPoint.isexisted[x][y]=1;
+				findPoint.isexisted[x2][y2]=1;
 				haseaten=true;
 			}
 			break;
@@ -177,15 +185,15 @@ public class PiecesMove {
 	}
 	public void QueenEatRule(JLabel label, JLabel label2) {
 		findPoint.SetChessPoint(label2);
-		int x=findPoint.x;
-		int y=findPoint.y;
+		int x2=findPoint.x;
+		int y2=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;
-		int d=x-x1;
-		int d1=y-y1;
+		int d=x2-x1;
+		int d1=y2-y1;
 		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
-			if (!Judgehaspieces(x1,y1,x,y)) {
+			if (!Judgehaspieces(x1,y1,x2,y2)) {
 
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
 				haseaten=true;
@@ -195,15 +203,15 @@ public class PiecesMove {
 	}
 	public void KingEatRule(JLabel label, JLabel label2) {
 		findPoint.SetChessPoint(label2);
-		int x=findPoint.x;
-		int y=findPoint.y;
+		int x2=findPoint.x;
+		int y2=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;
-		int d=x-x1;
-		int d1=y-y1;
+		int d=x2-x1;
+		int d1=y2-y1;
 		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
-			 if (!Judgehaspieces(x1,y1,x,y)) {
+			 if (!Judgehaspieces(x1,y1,x2,y2)) {
 			label.setLocation(label2.getLocation().x, label2.getLocation().y);
 			haseaten=true;
 			  }
@@ -228,13 +236,13 @@ public class PiecesMove {
 	}
 	public void knightEatRule(JLabel label, JLabel label2) {
 		findPoint.SetChessPoint(label2);
-		int x=findPoint.x;
-		int y=findPoint.y;
+		int x2=findPoint.x;
+		int y2=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;
-		int d=x-x1;
-		int d1=y-y1;
+		int d=x2-x1;
+		int d1=y2-y1;
 		if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
 			
 			label.setLocation(label2.getLocation().x, label2.getLocation().y);
@@ -243,15 +251,15 @@ public class PiecesMove {
 	}
 	public void BisshopEatRule(JLabel label, JLabel label2) {
 		findPoint.SetChessPoint(label2);
-		int x=findPoint.x;
-		int y=findPoint.y;
+		int x2=findPoint.x;
+		int y2=findPoint.y;
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;
-		int d=x-x1;
-		int d1=y-y1;
+		int d=x2-x1;
+		int d1=y2-y1;
 		if (Math.abs(d)==Math.abs(d1)) {
-			 if (!Judgehaspieces(x1,y1,x,y)) {
+			 if (!Judgehaspieces(x1,y1,x2,y2)) {
 			label.setLocation(label2.getLocation().x, label2.getLocation().y);
 			haseaten=true;
 			 }
@@ -263,12 +271,38 @@ public class PiecesMove {
 		//2.形成本方有兵与其横向紧贴并列
 		//3.吃的方式为斜进，并拿掉对方棋子
 	}
-	public void Castling() {
+	public void Castling(JLabel label, JLabel label2) {//this part l haven't done
 		//王车长短易位
 		//1.王车从来没有移位
 		//2.王和车之间没有棋子
 		//3.王的原始格子或者将要越过的格子或者将要占据的格子正受到对方棋子的攻击
 		//王往右两个或者往左两个，车换到王的里侧
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		findPoint.SetChessPoint(label2);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		int d1=x2-x1;
+		System.out.println(d1);
+		if (d1==3) {
+			//short distance casting
+			if (!Judgehaspieces(x1, y1, x2, y2)) {
+				int x3=label.getLocation().x;
+				int y3=label.getLocation().y;
+				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
+				label2.setLocation(x3+side, y3);
+				hascasting=true;
+			}
+		}else if(d1==-4){// long distance casting
+			if (!Judgehaspieces(x1, y1, x2, y2)) {
+				
+				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
+				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
+				hascasting=true;
+			}
+		}
+		
 	}
 	boolean checkPawnPosition(JLabel label,int y){
 		if (label.getName().charAt(0)==1) {
@@ -340,8 +374,9 @@ public class PiecesMove {
 			}
 			return false;
 		}else if (d1>0&&d2==0) {
+			System.out.println("fff");
 			for (int i = 1; i <d1; i++) {
-				if (findPoint.isexisted[x1+d1][y1]!=0) {
+				if (findPoint.isexisted[x1+i][y1]!=0) {
 					return true;
 				}
 			}
