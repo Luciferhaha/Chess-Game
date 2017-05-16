@@ -184,6 +184,7 @@ public class PiecesMove {
 		}
 	}
 	public void QueenEatRule(JLabel label, JLabel label2) {
+		
 		findPoint.SetChessPoint(label2);
 		int x2=findPoint.x;
 		int y2=findPoint.y;
@@ -284,7 +285,6 @@ public class PiecesMove {
 		int x2=findPoint.x;
 		int y2=findPoint.y;
 		int d1=x2-x1;
-		System.out.println(d1);
 		if (d1==3) {
 			//short distance casting
 			if (!Judgehaspieces(x1, y1, x2, y2)) {
@@ -374,7 +374,7 @@ public class PiecesMove {
 			}
 			return false;
 		}else if (d1>0&&d2==0) {
-			System.out.println("fff");
+
 			for (int i = 1; i <d1; i++) {
 				if (findPoint.isexisted[x1+i][y1]!=0) {
 					return true;
