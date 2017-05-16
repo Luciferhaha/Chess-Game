@@ -26,21 +26,21 @@ public Registry(){
 	con.add(labTitle);
 	con.add(Box.createHorizontalStrut(30000));//用来换行
 	
-	labName=new JLabel("Choose a name");
+	labName=new JLabel("     Choose a name:");
 	txtName=new JTextField();
 	txtName.setColumns(20);
 	con.add(labName);
 	con.add(txtName);
 	con.add(Box.createHorizontalStrut(30000));//用来换行
 	
-	labPass=new JLabel("New password:");
+	labPass=new JLabel("      New password:");
 	txtPass=new JPasswordField();
 	txtPass.setColumns(20);
 	con.add(labPass);
 	con.add(txtPass);
 	con.add(Box.createHorizontalStrut(30000));//用来换行
 	
-	labRPass=new JLabel("Confirm your password:");
+	labRPass=new JLabel("Confirm password:");
 	txtRPass=new JPasswordField();
 	txtRPass.setColumns(20);
 	con.add(labRPass);
@@ -59,6 +59,7 @@ public Registry(){
 	con.add(labSex);
 	con.add(mRadio);
 	con.add(fRadio);
+	con.add(Box.createHorizontalStrut(30000));//用来换行
 	
 	labAge=new JLabel("Age:");
 	txtAge=new JTextField();

@@ -18,15 +18,15 @@ public Login(){
 	con.setLayout(new FlowLayout());
 	labTitle=new JLabel("<html><body><h1> Welcome to Chess Game ! \n <br> </h1> </body>  </html>");
 	
-	labID=new JLabel("Your email address:");
+	labID=new JLabel("Email address:");
 	txtID=new JTextField();
 	txtID.setColumns(20);
 	
-	labName=new JLabel("  User name:");
+	labName=new JLabel(" User name:     ");
 	txtName=new JTextField();
 	txtName.setColumns(20);
 	
-	labPass=new JLabel("   password:");
+	labPass=new JLabel(" password:      ");
 	txtPass=new JPasswordField();
 	txtPass.setColumns(20);
 	
