@@ -10,9 +10,11 @@ public class Login implements ActionListener{
 	JTextField txtName,txtID;
 	JPasswordField txtPass;
 	JButton login1,register,cancel;
-	
+	public int width ,height;
 
 public Login(){
+	 width = Toolkit.getDefaultToolkit().getScreenSize().width;
+     height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	mainJFrame=new JFrame("User log in");
 	con=mainJFrame.getContentPane();
 	con.setLayout(new FlowLayout());
@@ -41,7 +43,7 @@ public Login(){
 	
 	
 	con.add(labTitle);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	con.add(labID);
 	con.add(txtID);
@@ -60,6 +62,8 @@ public Login(){
 	con.add(cancel);
 	
 	mainJFrame.setSize(350, 350);
+	mainJFrame.setBounds((width - 350) / 2,
+            (height - 350) / 2, 350, 350);
 	mainJFrame.setVisible(true);
 	mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }

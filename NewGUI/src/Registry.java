@@ -16,39 +16,42 @@ public class Registry implements ActionListener {
 	ButtonGroup sexBtnGroup;
 	static final String msg1[]={"153721","153722","I do not want to tell you"};
 	JComboBox Jcombobox1;
+	public int width,height;
 	
 public Registry(){
+	 width = Toolkit.getDefaultToolkit().getScreenSize().width;
+     height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	mainJFrame=new JFrame("Register");
 	con=mainJFrame.getContentPane();
 	con.setLayout(new FlowLayout());
 	
 	labTitle=new JLabel("<html><body><h1>User register     </h1> </body>  </html> ");
 	con.add(labTitle);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	labName=new JLabel("     Choose a name:");
 	txtName=new JTextField();
 	txtName.setColumns(20);
 	con.add(labName);
 	con.add(txtName);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	labPass=new JLabel("      New password:");
 	txtPass=new JPasswordField();
 	txtPass.setColumns(20);
 	con.add(labPass);
 	con.add(txtPass);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	labRPass=new JLabel("Confirm password:");
 	txtRPass=new JPasswordField();
 	txtRPass.setColumns(20);
 	con.add(labRPass);
 	con.add(txtRPass);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	 
-	labSex=new JLabel("Gender:");// ÕâÀïÓÃÁ½¸ö°´Å¥À´´¦Àí
+	labSex=new JLabel("Gender:");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	mRadio=new JRadioButton("I am a boy",true);
 	mRadio.addActionListener(this);
 	fRadio=new JRadioButton("I am a lady",false);
@@ -59,21 +62,21 @@ public Registry(){
 	con.add(labSex);
 	con.add(mRadio);
 	con.add(fRadio);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	labAge=new JLabel("Age:");
 	txtAge=new JTextField();
 	txtAge.setColumns(5);
 	con.add(labAge);
 	con.add(txtAge);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	labClass=new JLabel("Your class:");//ÕâÀïÊ¹ÓÃÏÂÀ­Ñ¡Ïî¿òÀ´ÏÔÊ¾Ñ¡Ïî
+	labClass=new JLabel("Your class:");//ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Ñ¡ï¿½ï¿½
 	Jcombobox1=new JComboBox(msg1);
 	//Jcombobox1.addItemListener(this);
 	con.add(labClass);
 	con.add(Jcombobox1);
-	con.add(Box.createHorizontalStrut(30000));//ÓÃÀ´»»ÐÐ
+	con.add(Box.createHorizontalStrut(30000));//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	regBtn=new JButton("Register");
 	regBtn.addActionListener(this); 
@@ -88,6 +91,9 @@ public Registry(){
 	con.add(cancel);
 	
 	mainJFrame.setSize(400,400);
+	mainJFrame.setBounds((width - 400) / 2,
+            (height - 400) / 2, 400, 400);
+	mainJFrame.setVisible(true);
 	mainJFrame.setVisible(true);
 	mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }
