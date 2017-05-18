@@ -8,11 +8,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import UI.bVictory;
+import UI.wVictory;
+
 public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnable{
 //	public final static int width=800;
 //	public final static int height=800;
-	public final static int gap=50;//实际棋盘和边框的间距
-	public  final static int side=85;//小正方形的边框
+	public final static int gap=50;//瀹為檯妫嬬洏鍜岃竟妗嗙殑闂磋窛
+	public  final static int side=85;//灏忔鏂瑰舰鐨勮竟妗�
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[6][8];
 	public ChessPoint Point;
@@ -26,9 +29,9 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	public int count=0;
 	public int nq,nq2;
 	public  boolean win;
-	/*chessPlayClick=3黑棋走棋*/
-	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
-	/*chessPlayClick=1 双方都不能走棋*/	
+	/*chessPlayClick=3榛戞璧版*/
+	/*chessPlayClick=2 鐧芥璧版 榛樿鐧芥鍏堣蛋*/
+	/*chessPlayClick=1 鍙屾柟閮戒笉鑳借蛋妫�*/	
 	int chessPlayClick=2;
 	//The thread which could control the chess to flash
 		thread hThread;
@@ -38,6 +41,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	static int left,right;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
+		
 		insertimage();
 		setlocation();
 		for (int i = 0; i <4; i++) {
@@ -134,7 +138,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//利用余数来错位
+				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//鍒╃敤浣欐暟鏉ラ敊浣�
 			}
 		}
 	}
@@ -678,9 +682,11 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		
 		if (label2.getName()=="1King") {
 			System.out.println("The white side succeed!");
+			new wVictory();
 			win=true;
 		}else if (label2.getName()=="2King") {
 			System.out.println("The black side succeed!");
+			new bVictory();
 			win=true;
 		}
 	

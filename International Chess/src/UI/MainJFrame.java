@@ -91,7 +91,7 @@ public class MainJFrame extends JFrame {
 				// TODO Auto-generated method stub
 				if (e!=null) {
 					dispose();
-					new Main();
+					new Modechoose();
 				}
 			}
 		});
@@ -273,7 +273,42 @@ public class MainJFrame extends JFrame {
 			}
         	
         });
+        JButton onlineb = new JButton("OnlineMode");
+        onlineb.setBounds(200, 500, 120, 48);
+        onlineb.setContentAreaFilled(false);
+        onlineb.setFont(new Font("Arial",Font.BOLD,14));
+        onlineb.setForeground(Color.black);
+        onlineb.addMouseListener(new MouseListener(){
 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});
 
         String path1 = "background.jpg";   
         
@@ -290,6 +325,7 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button3);
         imagePanel.add(button4);
         imagePanel.add(musicb);
+        //imagePanel.add(onlineb);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  
