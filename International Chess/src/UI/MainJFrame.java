@@ -14,11 +14,9 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;  
-import javax.swing.JLabel;  
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import Model_Chess.Main;
 public class MainJFrame extends JFrame {  
   
     /**

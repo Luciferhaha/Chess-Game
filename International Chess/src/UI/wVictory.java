@@ -35,7 +35,7 @@ public class wVictory extends JFrame{
         button1.setBounds(200, 150, 90, 36);
         button1.setContentAreaFilled(false);
         button1.setFont(new Font("Arial",Font.BOLD,16));
-        button1.setForeground(Color.WHITE);
+        button1.setForeground(Color.black);
         button1.addMouseListener(new MouseListener(){
 
 			@Override

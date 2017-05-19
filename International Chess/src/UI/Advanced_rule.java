@@ -36,7 +36,7 @@ public class Advanced_rule extends JFrame{
         button1.setBounds(700, 475, 150, 60);
         button1.setContentAreaFilled(false);
         button1.setFont(new Font("Arial",Font.BOLD,26));
-        button1.setForeground(Color.WHITE);
+        button1.setForeground(Color.black);
         button1.addMouseListener(new MouseListener(){
 
 			@Override

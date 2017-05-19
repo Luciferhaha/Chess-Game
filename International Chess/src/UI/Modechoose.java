@@ -14,7 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import Model_Chess.Main;
+import Local_Chess.LocalChess;
+import Server.Server;
 
 public class Modechoose extends JFrame{
 	/**
@@ -39,7 +40,7 @@ public class Modechoose extends JFrame{
         button1.setBounds(700, 475, 150, 60);
         button1.setContentAreaFilled(false);
         button1.setFont(new Font("Arial",Font.BOLD,26));
-        button1.setForeground(Color.WHITE);
+        button1.setForeground(Color.black);
         button1.addMouseListener(new MouseListener(){
 
 			@Override
@@ -85,7 +86,7 @@ public class Modechoose extends JFrame{
         button2.setBounds(225, 200, 150, 60);
         button2.setContentAreaFilled(false);
         button2.setFont(new Font("Arial",Font.BOLD,26));
-        button2.setForeground(Color.WHITE);
+        button2.setForeground(Color.black);
         button2.addMouseListener(new MouseListener(){
 
 			@Override
@@ -93,7 +94,7 @@ public class Modechoose extends JFrame{
 				// TODO Auto-generated method stub
 				if(e != null){
 					dispose();
-					new Main();
+					new LocalChess();
 				}
 			}
 
@@ -124,7 +125,7 @@ public class Modechoose extends JFrame{
         button3.setBounds(525, 200, 150, 60);
         button3.setContentAreaFilled(false);
         button3.setFont(new Font("Arial",Font.BOLD,26));
-        button3.setForeground(Color.WHITE);
+        button3.setForeground(Color.black);
         button3.addMouseListener(new MouseListener(){
 
 			@Override
@@ -132,6 +133,7 @@ public class Modechoose extends JFrame{
 				// TODO Auto-generated method stub
 				if(e != null){
 					// online mode
+					new Server();
 				}
 			}
 
@@ -170,7 +172,7 @@ public class Modechoose extends JFrame{
         imagePanel.add(button1);
         imagePanel.add(button2);
         imagePanel.add(button3);
-        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 	}
 }
