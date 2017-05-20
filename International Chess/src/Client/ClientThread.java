@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 package Client;
 
+=======
+ package Client;
+>>>>>>> origin/master
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -35,6 +39,7 @@ public class ClientThread extends Thread
 					firClient.userListPad.userList.add(user);// 将用户信息添加到用户列表中
 					firClient.userInputPad.userChoice.addItem(user); // 将用户信息添加到用户下拉框中
 				}
+				
 				userNumber++;
 			}
 			firClient.userInputPad.userChoice.setSelectedIndex(0);// 下拉框默认选中所有人

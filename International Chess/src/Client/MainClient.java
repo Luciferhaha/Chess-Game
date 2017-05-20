@@ -1,5 +1,4 @@
 package Client;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -13,9 +12,10 @@ import UI2.UserControlPad;
 import UI2.UserInputPad;
 import UI2.UserListPad;
 
-// 五子棋客户端
+// chess client
 public class MainClient extends JFrame implements ActionListener, KeyListener
 {
+	
 	// 客户端套接口
 	Socket clientSocket;
 	// 数据输入流
@@ -54,6 +54,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	Panel centerPanel = new Panel();
 	Panel eastPanel = new Panel();
 
+	
 	// 构造方法，创建界面
 	public MainClient()
 	{
