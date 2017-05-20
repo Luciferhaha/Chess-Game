@@ -7,6 +7,7 @@ import LoginSystem.inputdata;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.StringTokenizer;
 
 public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 
@@ -22,6 +23,7 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 	public JLabel label2=null;
 	// label3 for casting
 	public JLabel label3=null;
+	public JLabel label4=null;
 	public Point_Operation2 check=new Point_Operation2();
 	public int count=0;
 	public int nq,nq2;
@@ -173,7 +175,9 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 									hThread.end();
 									firThread.sendMessage("/" + chessPeerName + " /chess "
 						+  check.Point.row()+ " " + check.Point.row() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-									PawnPromotion();
+									if (PawnPromotion()) {
+										firThread.sendMessage(label.getName());
+									}
 //									chessPlayClick=3;
 									rule.rightmove=false;
 								}
@@ -189,7 +193,7 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 							hThread.end();
 //							chessPlayClick=3;
 							firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.col() + " " +x+" "+y+" "+ label.getName());
+						+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
 							rule.rightmove=false;
 						}
 					}
@@ -548,6 +552,8 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 				}
 			}
 		}
+		System.out.println(label);
+		System.out.println(label2);
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {
@@ -597,8 +603,9 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 						System.out.println(rule.hascasting);
 						if (!rule.hascasting) {
 							label=label3;
-						}else {
-							chessPlayClick=3;
+						}else {//send message about new location from both.
+							
+							firThread.sendMessage(label.getName()+" "+label3.getName());
 						}
 				}else {
 					label=(JLabel) e.getSource();
@@ -667,7 +674,9 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 						if (!rule.hascasting) {
 							label=label3;
 						}else {
-							chessPlayClick=2;
+						
+							firThread.sendMessage(label.getName()+" "+label3.getName());
+							
 						}
 				}else {
 					label=(JLabel) e.getSource();
@@ -720,22 +729,31 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 		// TODO Auto-generated method stub
 		
 	}
-	public void PawnPromotion() {
+	public boolean PawnPromotion() {
 		//when a pawn moving to the last line ,it will be turn to queen.
-		for (int i = 0; i <8; i++) {
-			int record =pieces[1][i].getLocation().y/side;
-			int record2=pieces[2][i].getLocation().y/side;
+		try {
+			for (int i = 0; i <8; i++) {
+				int record =pieces[1][i].getLocation().y/side;
+				int record2=pieces[2][i].getLocation().y/side;
 				if (record==7) {
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
 					nq2=i;
+					return true;
 				}
 				if (record2==0) {
 					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 					pieces[2][i].setName("3Queen");
 					nq=i;
+					return true;
 				}
 			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return false;
 	}
 	public void victory() {
 		
@@ -773,87 +791,95 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 	public  void arrivemessage(int Sx, int Sy, int Dx, int Dy, String label6) {
 		// TODO Auto-generated method stub
 		// for pawn 
-		System.out.println("arrived");
-		for (int i = 0; i < 8; i++) {
-			if (label6.equals("1"+i+"Pawn")) {
-				rule.justmove(Sx, Sy, Dx,Dy,pieces[1][i]);
+		try {
+			System.out.println("arrived");
+			for (int i = 0; i < 8; i++) {
+				if (label6.equals("1"+i+"Pawn")) {
+					rule.justmove(Sx, Sy, Dx,Dy,pieces[1][i]);
+					isEnabled=true;
+				}
+				else if (label6.equals("2"+i+"Pawn")) {
+					rule.justmove(Sx, Sy,Dx,Dy,pieces[2][i]);
+					isEnabled=true;
+				}
+			}
+			//for WQ
+			if (label6.equals("2King")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][4]);
+				System.out.println(Dx);
+				System.out.println(Dy);
 				isEnabled=true;
-				}
-			else if (label6.equals("2"+i+"Pawn")) {
-				rule.justmove(Sx, Sy,Dx,Dy,pieces[2][i]);
-				 isEnabled=true;
-				}
-		}
-		//for WQ
-		if (label6.equals("2King")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][4]);
-			 isEnabled=true;
-		}
-		if (label6.equals("1King")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][4]);
-			 isEnabled=true;
-		}
-		if (label6.equals("2Queen")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][3]);
-			 isEnabled=true;
-		}
-		if (label6.equals("1Queen")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][3]);
-			 isEnabled=true;
-		}
-		if (label6.equals("21Knight")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][1]);
-			 isEnabled=true;
-		}
-		if (label6.equals("26Knight")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][6]);
-			 isEnabled=true;
-		}
-		if (label6.equals("11Knight")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][1]);
-			 isEnabled=true;
-		}
-		if (label6.equals("16Knight")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][6]);
-			 isEnabled=true;
-		}
-		if (label6.equals("20Rook")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][0]);
-			 isEnabled=true;
-		}
-		if (label6.equals("27Rook")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][7]);
-			 isEnabled=true;
-		}
-		if (label6.equals("10Rook")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][0]);
-			 isEnabled=true;
-		}
-		if (label6.equals("17Rook")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][7]);
-			 isEnabled=true;
-		}
-		if (label6.equals("22Bishop")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][2]);
-			 isEnabled=true;
-		}
-		if (label6.equals("25Bishop")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][5]);
-			 isEnabled=true;
-		}
-		if (label6.equals("12Bishop")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][2]);
-			 isEnabled=true;
-		}
-		if (label6.equals("15Bishop")) {
-			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][5]);
-			 isEnabled=true;
-		}
-	
-		if (isEnabled&&whoismaster.equals("Master")) {
-			chessPlayClick=2;
-		}else if(isEnabled&&whoismaster.equals("Guest")){
-			chessPlayClick=3;
+			}
+			if (label6.equals("1King")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][4]);
+				isEnabled=true;
+			}
+			if (label6.equals("2Queen")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][3]);
+				isEnabled=true;
+			}
+			if (label6.equals("1Queen")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][3]);
+				isEnabled=true;
+			}
+			if (label6.equals("21Knight")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][1]);
+				isEnabled=true;
+			}
+			if (label6.equals("26Knight")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][6]);
+				isEnabled=true;
+			}
+			if (label6.equals("11Knight")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][1]);
+				isEnabled=true;
+			}
+			if (label6.equals("16Knight")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][6]);
+				isEnabled=true;
+			}
+			if (label6.equals("20Rook")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][0]);
+				isEnabled=true;
+			}
+			if (label6.equals("27Rook")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][7]);
+				isEnabled=true;
+			}
+			if (label6.equals("10Rook")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][0]);
+				isEnabled=true;
+			}
+			if (label6.equals("17Rook")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][7]);
+				isEnabled=true;
+			}
+			if (label6.equals("22Bishop")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][2]);
+				isEnabled=true;
+			}
+			if (label6.equals("25Bishop")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][5]);
+				isEnabled=true;
+			}
+			if (label6.equals("12Bishop")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][2]);
+				isEnabled=true;
+			}
+			if (label6.equals("15Bishop")) {
+				rule.justmove(Sx, Sy,Dx,Dy,pieces[0][5]);
+				isEnabled=true;
+			}
+			
+			if (isEnabled&&whoismaster.equals("Master")) {
+				chessPlayClick=2;
+			}else if(isEnabled&&whoismaster.equals("Guest")){
+				chessPlayClick=3;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	@Override
@@ -945,9 +971,10 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j <8; j++) {
 				if (pieces[i][j].getName().equals(label7)) {
-					
+					label4=pieces[i][j];
 					remove(pieces[i][j]);
 					pieces[i][j]=null;
+					pieces[i][j]=label4;
 				}
 			}
 		}
@@ -955,6 +982,45 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 			chessPlayClick=2;
 		}else if(isEnabled&&whoismaster.equals("Guest")){
 			chessPlayClick=3;
+		}
+	}
+	public void arriveCastingmessage(String string, String string2) {
+		// TODO Auto-generated method stub
+		System.out.println("arrived3");
+		int x3=label.getLocation().x;
+		int y3=label.getLocation().y;
+		if (pieces[0][4].equals(string)) {
+			if (pieces[0][0].equals(string2)) {
+				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
+				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
+			}else if (pieces[0][7].equals(string2)) {
+				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
+				label2.setLocation(x3+side, y3);
+			}
+		}else if (pieces[3][4].equals(string2)) {
+			if (pieces[3][0].equals(string2)) {
+				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
+				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
+			}else if (pieces[3][7].equals(string2)) {
+				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
+				label2.setLocation(x3+side, y3);
+			}
+		}{
+			
+		}
+	}
+	public void arrivePromotion(StringTokenizer userMsgToken) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < 8; i++) {
+			if (pieces[1][i].getName().equals(userMsgToken)) {
+				pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
+				pieces[1][i].setName("4Queen");
+				nq2=i;
+			}else if(pieces[2][i].getName().equals(userMsgToken)) {
+				pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
+				pieces[2][i].setName("3Queen");
+				nq=i;
+			}
 		}
 	}
 	

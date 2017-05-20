@@ -26,7 +26,7 @@ public class FIRThread extends Thread
 			// 表示棋子信息的数组、0索引为：x坐标；1索引位：y坐标；2索引位：棋子类型
 			String chessInfo[]=new String[5];
 			String chessInfo2[]=new String[6];
-			int i = 0,j=0; // 标志位
+			int i = 0,j=0,k=0; // 标志位
 			String chessInfoToken;
 			System.out.println(userMsgToken.countTokens());
 			if (userMsgToken.countTokens()==6) {
@@ -41,8 +41,9 @@ public class FIRThread extends Thread
 				}
 				currPad.arrivemessage(Integer.parseInt(chessInfo[0]), Integer.parseInt(chessInfo[1]), 
 						Integer.parseInt(chessInfo[2]),Integer.parseInt(chessInfo[3]),chessInfo[4]);
+				
 			}else if (userMsgToken.countTokens()==7) {
-				System.out.println("l got it");
+				System.out.println("l got it2");
 				while (userMsgToken.hasMoreTokens())
 				{
 					chessInfoToken = (String) userMsgToken.nextToken(" ");
@@ -54,6 +55,22 @@ public class FIRThread extends Thread
 				}
 				currPad.arriveEatMessage(Integer.parseInt(chessInfo2[0]), Integer.parseInt(chessInfo2[1]), 
 						Integer.parseInt(chessInfo2[2]),Integer.parseInt(chessInfo2[3]),chessInfo2[4],chessInfo2[5]);
+			}else if (userMsgToken.countTokens()==2) {
+				System.out.println("l got it 3");
+				String[] info3=new String[2];
+				while (userMsgToken.hasMoreTokens())
+				{
+					chessInfoToken = (String) userMsgToken.nextToken(" ");
+					if (k>= 1 && k<= 1)
+					{
+						info3[k-1] = chessInfoToken;
+					}
+					k++;
+				}
+				currPad.arriveCastingmessage(info3[0],info3[2]);
+			}else if (userMsgToken.countTokens()==1) {
+				System.out.println("l got it 4");
+				currPad.arrivePromotion(userMsgToken);
 			}
 		}
 		else if (msgReceived.startsWith("/yourname "))

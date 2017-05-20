@@ -23,6 +23,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	public JLabel label2=null;
 	// label3 for casting
 	public JLabel label3=null;
+	public JLabel label4=null;
 	public Point_Operation check=new Point_Operation();
 	public int count=0;
 	public int nq,nq2;
