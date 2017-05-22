@@ -9,7 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-//用户输入区
+//鐢ㄦ埛杈撳叆鍖�
 public class UserInputPad extends JPanel
 {
 	public JTextField contentInputted = new JTextField("", 26);
@@ -20,7 +20,7 @@ public class UserInputPad extends JPanel
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		for (int i = 0; i < 50; i++)
 		{
-			userChoice.addItem(i + "." + "无用户");
+			userChoice.addItem(i + "." + "No User");
 		}
 		userChoice.setSize(60, 24);
 		add(userChoice);

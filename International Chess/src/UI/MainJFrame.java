@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import Server.Server;
 public class MainJFrame extends JFrame {  
   
     /**
@@ -28,7 +30,7 @@ public class MainJFrame extends JFrame {
     File f1 = new File("1.wav");
 
 	@SuppressWarnings("deprecation")
-	public MainJFrame() {   
+	public MainJFrame() {
         super("International Chess");   
         setSize(900, 600); 
         this.setResizable(false);
@@ -315,8 +317,8 @@ public class MainJFrame extends JFrame {
         label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  
         imagePanel.setOpaque(false); 
-        
         this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
+        
         setVisible(true); 
         imagePanel.add(button1);
         imagePanel.add(button2);
@@ -324,11 +326,12 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button4);
         imagePanel.add(musicb);
         //imagePanel.add(onlineb);
-        repaint();
+        //repaint();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  
   
     public static void main(String[] args) {  
-        new MainJFrame();  
+    	new MainJFrame();  
+    	Server firServer = new Server();
     }  
 } 

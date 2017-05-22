@@ -5,7 +5,10 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import Network.ChessBoard2;
 import UI2.UserChatPad;
@@ -13,52 +16,57 @@ import UI2.UserControlPad;
 import UI2.UserInputPad;
 import UI2.UserListPad;
 
-// 五子棋客户端
+// 浜斿瓙妫嬪鎴风
 public class MainClient extends JFrame implements ActionListener, KeyListener
 {
-	// 客户端套接口
+	// 瀹㈡埛绔鎺ュ彛
 	Socket clientSocket;
-	// 数据输入流
+	// 鏁版嵁杈撳叆娴�
 	DataInputStream inputStream;
-	// 数据输出流
+	// 鏁版嵁杈撳嚭娴�
 	DataOutputStream outputStream;
-	// 用户名
+	// 鐢ㄦ埛鍚�
 	String chessClientName = null;
-	// 主机地址
+	// 涓绘満鍦板潃
 	String host = null;
-	// 主机端口
+	// 涓绘満绔彛
 	int port = 4331;
-	// 是否在聊天
+	// 鏄惁鍦ㄨ亰澶�
 	boolean isOnChat = false;
-    // 是否在下棋
+    // 鏄惁鍦ㄤ笅妫�
 	boolean isOnChess = false;
-	// 游戏是否进行中
+	// 娓告垙鏄惁杩涜涓�
 	boolean isGameConnected = false;
-	// 是否为游戏创建者
+	// 鏄惁涓烘父鎴忓垱寤鸿��
 	boolean isCreator = false; 
-	// 是否为游戏加入者
+	// 鏄惁涓烘父鎴忓姞鍏ヨ��
 	boolean isParticipant = false;
-	// 用户列表区
+	// 鐢ㄦ埛鍒楄〃鍖�
 	UserListPad userListPad = new UserListPad();
-	// 用户聊天区
+	// 鐢ㄦ埛鑱婂ぉ鍖�
 	UserChatPad userChatPad = new UserChatPad();
-	// 用户操作区
+	// 鐢ㄦ埛鎿嶄綔鍖�
 	UserControlPad userControlPad = new UserControlPad();
-	// 用户输入区
+	// 鐢ㄦ埛杈撳叆鍖�
 	UserInputPad userInputPad = new UserInputPad();
-	// 下棋区
+	// 涓嬫鍖�
 	public ChessBoard2 jpanel=new ChessBoard2();
-	// 面板区
+	// 闈㈡澘鍖�
 	Panel southPanel = new Panel();
 	Panel northPanel = new Panel();
 	Panel centerPanel = new Panel();
 	Panel eastPanel = new Panel();
+	
 
 	// create the frame
 	public MainClient()
 	{
 		super("Chess Client");
-		setLayout(new BorderLayout());
+
+		//new Background();
+        //setVisible(true);
+        
+		setLayout(new BorderLayout());	
 		host = userControlPad.ipInputted.getText();
 		eastPanel.setLayout(new BorderLayout());
 		eastPanel.add(userListPad, BorderLayout.NORTH);
@@ -68,6 +76,10 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		userInputPad.contentInputted.addKeyListener(this);
 //		System.out.println(userControlPad.ipInputted.getText());
 		jpanel.host = userControlPad.ipInputted.getText();
+		
+		String path0 = "icon.png";
+        ImageIcon icon = new ImageIcon(path0);
+        setIconImage(icon.getImage());
 		
 		centerPanel.add(jpanel, BorderLayout.CENTER);
 //		centerPanel.add(userInputPad, BorderLayout.SOUTH);
@@ -89,17 +101,17 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			public void windowClosing(WindowEvent e)
 			{
 				if (isOnChat)
-				{ // 聊天中
+				{ // 鑱婂ぉ涓�
 					try
-					{  // 关闭客户端套接口
+					{  // 鍏抽棴瀹㈡埛绔鎺ュ彛
 						clientSocket.close();
 					}
 					catch (Exception ed){}
 				}
 				if (isOnChess || isGameConnected)
-				{ // 下棋中
+				{ // 涓嬫涓�
 					try
-					{   // 关闭下棋端口
+					{   // 鍏抽棴涓嬫绔彛
 						jpanel.chessSocket.close();
 					}
 					catch (Exception ee){}
@@ -131,67 +143,67 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	// 按指定的IP地址和端口连接到服务器
+	// 鎸夋寚瀹氱殑IP鍦板潃鍜岀鍙ｈ繛鎺ュ埌鏈嶅姟鍣�
 	public boolean connectToServer(String serverIP, int serverPort) throws Exception
 	{
 		try
 		{
-			// 创建客户端套接口
+			// 鍒涘缓瀹㈡埛绔鎺ュ彛
 			clientSocket = new Socket(serverIP, serverPort);
-			// 创建输入流
+			// 鍒涘缓杈撳叆娴�
 			inputStream = new DataInputStream(clientSocket.getInputStream());
-			// 创建输出流
+			// 鍒涘缓杈撳嚭娴�
 			outputStream = new DataOutputStream(clientSocket.getOutputStream());
-			// 创建客户端线程
+			// 鍒涘缓瀹㈡埛绔嚎绋�
 			ClientThread clientthread = new ClientThread(this);
-			// 启动线程，等待聊天信息
+			// 鍚姩绾跨▼锛岀瓑寰呰亰澶╀俊鎭�
 			clientthread.start();
 			isOnChat = true;
 			return true;
 		}
 		catch (IOException ex)
 		{
-			this.userControlPad.tipsField.setText("不能连接!\n");
+			this.userControlPad.tipsField.setText("Connection Disabled!\n");
 		}
 		return false;
 	}
 
-	// 客户端事件处理
+	// 瀹㈡埛绔簨浠跺鐞�
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == userControlPad.connectButton)
-		{ // 连接到主机按钮单击事件
-			host = jpanel.host = userControlPad.ipInputted.getText(); // 取得主机地址
+		{ // 杩炴帴鍒颁富鏈烘寜閽崟鍑讳簨浠�
+			host = jpanel.host = userControlPad.ipInputted.getText(); // 鍙栧緱涓绘満鍦板潃
 			try
 			{
 				if (connectToServer(host, port))
-				{   // 成功连接到主机时，设置客户端相应的界面状态
+				{   // 鎴愬姛杩炴帴鍒颁富鏈烘椂锛岃缃鎴风鐩稿簲鐨勭晫闈㈢姸鎬�
 					userChatPad.chatTextArea.setText("");
 					userControlPad.connectButton.setEnabled(false);
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
-					this.userControlPad.tipsField.setText("连接成功，请等待!");
+					this.userControlPad.tipsField.setText("Connect success, please wait.");
 				}
 			}
 			catch (Exception ei)
 			{
-				this.userControlPad.tipsField.setText("不能连接!\n");
+				this.userControlPad.tipsField.setText("Connection disabled!\n");
 			}
 		}
 		if (e.getSource() == userControlPad.exitButton)
-		{ // 离开游戏按钮单击事件
+		{ // 绂诲紑娓告垙鎸夐挳鍗曞嚮浜嬩欢
 			if (isOnChat)
-			{  // 若用户处于聊天状态中
+			{  // 鑻ョ敤鎴峰浜庤亰澶╃姸鎬佷腑
 				try
-				{ // 关闭客户端套接口
+				{ // 鍏抽棴瀹㈡埛绔鎺ュ彛
 					clientSocket.close();
 				}
 				catch (Exception ed){}
 			}
 			if (isOnChess || isGameConnected)
-			{ // 若用户处于游戏状态中
+			{ // 鑻ョ敤鎴峰浜庢父鎴忕姸鎬佷腑
 				try
-				{ // 关闭游戏端口
+				{ // 鍏抽棴娓告垙绔彛
 					jpanel.chessSocket.close();
 				}
 				catch (Exception ee){}
@@ -199,21 +211,21 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			System.exit(0);
 		}
 		if (e.getSource() == userControlPad.joinButton)
-		{ // 加入游戏按钮单击事件
-			String selectedUser = (String)userListPad.userList.getSelectedItem(); // 取得要加入的游戏
+		{ // 鍔犲叆娓告垙鎸夐挳鍗曞嚮浜嬩欢
+			String selectedUser = (String)userListPad.userList.getSelectedItem(); // 鍙栧緱瑕佸姞鍏ョ殑娓告垙
 			if (selectedUser == null || selectedUser.startsWith("[inchess]") ||
 					selectedUser.equals(chessClientName))
-			{ // 若未选中要加入的用户，或选中的用户已经在游戏，则给出提示信息
-				this.userControlPad.tipsField.setText("必须选择一个用户!");
+			{ // 鑻ユ湭閫変腑瑕佸姞鍏ョ殑鐢ㄦ埛锛屾垨閫変腑鐨勭敤鎴峰凡缁忓湪娓告垙锛屽垯缁欏嚭鎻愮ず淇℃伅
+				this.userControlPad.tipsField.setText("Choose a user!");
 			}
 			else
-			{ // 执行加入游戏的操作
+			{ // 鎵ц鍔犲叆娓告垙鐨勬搷浣�
 				try
 				{
 					if (!isGameConnected)
-					{ // 若游戏套接口未连接
+					{ // 鑻ユ父鎴忓鎺ュ彛鏈繛鎺�
 						if (jpanel.connectServer(jpanel.host, jpanel.port))
-						{ // 若连接到主机成功
+						{ // 鑻ヨ繛鎺ュ埌涓绘満鎴愬姛
 							isGameConnected = true;
 							isOnChess = true;
 							isParticipant = true;
@@ -227,7 +239,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 						}
 					}
 					else
-					{ // 若游戏端口连接中
+					{ // 鑻ユ父鎴忕鍙ｈ繛鎺ヤ腑
 						isOnChess = true;
 						isParticipant = true;
 						userControlPad.createButton.setEnabled(false);
@@ -246,18 +258,18 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
 					userControlPad.cancelButton.setEnabled(false);
-					this.userControlPad.tipsField.setText("不能连接: \n" + ee);
+					this.userControlPad.tipsField.setText("Connection disabled: \n" + ee);
 				}
 			}
 		}
 		if (e.getSource() == userControlPad.createButton)
-		{ // 创建游戏按钮单击事件
+		{ // 鍒涘缓娓告垙鎸夐挳鍗曞嚮浜嬩欢
 			try
 			{
 				if (!isGameConnected)
-				{ // 若游戏端口未连接
+				{ // 鑻ユ父鎴忕鍙ｆ湭杩炴帴
 					if (jpanel.connectServer(jpanel.host, jpanel.port))
-					{ // 若连接到主机成功
+					{ // 鑻ヨ繛鎺ュ埌涓绘満鎴愬姛
 						isGameConnected = true;
 						isOnChess = true;
 						isCreator = true;
@@ -269,7 +281,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					}
 				}
 				else
-				{ // 若游戏端口连接中
+				{ // 鑻ユ父鎴忕鍙ｈ繛鎺ヤ腑
 					isOnChess = true;
 					isCreator = true;
 					userControlPad.createButton.setEnabled(false);
@@ -288,27 +300,27 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				ec.printStackTrace();
-				this.userControlPad.tipsField.setText("不能连接: \n"
+				this.userControlPad.tipsField.setText("Connection disabled: \n"
 						+ ec);
 			}
 		}
 		if (e.getSource() == userControlPad.cancelButton)
-		{ // 退出游戏按钮单击事件
+		{ // 閫�鍑烘父鎴忔寜閽崟鍑讳簨浠�
 			if (isOnChess)
-			{ // 游戏中
+			{ // 娓告垙涓�
 				jpanel.firThread.sendMessage("/giveup " + chessClientName);
 //				jpanel.setVicStatus(-1 * jpanel.chessColor);
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				this.userControlPad.tipsField.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("Please create or join a game!");
 			}
 			if (!isOnChess)
-			{ // 非游戏中
+			{ // 闈炴父鎴忎腑
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				this.userControlPad.tipsField.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("Please create or join a game!");
 			}
 			isParticipant = isCreator = false;
 		}
@@ -318,18 +330,18 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	{
 		TextField inputwords = (TextField) e.getSource();
 		if (e.getKeyCode() == KeyEvent.VK_ENTER)
-		{ // 处理回车按键事件
-			if (userInputPad.userChoice.getSelectedItem().equals("所有用户"))
-			{ // 给所有人发信息
+		{ // 澶勭悊鍥炶溅鎸夐敭浜嬩欢
+			if (userInputPad.userChoice.getSelectedItem().equals("All User"))
+			{ // 缁欐墍鏈変汉鍙戜俊鎭�
 				try
 				{
-					// 发送信息
+					// 鍙戦�佷俊鎭�
 					outputStream.writeUTF(inputwords.getText());
 					inputwords.setText("");
 				}
 				catch (Exception ea)
 				{
-					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("Cannot connect to the server.\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");
@@ -337,7 +349,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 			}
 			else
-			{ // 给指定人发信息
+			{ // 缁欐寚瀹氫汉鍙戜俊鎭�
 				try
 				{
 					outputStream.writeUTF("/" + userInputPad.userChoice.getSelectedItem()
@@ -346,7 +358,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 				catch (Exception ea)
 				{
-					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("Cannot connect to the server.\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");

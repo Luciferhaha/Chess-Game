@@ -19,7 +19,7 @@ public class UserListPad extends Panel
 		setLayout(null);
 		for (int i = 0; i < 10; i++)
 		{
-			userList.add(i + "." + "无用户");
+			userList.add(i + "." + "No User");
 		}
 		userList.setSize(185, 200);
 		this.add(userList);
