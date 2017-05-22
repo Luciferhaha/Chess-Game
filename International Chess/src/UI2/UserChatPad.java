@@ -8,10 +8,9 @@ import java.awt.TextArea;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-//用户聊天面板
 public class UserChatPad extends JPanel
 {
-	public JTextArea chatTextArea = new JTextArea("命令区域", 18, 20);
+	public JTextArea chatTextArea = new JTextArea("Command area", 18, 20);
 	public UserChatPad()
 	{
 		

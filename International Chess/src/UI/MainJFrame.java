@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import Server.Server;
 public class MainJFrame extends JFrame {  
   
     /**
@@ -323,7 +325,7 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button3);
         imagePanel.add(button4);
         imagePanel.add(musicb);
-        //imagePanel.add(onlineb);
+       
         repaint();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  

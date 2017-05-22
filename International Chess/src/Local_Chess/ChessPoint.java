@@ -1,5 +1,5 @@
 package Local_Chess;
-//位置class
+//class about position
 
 	public class ChessPoint {
 		private int row = 0;

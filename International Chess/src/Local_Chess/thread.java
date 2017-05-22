@@ -15,7 +15,7 @@ public class thread extends Thread{
 		// TODO Auto-generated method stub
 		isrunning=true;
 		while (isrunning) {
-			//单击棋子第一下开始闪烁
+			//hit the piece and flashing
 			if (label!=null) {
 				label.setVisible(false);
 					try {

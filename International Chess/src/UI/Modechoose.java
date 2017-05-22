@@ -135,7 +135,6 @@ public class Modechoose extends JFrame{
 				if(e != null){
 					// online mode
 					dispose();
-					new Server();
 					new MainClient();
 					
 				}

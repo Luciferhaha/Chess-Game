@@ -6,6 +6,8 @@ import java.util.*;
 import java.awt.event.*;
 import javax.swing.JButton;
 
+import Client.MainClient;
+
 // The class about the frame of the server
 public class Server extends Frame implements ActionListener
 {
@@ -61,6 +63,7 @@ public class Server extends Frame implements ActionListener
 		{
 			e.printStackTrace();
 		}
+		
 	}
 
 	// Create a server with the specified port and panel
@@ -124,10 +127,9 @@ public class Server extends Frame implements ActionListener
 			System.exit(0);
 		}
 	}
-
-	public static void main(String args[])
-	{
-		Server firServer = new Server();
+	public static void main(String[] args) {
+		new Server();
 	}
+	
 }
 
