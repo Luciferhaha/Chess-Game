@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import Client.MainClient;
 import Local_Chess.LocalChess;
 import Server.Server;
 
@@ -133,7 +134,10 @@ public class Modechoose extends JFrame{
 				// TODO Auto-generated method stub
 				if(e != null){
 					// online mode
+					dispose();
 					new Server();
+					new MainClient();
+					
 				}
 			}
 

@@ -324,7 +324,7 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button4);
         imagePanel.add(musicb);
         //imagePanel.add(onlineb);
-
+        repaint();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  
   

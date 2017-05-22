@@ -1,4 +1,5 @@
 package Client;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -12,10 +13,9 @@ import UI2.UserControlPad;
 import UI2.UserInputPad;
 import UI2.UserListPad;
 
-// chess client
+// 五子棋客户端
 public class MainClient extends JFrame implements ActionListener, KeyListener
 {
-	
 	// 客户端套接口
 	Socket clientSocket;
 	// 数据输入流
@@ -54,8 +54,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	Panel centerPanel = new Panel();
 	Panel eastPanel = new Panel();
 
-	
-	// 构造方法，创建界面
+	// create the frame
 	public MainClient()
 	{
 		super("Chess Client");
@@ -120,7 +119,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		int width = (int)screensize.getWidth();
 		int height = (int)screensize.getHeight();
 		this.setBounds((width - 900) / 2,
-	            (height - 900) / 2, 900, 900);
+	            (height - 780) / 2, 900, 780);
 		
 		jpanel=new ChessBoard2();
 		this.add(jpanel);
@@ -152,7 +151,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		}
 		catch (IOException ex)
 		{
-			System.out.println("不能连接!\n");
+			this.userControlPad.tipsField.setText("不能连接!\n");
 		}
 		return false;
 	}
@@ -171,12 +170,12 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					userControlPad.connectButton.setEnabled(false);
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
-					System.out.println("连接成功，请等待!");
+					this.userControlPad.tipsField.setText("连接成功，请等待!");
 				}
 			}
 			catch (Exception ei)
 			{
-				System.out.println("不能连接!\n");
+				this.userControlPad.tipsField.setText("不能连接!\n");
 			}
 		}
 		if (e.getSource() == userControlPad.exitButton)
@@ -205,7 +204,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			if (selectedUser == null || selectedUser.startsWith("[inchess]") ||
 					selectedUser.equals(chessClientName))
 			{ // 若未选中要加入的用户，或选中的用户已经在游戏，则给出提示信息
-				jpanel.statusText.setText("必须选择一个用户!");
+				this.userControlPad.tipsField.setText("必须选择一个用户!");
 			}
 			else
 			{ // 执行加入游戏的操作
@@ -247,8 +246,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
 					userControlPad.cancelButton.setEnabled(false);
-					userChatPad.chatTextArea
-							.setText("不能连接: \n" + ee);
+					this.userControlPad.tipsField.setText("不能连接: \n" + ee);
 				}
 			}
 		}
@@ -290,7 +288,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				ec.printStackTrace();
-				userChatPad.chatTextArea.setText("不能连接: \n"
+				this.userControlPad.tipsField.setText("不能连接: \n"
 						+ ec);
 			}
 		}
@@ -303,14 +301,14 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				jpanel.statusText.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("请创建或加入游戏!");
 			}
 			if (!isOnChess)
 			{ // 非游戏中
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				jpanel.statusText.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("请创建或加入游戏!");
 			}
 			isParticipant = isCreator = false;
 		}
@@ -331,8 +329,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 				catch (Exception ea)
 				{
-					userChatPad.chatTextArea
-							.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");
@@ -349,8 +346,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 				catch (Exception ea)
 				{
-					userChatPad.chatTextArea
-							.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");

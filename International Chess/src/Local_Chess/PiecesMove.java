@@ -1,9 +1,11 @@
 package Local_Chess;
+import java.awt.TexturePaint;
 //不能连续同一方走棋按照count和getname来解决
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 
 import javax.swing.JLabel;
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 
 //处理不同棋子的算法
@@ -23,6 +25,9 @@ public class PiecesMove {
 	public  boolean rightmove;
 	public  boolean  haseaten;
 	public boolean hascasting;
+	public boolean inthreat;
+	public int count1;
+	public int count2;
 	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
@@ -32,7 +37,7 @@ public class PiecesMove {
 		findPoint=check;
 	}
 	//move rule 
-	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point,Point_Operation check){
+	public void Pawn(JLabel pieces,MouseEvent e, int x, int y, ChessPoint point){
 	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
 	//吃对方的棋子则是向前打斜来吃
 		//黑棋
@@ -170,7 +175,15 @@ public class PiecesMove {
 				findPoint.isexisted[x1][y1]=0;
 				findPoint.isexisted[x2][y2]=1;
 				haseaten=true;
-			}
+			}// how to restrict the eating must be on time ?
+				if (y2==4&&y1==4&&Math.abs(d)==1&&label2.getName().equals("2Pawn")) {
+					label.setLocation(label2.getLocation().x, label2.getLocation().y+side);
+					findPoint.isexisted[x1][y1]=0;
+					findPoint.isexisted[x2][y2+1]=1;
+					findPoint.isexisted[x2][y2]=0;
+					haseaten=true;
+				}
+			
 			break;
 
 		case '2':
@@ -180,8 +193,18 @@ public class PiecesMove {
 				findPoint.isexisted[x2][y2]=1;
 				haseaten=true;
 			}
+			// how to restrict the eating must be on time ?
+				if (y2==3&&y1==3&&Math.abs(d)==1&&label2.getName().equals("1Pawn")) {
+					label.setLocation(label2.getLocation().x, label2.getLocation().y-side);
+					findPoint.isexisted[x1][y1]=0;
+					findPoint.isexisted[x2][y2-1]=1;
+					findPoint.isexisted[x2][y2]=0;
+					haseaten=true;
+				}
+			
 			break;
 		}
+		//吃过路兵
 	}
 	public void QueenEatRule(JLabel label, JLabel label2) {
 		
@@ -265,12 +288,6 @@ public class PiecesMove {
 			haseaten=true;
 			 }
 		}
-	}
-	public void En_Passant() {
-		//吃路过兵
-		//1.对方的兵必须是在原位第一次移动且直进两格
-		//2.形成本方有兵与其横向紧贴并列
-		//3.吃的方式为斜进，并拿掉对方棋子
 	}
 	public void Castling(JLabel label, JLabel label2) {//this part l haven't done
 		//王车长短易位
@@ -392,7 +409,116 @@ public class PiecesMove {
 			return false;
 		}
 	}
-		public void Kingprotections(){
-		
+	public boolean PawnThreat(JLabel label,JLabel king){
+		char c=label.getName().charAt(0);
+		findPoint.SetChessPoint(king);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x2-x1;
+		int d1=y2-y1;
+		switch (c) {
+		case '1':
+			if (d1==1&&(d==1||d==-1)) {
+				inthreat=true;
+				return true;
+			}
+			break;
+
+		case '2':
+			if (d1==-1&&(d==-1||d==1)) {
+				haseaten=true;
+				return true;
+			}
+			break;
 		}
+		return false;
+		}
+	public boolean queenThreat(JLabel label,JLabel king){
+		findPoint.SetChessPoint(king);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x2-x1;
+		int d1=y2-y1;
+		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
+			if (!Judgehaspieces(x1,y1,x2,y2)) {
+				inthreat=true;
+				return true;
+			}
+		}
+		return false;
 	}
+	public boolean kingThreat(JLabel label,JLabel king){
+		findPoint.SetChessPoint(king);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x2-x1;
+		int d1=y2-y1;
+		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
+			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+				 inthreat=true;
+				 return true;
+			  }
+			}
+		return false;
+	}
+	public boolean RookThreat(JLabel label,JLabel king){
+		findPoint.SetChessPoint(king);
+		int x=findPoint.x;
+		int y=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x-x1;
+		int d1=y-y1;
+		if (d==0||d1==0) {
+			 if (!Judgehaspieces(x1,y1,x,y)) {
+				 inthreat=true;
+				 return true;
+			 }
+		}
+		return false;
+	}
+	public boolean KnightThreat(JLabel label,JLabel king){
+		findPoint.SetChessPoint(king);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x2-x1;
+		int d1=y2-y1;
+		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
+			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+				 inthreat=true;
+				 return true;
+			}
+		}
+		return false;
+	}
+	public boolean bishopThreat(JLabel label ,JLabel king) {
+		findPoint.SetChessPoint(king);
+		int x2=findPoint.x;
+		int y2=findPoint.y;
+		findPoint.SetChessPoint(label);
+		int x1=findPoint.x;
+		int y1=findPoint.y;
+		int d=x2-x1;
+		int d1=y2-y1;
+		if (Math.abs(d)==Math.abs(d1)) {
+			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+			label.setLocation(king.getLocation().x, king.getLocation().y);
+			haseaten=true;
+			 }
+		}
+		return false;
+	}
+}

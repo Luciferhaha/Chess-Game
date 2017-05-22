@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 package Client;
 
-=======
- package Client;
->>>>>>> origin/master
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -39,7 +35,6 @@ public class ClientThread extends Thread
 					firClient.userListPad.userList.add(user);// 将用户信息添加到用户列表中
 					firClient.userInputPad.userChoice.addItem(user); // 将用户信息添加到用户下拉框中
 				}
-				
 				userNumber++;
 			}
 			firClient.userInputPad.userChoice.setSelectedIndex(0);// 下拉框默认选中所有人
@@ -54,7 +49,7 @@ public class ClientThread extends Thread
 		{ // 收到的信息为拒绝用户时
 			try
 			{
-				System.out.println("不能加入游戏!");
+				firClient.userControlPad.tipsField.setText("不能加入游戏!");
 				firClient.userControlPad.cancelButton.setEnabled(false);
 				firClient.userControlPad.joinButton.setEnabled(true);
 				firClient.userControlPad.createButton.setEnabled(true);
@@ -74,25 +69,25 @@ public class ClientThread extends Thread
 				firClient.jpanel.chessPlayClick=2;// 设定其为白棋先行
 //				firClient.jpanel.isMouseEnabled = true;
 				firClient.jpanel.whoismaster="Master";
-				System.out.println("白方下...");
+				firClient.userControlPad.tipsField.setText("白方下...");
 			}
 			else if (firClient.isParticipant)
 			{ // 若用户为游戏加入者
 				firClient.jpanel.chessPlayClick = 1; // 设定其为黑棋后行
 				firClient.jpanel.whoismaster="Guest";
-				System.out.println("游戏加入，等待对手.");
+				firClient.userControlPad.tipsField.setText("游戏加入，等待对手.");
 			}
 		}
 		else if (msgReceived.equals("/youwin"))
 		{ // 收到信息为胜利信息
 			firClient.isOnChess = false;
 //			firClient.jpanel.setVicStatus(firClient.jpanel.chessColor);
-			System.out.println("对手退出");
+			firClient.userControlPad.tipsField.setText("对手退出");
 //			firClient.jpanel.isMouseEnabled = false;
 		}
 		else if (msgReceived.equals("/OK"))
 		{ // 收到信息为成功创建游戏
-			System.out.println("游戏创建等待对手");
+			firClient.userControlPad.tipsField.setText("游戏创建等待对手");
 		}
 
 		else if (msgReceived.equals("/error"))

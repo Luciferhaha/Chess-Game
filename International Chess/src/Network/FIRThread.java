@@ -55,22 +55,23 @@ public class FIRThread extends Thread
 				}
 				currPad.arriveEatMessage(Integer.parseInt(chessInfo2[0]), Integer.parseInt(chessInfo2[1]), 
 						Integer.parseInt(chessInfo2[2]),Integer.parseInt(chessInfo2[3]),chessInfo2[4],chessInfo2[5]);
-			}else if (userMsgToken.countTokens()==2) {
+			}else if (userMsgToken.countTokens()==3) {
 				System.out.println("l got it 3");
 				String[] info3=new String[2];
 				while (userMsgToken.hasMoreTokens())
 				{
 					chessInfoToken = (String) userMsgToken.nextToken(" ");
-					if (k>= 1 && k<= 1)
+					if (k>= 1 && k<= 2)
 					{
 						info3[k-1] = chessInfoToken;
 					}
 					k++;
 				}
-				currPad.arriveCastingmessage(info3[0],info3[2]);
-			}else if (userMsgToken.countTokens()==1) {
+				currPad.arriveCastingmessage(info3[0],info3[1]);
+			}else if (userMsgToken.countTokens()==2) {
 				System.out.println("l got it 4");
-				currPad.arrivePromotion(userMsgToken);
+				userMsgToken.nextToken(" ");
+				currPad.arrivePromotionandThreat(userMsgToken.nextToken(" "));
 			}
 		}
 		else if (msgReceived.startsWith("/yourname "))

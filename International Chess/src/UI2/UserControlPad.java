@@ -10,12 +10,14 @@ import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class UserControlPad extends JPanel
 {
 	public JLabel ipLabel = new JLabel("IP", JLabel.LEFT);
 	public JTextField ipInputted = new JTextField("localhost", 10);
+	public JTextArea tipsField=new JTextArea("",10,10);
 	public JButton connectButton = new JButton("连接到服务器");
 	public JButton createButton = new JButton("创建游戏");
 	public JButton joinButton = new JButton("加入游戏");
@@ -27,13 +29,13 @@ public class UserControlPad extends JPanel
 	public UserControlPad()
 	{
 
-		this.setLayout(new GridLayout(6,1,4,4));
+		this.setLayout(new GridLayout(7,1,5,5));
 //		this.setBackground(Color.red);
 		panel1.setLayout(new FlowLayout());
 		panel1.add(ipLabel);
 		panel1.add(ipInputted);
-	
 		this.add(panel1);
+		this.add(tipsField);
 		this.add(connectButton);
 		this.add(createButton);
 		this.add(joinButton);

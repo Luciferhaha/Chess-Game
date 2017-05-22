@@ -2,17 +2,16 @@ package Network;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-import LoginSystem.inputdata;
-
+import UI.bVictory;
+import UI.wVictory;
 import java.io.*;
 import java.net.Socket;
-import java.util.StringTokenizer;
 
-public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 
-	public final static int gap=35;//实际棋盘和边框的间距
-	public final static int gap2=0;
+public class ChessBoard2 extends JPanel implements MouseListener{
+
+	public final static int gap=30;//实际棋盘和边框的间距
+	public final static int gap2=30;
 	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[4][8];
@@ -28,6 +27,8 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 	public int count=0;
 	public int nq,nq2;
 	public  boolean win;
+	public JLabel label5=null;
+	public JLabel label6=null;
 	/*chessPlayClick=3黑棋走棋*/
 	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
 	/*chessPlayClick=1 双方都不能走棋*/	
@@ -114,443 +115,499 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 	public void setlocation() {
 		//initial location of pawn
 		for (int i = 0; i <8; i++) {
-			pieces[1][i].setBounds(gap+i*side, side,side, side);
-			pieces[2][i].setBounds(gap+i*side, 6*side,side, side);
+			pieces[1][i].setBounds(gap+i*side, side+gap2,side, side);
+			pieces[2][i].setBounds(gap+i*side, 6*side+gap2,side, side);
 		}
 		//kings
-		pieces[0][4].setBounds(gap+4*side, 0, side, side);
-		pieces[3][4].setBounds(gap+4*side, 7*side, side, side);
+		pieces[0][4].setBounds(gap+4*side, 0+gap2, side, side);
+		pieces[3][4].setBounds(gap+4*side, 7*side+gap2, side, side);
 		//queens
-		pieces[0][3].setBounds(gap+3*side, 0, side, side);
-		pieces[3][3].setBounds(gap+3*side, 7*side, side, side);
+		pieces[0][3].setBounds(gap+3*side, 0+gap2, side, side);
+		pieces[3][3].setBounds(gap+3*side, 7*side+gap2, side, side);
 		//knights
-		pieces[0][1].setBounds(gap+side, 0, side, side);
-		pieces[0][6].setBounds(gap+6*side, 0, side, side);
-		pieces[3][1].setBounds(gap+side, 7*side,side, side);
-		pieces[3][6].setBounds(gap+6*side,7*side,side, side);
+		pieces[0][1].setBounds(gap+side, 0+gap2, side, side);
+		pieces[0][6].setBounds(gap+6*side, 0+gap2, side, side);
+		pieces[3][1].setBounds(gap+side, 7*side+gap2,side, side);
+		pieces[3][6].setBounds(gap+6*side,7*side+gap2,side, side);
 		//rooks
-		pieces[0][0].setBounds(gap, 0, side, side);
-		pieces[0][7].setBounds(gap+7*side, 0, side, side);
-		pieces[3][0].setBounds(gap, 7*side, side, side);
-		pieces[3][7].setBounds(gap+7*side, 7*side,side, side);
+		pieces[0][0].setBounds(gap, gap2, side, side);
+		pieces[0][7].setBounds(gap+7*side,gap2, side, side);
+		pieces[3][0].setBounds(gap, 7*side+gap2, side, side);
+		pieces[3][7].setBounds(gap+7*side, 7*side+gap2,side, side);
 		//Bishops
-		pieces[0][2].setBounds(gap+2*side, 0, side, side);
-		pieces[0][5].setBounds(gap+5*side, 0, side, side);
-		pieces[3][2].setBounds(gap+2*side, 7*side, side, side);
-		pieces[3][5].setBounds(gap+5*side, 7*side, side, side);
+		pieces[0][2].setBounds(gap+2*side, 0+gap2, side, side);
+		pieces[0][5].setBounds(gap+5*side, 0+gap2, side, side);
+		pieces[3][2].setBounds(gap+2*side, 7*side+gap2, side, side);
+		pieces[3][5].setBounds(gap+5*side, 7*side+gap2, side, side);
 	}
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
-		g.fillRect(gap, 0,row*side,column*side);
+		g.fillRect(gap, gap2,row*side,column*side);
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//利用余数来错位
+				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);//利用余数来错位
 			}
 		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (win==false) {
-			
-		
-		int x,y;
-		//acquire location
-		x=(e.getX()-gap)/side;
-		y=(e.getY())/side;
-		
-		if (x>=0&&x<8&&y>=0&&y<8) {
-			//move pieces
-			//move white pawn pieces
-			if (chessPlayClick==2) {
-				selectPiece(e,chessPlayClick);
-				if (label!=null&&e.getSource().equals(this)) {
-					
-						for (int i = 0; i <8; i++) {
-							if (label.equals(pieces[2][i])&&pieces[2][i].getName()!="3Queen") {
-								check.findChessPoint(label);// 
-								rule.Pawn(label, x,y,check.Point);
+		if (chessPlayClick!=1) {
+			if (win==false) {
+				int x,y;
+				//acquire location
+				x=(e.getX()-gap)/side;
+				y=(e.getY()-gap2)/side;
+				
+				if (x>=0&&x<8&&y>=0&&y<8) {
+					//move pieces
+					//move white pawn pieces
+					if (chessPlayClick==2) {
+						selectPiece(e,chessPlayClick);
+						if (label!=null&&e.getSource().equals(this)) {
+							
+							for (int i = 0; i <8; i++) {
+								if (label.equals(pieces[2][i])&&pieces[2][i].getName()!="3Queen") {
+									check.findChessPoint(label);// 
+									rule.Pawn(label, x,y,check.Point);
+									String pString=pieces[2][i].getName();
+									if (rule.rightmove==true) {
+										hThread.end();
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+												+  check.Point.row()+ " " + check.Point.row() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+										if (PawnPromotion()) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
+										}
+										if (rule.PawnThreat(label, pieces[0][4])) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "
+												+ "AThreat");
+										}
+										rule.rightmove=false;
+									}
+								}
+							}
+							
+							
+							//move white queens
+							if (label.equals(pieces[3][3])||(label.equals(pieces[2][nq])&&pieces[2][nq].getName()=="3Queen")) {
+								check.findChessPoint(label);
+								rule.Queen(label,x, y,check.Point);
 								if (rule.rightmove==true) {
 									hThread.end();
 									firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.row() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-									if (PawnPromotion()) {
-										firThread.sendMessage(label.getName());
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.queenThreat(label, pieces[0][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
 									}
-//									chessPlayClick=3;
+									rule.rightmove=false;
+								}
+							}
+							//move white king
+							if (label.equals(pieces[3][4])) {
+								check.findChessPoint(label);
+								rule.King(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=3;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.kingThreat(label, pieces[0][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move white rooks
+							if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
+								check.findChessPoint(label);
+								rule.Rook(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=3;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.RookThreat(label, pieces[0][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							// move white knights
+							if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
+								check.findChessPoint(label);
+								rule.knight(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.KnightThreat(label, pieces[0][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move white bishops
+							if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
+								check.findChessPoint(label);
+								rule.Bisshop(label, x, y, check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.bishopThreat(label, pieces[0][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
 									rule.rightmove=false;
 								}
 							}
 						}
-						
-					
-			//move white queens
-				if (label.equals(pieces[3][3])||(label.equals(pieces[2][nq])&&pieces[2][nq].getName()=="3Queen")) {
-					check.findChessPoint(label);
-					rule.Queen(label,x, y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=3;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-			//move white king
-					if (label.equals(pieces[3][4])) {
-						check.findChessPoint(label);
-						rule.King(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=3;
-						firThread.sendMessage("/" + chessPeerName + " /chess "
-					+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-			//move white rooks
-					if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
-						check.findChessPoint(label);
-						rule.Rook(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=3;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-					+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-			// move white knights
-					if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
-						check.findChessPoint(label);
-						rule.knight(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=3;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-					+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-			//move white bishops
-					if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
-						check.findChessPoint(label);
-						rule.Bisshop(label, x, y, check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=3;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-							+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-				}
-			}	
-			//move black pieces
-			else if (chessPlayClick==3) {
-				//select black pieces
-				selectPiece(e,chessPlayClick);
-				if (label!=null&&e.getSource().equals(this)) {
-					// move black pawns
-					
-					for (int i = 0; i <8; i++) {
-						if (label.equals(pieces[1][i])&&pieces[1][i].getName()!="4Queen") {
-							check.findChessPoint(label);
-							rule.Pawn(label, x,y,check.Point);
-							if (rule.rightmove==true) {
-								hThread.end();
-								PawnPromotion();
-//								chessPlayClick=2;
-								firThread.sendMessage("/" + chessPeerName + " /chess "
-								+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-								rule.rightmove=false;
-							}
-						}
-					}
-				
-					//move black queens
-					if (label.equals(pieces[0][3])||(label.equals(pieces[1][nq2])&&pieces[1][nq2].getName()=="4Queen")) {
-						check.findChessPoint(label);
-						rule.Queen(label,x, y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=2;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-					//move black kings
-					if (label.equals(pieces[0][4])) {
-						check.findChessPoint(label);
-						rule.King(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=2;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-					//move black rooks
-					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
-						check.findChessPoint(label);
-						rule.Rook(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=2;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-					+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-					//move black knights
-					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
-						check.findChessPoint(label);
-						rule.knight(label,x,y,check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=2;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-							+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-					//move black bishops
-					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
-						check.findChessPoint(label);
-						rule.Bisshop(label, x, y, check.Point);
-						if (rule.rightmove==true) {
-							hThread.end();
-//							chessPlayClick=2;
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-						+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-							rule.rightmove=false;
-						}
-					}
-					
-				}
-			}
-			//find eat pieces
-			if (label!=null&&!e.getSource().equals(this)) {
-				for (int i = 0; i <4; i++) {
-					for (int j = 0; j <8; j++) {
-						if (e.getSource().equals(pieces[i][j])) {
-							if (pieces[i][j].getName()!=label.getName()) {
-								label2=pieces[i][j];
-								if (label2.getName().charAt(0)==label.getName().charAt(0)) {
-									// casting
-										label2=null;
+					}	
+					//move black pieces
+					else if (chessPlayClick==3) {
+						//select black pieces
+						selectPiece(e,chessPlayClick);
+						if (label!=null&&e.getSource().equals(this)) {
+							// move black pawns
+							
+							for (int i = 0; i <8; i++) {
+								if (label.equals(pieces[1][i])&&pieces[1][i].getName()!="4Queen") {
+									check.findChessPoint(label);
+									rule.Pawn(label, x,y,check.Point);
+									String pString=pieces[1][i].getName();
+									if (rule.rightmove==true) {
+										hThread.end();
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+												+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+										if (PawnPromotion()) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
+										}
+										if (rule.PawnThreat(label, pieces[3][4])) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "
+												+ "AThreat");
+										}
+										rule.rightmove=false;
 									}
+								}
+							}
+							
+							//move black queens
+							if (label.equals(pieces[0][3])||(label.equals(pieces[1][nq2])&&pieces[1][nq2].getName()=="4Queen")) {
+								check.findChessPoint(label);
+								rule.Queen(label,x, y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=2;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.queenThreat(label, pieces[3][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move black kings
+							if (label.equals(pieces[0][4])) {
+								check.findChessPoint(label);
+								rule.King(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=2;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.kingThreat(label, pieces[3][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move black rooks
+							if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
+								check.findChessPoint(label);
+								rule.Rook(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=2;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.RookThreat(label, pieces[3][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move black knights
+							if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
+								check.findChessPoint(label);
+								rule.knight(label,x,y,check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=2;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.KnightThreat(label, pieces[3][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							//move black bishops
+							if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
+								check.findChessPoint(label);
+								rule.Bisshop(label, x, y, check.Point);
+								if (rule.rightmove==true) {
+									hThread.end();
+//							chessPlayClick=2;
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+									if (rule.bishopThreat(label, pieces[3][4])) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+											+ "AThreat");
+									}
+									rule.rightmove=false;
+								}
+							}
+							
+						}
+					}
+					//find eat pieces
+					if (label!=null&&!e.getSource().equals(this)) {
+						for (int i = 0; i <4; i++) {
+							for (int j = 0; j <8; j++) {
+								if (e.getSource().equals(pieces[i][j])) {
+									if (pieces[i][j].getName()!=label.getName()) {
+										label2=pieces[i][j];
+										if (label2.getName().charAt(0)==label.getName().charAt(0)) {
+											// casting
+											label2=null;
+										}
+									}
+								}
 							}
 						}
 					}
-				}
-			}
 //			System.out.println(label.getName());
 //			System.out.println(label2);
-			// make a judgment 
-			//judge the piece is  pawn or not 
-
-			if (label2!=null&&label2.getName().charAt(0)!=label.getName().charAt(0)) {
-				
-				if (chessPlayClick==3) {
-					//black pawn eat pieces
-						for (int i = 0; i <8; i++) {
-							if (label.equals(pieces[1][i])&&pieces[1][i].getName()!="4Queen") {
+					// make a judgment 
+					//judge the piece is  pawn or not 
+					
+					if (label2!=null&&label2.getName().charAt(0)!=label.getName().charAt(0)) {
+						
+						if (chessPlayClick==3) {
+							//black pawn eat pieces
+							for (int i = 0; i <8; i++) {
+								if (label.equals(pieces[1][i])&&pieces[1][i].getName()!="4Queen") {
+									check.findChessPoint(label);
+									rule.PawnEatRule(label, label2);
+									if (rule.haseaten) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+												+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+										remove(label2);
+										victory();
+										label2=null;
+										String pString=pieces[1][i].getName();
+										if (PawnPromotion()) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
+										}
+										hThread.end();
+										rule.haseaten=false;
+//									chessPlayClick=2;
+									}
+								}
+							}
+							//black queen eat pieces
+							if (label.equals(pieces[0][3])||(label.equals(pieces[1][nq2])&&pieces[1][nq2].getName()=="4Queen")) {
 								check.findChessPoint(label);
-								rule.PawnEatRule(label, label2);
+								rule.QueenEatRule(label, label2);
 								if (rule.haseaten) {
 									firThread.sendMessage("/" + chessPeerName + " /chess "
 											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
 									remove(label2);
 									victory();
 									label2=null;
-									PawnPromotion();
 									hThread.end();
 									rule.haseaten=false;
-//									chessPlayClick=2;
+//							chessPlayClick=2;
+								}
+							}
+							//black king
+							if (label.equals(pieces[0][4])) {
+								check.findChessPoint(label);
+								rule.KingEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=2;
+								}
+							}
+							//black knight eat
+							if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
+								check.findChessPoint(label);
+								rule.knightEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=2;
+								}
+							}
+							//black bishop 
+							if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
+								check.findChessPoint(label);
+								rule.BisshopEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=2;
+								}
+							}
+							//black rook eat 
+							if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
+								check.findChessPoint(label);
+								rule.RookEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=2;
 								}
 							}
 						}
-					//black queen eat pieces
-					if (label.equals(pieces[0][3])||(label.equals(pieces[1][nq2])&&pieces[1][nq2].getName()=="4Queen")) {
-						check.findChessPoint(label);
-						rule.QueenEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=2;
-						}
-					}
-					//black king
-					if (label.equals(pieces[0][4])) {
-						check.findChessPoint(label);
-						rule.KingEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=2;
-						}
-					}
-					//black knight eat
-					if (label.equals(pieces[0][1])||label.equals(pieces[0][6])) {
-						check.findChessPoint(label);
-						rule.knightEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=2;
-						}
-					}
-					//black bishop 
-					if (label.equals(pieces[0][2])||label.equals(pieces[0][5])) {
-						check.findChessPoint(label);
-						rule.BisshopEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=2;
-						}
-					}
-					//black rook eat 
-					if (label.equals(pieces[0][0])||label.equals(pieces[0][7])) {
-						check.findChessPoint(label);
-						rule.RookEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=2;
-						}
-					}
-				}
-				if (chessPlayClick==2) {
-					//white pawn eat pieces
-					for (int i = 0; i <8; i++) {
-						if (label.equals(pieces[2][i])&&pieces[2][i].getName()!="3Queen") {
-							check.findChessPoint(label);
-							rule.PawnEatRule(label, label2);
-							if (rule.haseaten) {
-								firThread.sendMessage("/" + chessPeerName + " /chess "
-							+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-								remove(label2);
-								victory();
-								label2=null;
-								PawnPromotion();
-								hThread.end();
-								rule.haseaten=false;
+						if (chessPlayClick==2) {
+							//white pawn eat pieces
+							for (int i = 0; i <8; i++) {
+								if (label.equals(pieces[2][i])&&pieces[2][i].getName()!="3Queen") {
+									check.findChessPoint(label);
+									rule.PawnEatRule(label, label2);
+									if (rule.haseaten) {
+										firThread.sendMessage("/" + chessPeerName + " /chess "
+												+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+										remove(label2);
+										victory();
+										label2=null;
+										String pString2=pieces[2][i].getName();
+										if (PawnPromotion()) {
+											firThread.sendMessage("/" + chessPeerName + " /chess "+pString2);
+										}
+										hThread.end();
+										rule.haseaten=false;
 //								chessPlayClick=3;
+									}
+								}
 							}
+							// white queen eat pieces
+							if (label.equals(pieces[3][3])||(label.equals(pieces[2][nq])&&pieces[2][nq].getName()=="3Queen")) {
+								check.findChessPoint(label);
+								rule.QueenEatRule(label, label2);
+								
+								if (rule.haseaten==true) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=3;
+								}
+							}
+							//white king eat pieces
+							if (label.equals(pieces[3][4])) {
+								check.findChessPoint(label);
+								rule.KingEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=3;
+								}
+							}
+							//white rook eat 
+							if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
+								check.findChessPoint(label);
+								rule.RookEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=3;
+								}
+							}
+							//white knight eat
+							if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
+								check.findChessPoint(label);
+								rule.knightEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=3;
+								}
+							}
+							// white bishop eat 
+							if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
+								check.findChessPoint(label);
+								rule.BisshopEatRule(label, label2);
+								if (rule.haseaten) {
+									firThread.sendMessage("/" + chessPeerName + " /chess "
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
+									remove(label2);
+									victory();
+									label2=null;
+									hThread.end();
+									rule.haseaten=false;
+//							chessPlayClick=3;
+								}
+							}
+							
 						}
-					}
-					// white queen eat pieces
-					if (label.equals(pieces[3][3])||(label.equals(pieces[2][nq])&&pieces[2][nq].getName()=="3Queen")) {
-						check.findChessPoint(label);
-						rule.QueenEatRule(label, label2);
 						
-						if (rule.haseaten==true) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=3;
-						}
+						
 					}
-					//white king eat pieces
-					if (label.equals(pieces[3][4])) {
-						check.findChessPoint(label);
-						rule.KingEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=3;
-						}
-					}
-					//white rook eat 
-					if (label.equals(pieces[3][0])||label.equals(pieces[3][7])) {
-						check.findChessPoint(label);
-						rule.RookEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=3;
-						}
-					}
-					//white knight eat
-					if (label.equals(pieces[3][1])||label.equals(pieces[3][6])) {
-						check.findChessPoint(label);
-						rule.knightEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=3;
-						}
-					}
-					// white bishop eat 
-					if (label.equals(pieces[3][2])||label.equals(pieces[3][5])) {
-						check.findChessPoint(label);
-						rule.BisshopEatRule(label, label2);
-						if (rule.haseaten) {
-							firThread.sendMessage("/" + chessPeerName + " /chess "
-									+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName()+" "+label2.getName());
-							remove(label2);
-							victory();
-							label2=null;
-							hThread.end();
-							rule.haseaten=false;
-//							chessPlayClick=3;
-						}
-					}
-					
-					}
-				
-				
 				}
-			}
+			
+		}
 		}
 		System.out.println(label);
 		System.out.println(label2);
@@ -605,7 +662,7 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 							label=label3;
 						}else {//send message about new location from both.
 							
-							firThread.sendMessage(label.getName()+" "+label3.getName());
+							firThread.sendMessage("/" + chessPeerName + " /chess "+label.getName()+" "+label3.getName());
 						}
 				}else {
 					label=(JLabel) e.getSource();
@@ -675,7 +732,7 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 							label=label3;
 						}else {
 						
-							firThread.sendMessage(label.getName()+" "+label3.getName());
+							firThread.sendMessage("/" + chessPeerName + " /chess "+label.getName()+" "+label3.getName());
 							
 						}
 				}else {
@@ -760,9 +817,11 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 		if (label2.getName()=="1King") {
 			System.out.println("The white side succeed!");
 			win=true;
+			new wVictory();
 		}else if (label2.getName()=="2King") {
 			System.out.println("The black side succeed!");
 			win=true;
+			new bVictory();
 		}
 	
 	}
@@ -792,22 +851,22 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 		// TODO Auto-generated method stub
 		// for pawn 
 		try {
-			System.out.println("arrived");
+			
 			for (int i = 0; i < 8; i++) {
 				if (label6.equals("1"+i+"Pawn")) {
 					rule.justmove(Sx, Sy, Dx,Dy,pieces[1][i]);
+					label=pieces[1][i];//keep this 
 					isEnabled=true;
 				}
 				else if (label6.equals("2"+i+"Pawn")) {
 					rule.justmove(Sx, Sy,Dx,Dy,pieces[2][i]);
+					label=pieces[2][i];
 					isEnabled=true;
 				}
 			}
 			//for WQ
 			if (label6.equals("2King")) {
 				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][4]);
-				System.out.println(Dx);
-				System.out.println(Dy);
 				isEnabled=true;
 			}
 			if (label6.equals("1King")) {
@@ -816,6 +875,14 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 			}
 			if (label6.equals("2Queen")) {
 				rule.justmove(Sx, Sy,Dx,Dy,pieces[3][3]);
+				isEnabled=true;
+			}
+			if (label6.equals("3Queen")) {
+				rule.justmove(Sx, Sy,Dx,Dy,this.label6);
+				isEnabled=true;
+			}
+			if (label6.equals("4Queen")) {
+				rule.justmove(Sx, Sy,Dx,Dy,label5);
 				isEnabled=true;
 			}
 			if (label6.equals("1Queen")) {
@@ -882,11 +949,7 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public void run() {
-		// TODO Auto-generated method stu
 	
-	}
 	public void arriveEatMessage(int Sx, int Sy, int Dx, int Dy, String label6,
 			String label7) {
 		// TODO Auto-generated method stub
@@ -910,6 +973,14 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 		if (label6.equals("1King")) {
 			rule.justmove(Sx, Sy,Dx,Dy,pieces[0][4]);
 			 isEnabled=true;
+		}
+		if (label6.equals("3Queen")) {
+			rule.justmove(Sx, Sy,Dx,Dy,this.label6);
+			isEnabled=true;
+		}
+		if (label6.equals("4Queen")) {
+			rule.justmove(Sx, Sy,Dx,Dy,label5);
+			isEnabled=true;
 		}
 		if (label6.equals("2Queen")) {
 			rule.justmove(Sx, Sy,Dx,Dy,pieces[3][3]);
@@ -987,41 +1058,63 @@ public class ChessBoard2 extends JPanel implements MouseListener,Runnable{
 	public void arriveCastingmessage(String string, String string2) {
 		// TODO Auto-generated method stub
 		System.out.println("arrived3");
-		int x3=label.getLocation().x;
-		int y3=label.getLocation().y;
-		if (pieces[0][4].equals(string)) {
-			if (pieces[0][0].equals(string2)) {
-				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
-				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
-			}else if (pieces[0][7].equals(string2)) {
-				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
-				label2.setLocation(x3+side, y3);
+		int x3=pieces[0][4].getLocation().x;
+		int x23=pieces[3][4].getLocation().x;
+		int y3=pieces[3][4].getLocation().y;
+		if (string.equals("1King")) {
+			if (string2.equals("10Rook")) {
+				pieces[0][4].setLocation(pieces[0][4].getLocation().x-2*side, pieces[0][4].getLocation().y);
+				pieces[0][0].setLocation(pieces[0][0].getLocation().x+3*side, pieces[0][0].getLocation().y);
+			}else if (string2.equals("17Rook")) {
+				pieces[0][4].setLocation(pieces[0][7].getLocation().x-side, pieces[0][7].getLocation().y);
+				pieces[0][7].setLocation(x3+side, 0);
 			}
-		}else if (pieces[3][4].equals(string2)) {
-			if (pieces[3][0].equals(string2)) {
-				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
-				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
-			}else if (pieces[3][7].equals(string2)) {
-				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
-				label2.setLocation(x3+side, y3);
+		}else if (string.equals("2King")) {
+			if (string2.equals("20Rook")) {
+				pieces[3][4].setLocation(pieces[3][4].getLocation().x-2*side, pieces[3][4].getLocation().y);
+				pieces[3][0].setLocation(pieces[3][0].getLocation().x+3*side, pieces[3][0].getLocation().y);
+			}else if (string2.equals("27Rook")) {
+				pieces[3][4].setLocation(pieces[3][7].getLocation().x-side, pieces[3][7].getLocation().y);
+				pieces[3][7].setLocation(x23+side, y3);
 			}
 		}{
 			
 		}
+		if (isEnabled&&whoismaster.equals("Master")) {
+			chessPlayClick=2;
+		}else if(isEnabled&&whoismaster.equals("Guest")){
+			chessPlayClick=3;
+		}
 	}
-	public void arrivePromotion(StringTokenizer userMsgToken) {
+	public void arrivePromotionandThreat(String  paString) {
 		// TODO Auto-generated method stub
+		System.out.println("arrived 4");
+		if (paString.equals("AThreat")) {
+			if (isEnabled&&whoismaster.equals("Guest")) {
+				JOptionPane.showMessageDialog(null, "Black King Is In AThreat Now","Warning",
+						JOptionPane.WARNING_MESSAGE);
+			}else if(isEnabled&&whoismaster.equals("Master")){
+				JOptionPane.showMessageDialog(null, "White King Is In AThreat Now","Warning",
+						JOptionPane.WARNING_MESSAGE);
+			}
+		}
 		for (int i = 0; i < 8; i++) {
-			if (pieces[1][i].getName().equals(userMsgToken)) {
+			if (paString.equals("1"+i+"Pawn")) {
 				pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
+				label5=pieces[1][i];
 				pieces[1][i].setName("4Queen");
+				this.repaint();
 				nq2=i;
-			}else if(pieces[2][i].getName().equals(userMsgToken)) {
+			}else if(paString.equals("2"+i+"Pawn")) {
 				pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 				pieces[2][i].setName("3Queen");
+				label6=pieces[2][i];
+				this.repaint();
+				
 				nq=i;
 			}
 		}
+	
 	}
 	
 }

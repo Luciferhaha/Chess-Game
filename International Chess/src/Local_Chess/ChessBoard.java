@@ -9,10 +9,10 @@ import UI.wVictory;
 import java.io.*;
 import java.net.Socket;
 
-public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnable{
+public class ChessBoard extends JPanel implements MouseListener{
 
 	public final static int gap=35;//实际棋盘和边框的间距
-	public final static int gap2=0;
+	public final static int gap2=30;
 	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[6][8];
@@ -100,38 +100,38 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 	public void setlocation() {
 		//initial location of pawn
 		for (int i = 0; i <8; i++) {
-			pieces[1][i].setBounds(gap+i*side, side,side, side);
-			pieces[2][i].setBounds(gap+i*side, 6*side,side, side);
+			pieces[1][i].setBounds(gap+i*side, side+gap2,side, side);
+			pieces[2][i].setBounds(gap+i*side, 6*side+gap2,side, side);
 		}
 		//kings
-		pieces[0][4].setBounds(gap+4*side, 0, side, side);
-		pieces[3][4].setBounds(gap+4*side, 7*side, side, side);
+		pieces[0][4].setBounds(gap+4*side, 0+gap2, side, side);
+		pieces[3][4].setBounds(gap+4*side, 7*side+gap2, side, side);
 		//queens
-		pieces[0][3].setBounds(gap+3*side, 0, side, side);
-		pieces[3][3].setBounds(gap+3*side, 7*side, side, side);
+		pieces[0][3].setBounds(gap+3*side, 0+gap2, side, side);
+		pieces[3][3].setBounds(gap+3*side, 7*side+gap2, side, side);
 		//knights
-		pieces[0][1].setBounds(gap+side, 0, side, side);
-		pieces[0][6].setBounds(gap+6*side, 0, side, side);
-		pieces[3][1].setBounds(gap+side, 7*side,side, side);
-		pieces[3][6].setBounds(gap+6*side,7*side,side, side);
+		pieces[0][1].setBounds(gap+side, 0+gap2, side, side);
+		pieces[0][6].setBounds(gap+6*side, 0+gap2, side, side);
+		pieces[3][1].setBounds(gap+side, 7*side+gap2,side, side);
+		pieces[3][6].setBounds(gap+6*side,7*side+gap2,side, side);
 		//rooks
-		pieces[0][0].setBounds(gap, 0, side, side);
-		pieces[0][7].setBounds(gap+7*side, 0, side, side);
-		pieces[3][0].setBounds(gap, 7*side, side, side);
-		pieces[3][7].setBounds(gap+7*side, 7*side,side, side);
+		pieces[0][0].setBounds(gap, 0+gap2, side, side);
+		pieces[0][7].setBounds(gap+7*side, 0+gap2, side, side);
+		pieces[3][0].setBounds(gap, 7*side+gap2, side, side);
+		pieces[3][7].setBounds(gap+7*side, 7*side+gap2,side, side);
 		//Bishops
-		pieces[0][2].setBounds(gap+2*side, 0, side, side);
-		pieces[0][5].setBounds(gap+5*side, 0, side, side);
-		pieces[3][2].setBounds(gap+2*side, 7*side, side, side);
-		pieces[3][5].setBounds(gap+5*side, 7*side, side, side);
+		pieces[0][2].setBounds(gap+2*side, 0+gap2, side, side);
+		pieces[0][5].setBounds(gap+5*side, 0+gap2, side, side);
+		pieces[3][2].setBounds(gap+2*side, 7*side+gap2, side, side);
+		pieces[3][5].setBounds(gap+5*side, 7*side+gap2, side, side);
 	}
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.black);
-		g.fillRect(gap, 0,row*side,column*side);
+		g.fillRect(gap, gap2,row*side,column*side);
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side, side, side);//利用余数来错位
+				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);//利用余数来错位
 			}
 		}
 	}
@@ -144,7 +144,7 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		int x,y;
 		//acquire location
 		x=(e.getX()-gap)/side;
-		y=(e.getY())/side;
+		y=(e.getY()-gap2)/side;
 		
 		if (x>=0&&x<8&&y>=0&&y<8) {
 			//move pieces
@@ -152,15 +152,20 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 			if (chessPlayClick==2) {
 				selectPiece(e,chessPlayClick);
 				if (label!=null&&e.getSource().equals(this)) {
-					
+					//move white pawn
 						for (int i = 0; i <8; i++) {
 							if (label.equals(pieces[2][i])&&pieces[2][i].getName()!="3Queen") {
 								check.findChessPoint(label);
-								rule.Pawn(label, e,x,y,check.Point,check);
+								rule.Pawn(label, e,x,y,check.Point);
 								if (rule.rightmove==true) {
 									hThread.end();
 									PawnPromotion();
 									chessPlayClick=3;
+									
+									if (rule.PawnThreat(label, pieces[0][4])) {
+										JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+												JOptionPane.WARNING_MESSAGE);
+									}
 									rule.rightmove=false;
 								}
 							}
@@ -174,6 +179,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
+							if (rule.queenThreat(label,pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -184,6 +193,9 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
+							if (rule.kingThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning", JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -194,6 +206,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
+							if (rule.RookThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -204,6 +220,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
+							if (rule.KnightThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -214,6 +234,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=3;
+							if (rule.bishopThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -229,11 +253,15 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 					for (int i = 0; i <8; i++) {
 						if (label.equals(pieces[1][i])&&pieces[1][i].getName()!="4Queen") {
 							check.findChessPoint(label);
-							rule.Pawn(label, e,x,y,check.Point,check);
+							rule.Pawn(label, e,x,y,check.Point);
 							if (rule.rightmove==true) {
 								hThread.end();
 								PawnPromotion();
 								chessPlayClick=2;
+								if (rule.PawnThreat(label, pieces[3][4])) {
+									JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+											JOptionPane.WARNING_MESSAGE);
+								}
 								rule.rightmove=false;
 							}
 						}
@@ -246,6 +274,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
+							if (rule.queenThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -256,6 +288,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
+							if (rule.queenThreat(label,pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -266,6 +302,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
+							if (rule.queenThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -276,6 +316,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
+							if (rule.KnightThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -286,6 +330,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 						if (rule.rightmove==true) {
 							hThread.end();
 							chessPlayClick=2;
+							if (rule.bishopThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 							rule.rightmove=false;
 						}
 					}
@@ -328,6 +376,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 									hThread.end();
 									rule.haseaten=false;
 									chessPlayClick=2;
+									if (rule.PawnThreat(label, pieces[3][4])) {
+										JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+												JOptionPane.WARNING_MESSAGE);
+									}
 								}
 							}
 						}
@@ -341,6 +393,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=2;
+							if (rule.queenThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//black king
@@ -353,6 +409,11 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=2;
+							if (rule.kingThreat(label, pieces[3][4])) {
+								
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//black knight eat
@@ -365,6 +426,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=2;
+							if (rule.KnightThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White  King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//black bishop 
@@ -377,6 +442,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=2;
+							if (rule.bishopThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//black rook eat 
@@ -389,6 +458,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=2;
+							if (rule.bishopThreat(label, pieces[3][4])) {
+								JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 				}
@@ -406,6 +479,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 								hThread.end();
 								rule.haseaten=false;
 								chessPlayClick=3;
+								if (rule.PawnThreat(label, pieces[0][4])) {
+									JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+											JOptionPane.WARNING_MESSAGE);
+								}
 							}
 						}
 					}
@@ -420,6 +497,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=3;
+							if (rule.queenThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//white king eat pieces
@@ -432,6 +513,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=3;
+							if (rule.kingThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//white rook eat 
@@ -444,6 +529,11 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=3;
+							if (rule.RookThreat(label, pieces[0][4])) {
+								
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					//white knight eat
@@ -456,6 +546,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=3;
+							if (rule.kingThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					// white bishop eat 
@@ -468,6 +562,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 							hThread.end();
 							rule.haseaten=false;
 							chessPlayClick=3;
+							if (rule.bishopThreat(label, pieces[0][4])) {
+								JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						}
 					}
 					
@@ -476,7 +574,10 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 				
 			}
 		}
+		
 		}
+		System.out.println(label);
+		System.out.println(label2);
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {
@@ -649,11 +750,6 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void deliver() {
-		// TODO Auto-generated method stub
-		
-	}
 	public void PawnPromotion() {
 		//when a pawn moving to the last line ,it will be turn to queen.
 		for (int i = 0; i <8; i++) {
@@ -675,22 +771,17 @@ public class ChessBoard extends JPanel implements MouseListener,CallBack,Runnabl
 		
 		if (label2.getName()=="1King") {
 			System.out.println("The white side succeed!");
-			new wVictory();
 			win=true;
+			new wVictory();
 		}else if (label2.getName()=="2King") {
 			System.out.println("The black side succeed!");
-			new bVictory();
 			win=true;
+			new bVictory();
 		}
 	
 	}
-	// 连接到主机
 	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stu
 	
-	}
 	
 }
 
