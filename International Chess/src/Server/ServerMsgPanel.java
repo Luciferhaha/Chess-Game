@@ -19,15 +19,19 @@ public class ServerMsgPanel extends Panel
 	public Panel statusPanel = new Panel();
 	public ServerMsgPanel()
 	{
+		System.out.println("Mark5");
 		setSize(350, 300);
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(new BorderLayout());
+		System.out.println("Mark6");
 		msgPanel.setLayout(new FlowLayout());
 		msgPanel.setSize(210, 210);
+		System.out.println("Mark7");
 		statusPanel.setLayout(new BorderLayout());
 		statusPanel.setSize(210, 50);
 		msgPanel.add(msgTextArea);
 		statusPanel.add(statusLabel, BorderLayout.WEST);
+		System.out.println("Mark8");
 		add(msgPanel, BorderLayout.CENTER);
 		add(statusPanel, BorderLayout.NORTH);
 	}

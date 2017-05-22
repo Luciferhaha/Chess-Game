@@ -37,6 +37,46 @@ public class Modechoose extends JFrame{
         Container container1 = getContentPane();
         container1.setLayout(null);
         
+        JButton button4 = new JButton("Connect");
+        button4.setBounds(525, 475, 150, 60);
+        button4.setContentAreaFilled(false);
+        button4.setFont(new Font("Arial",Font.BOLD,26));
+        button4.setForeground(Color.black);
+        button4.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				if(e != null){
+					//dispose();
+					//Server firServer = new Server();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}});
+        
         JButton button1 = new JButton("BACK");
         button1.setBounds(700, 475, 150, 60);
         button1.setContentAreaFilled(false);
@@ -175,6 +215,7 @@ public class Modechoose extends JFrame{
         imagePanel.add(button1);
         imagePanel.add(button2);
         imagePanel.add(button3);
+        imagePanel.add(button4);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
 	}

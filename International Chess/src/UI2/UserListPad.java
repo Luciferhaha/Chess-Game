@@ -19,7 +19,11 @@ public class UserListPad extends Panel
 		setLayout(null);
 		for (int i = 0; i < 10; i++)
 		{
+<<<<<<< HEAD
+			userList.add(i + "." + "No User");
+=======
 			userList.add(i + "." + "no user");
+>>>>>>> origin/master
 		}
 		userList.setSize(185, 200);
 		this.add(userList);
