@@ -74,6 +74,7 @@ public Login(){
 }
 public void actionPerformed(ActionEvent e){
 	if(e.getSource()==login1){
+		mainJFrame.dispose();
 		new MainJFrame();
 	}
 	if(e.getSource()==register){

@@ -18,38 +18,38 @@ public class ClientThread extends Thread
 	public void dealWithMsg(String msgReceived)
 	{
 		if (msgReceived.startsWith("/userlist "))
-		{ // 若取得的信息为用户列表
+		{ // get the information of the user list
 			StringTokenizer userToken = new StringTokenizer(msgReceived, " ");
 			int userNumber = 0;
-			// 清空客户端用户列表
+			// clear the user list
 			firClient.userListPad.userList.removeAll();
-			// 清空客户端用户下拉框
+			
 			firClient.userInputPad.userChoice.removeAll();
-			// 给客户端用户下拉框添加一个选项
-			firClient.userInputPad.userChoice.addItem("所有用户");
+			
+			firClient.userInputPad.userChoice.addItem("all players");
 			while (userToken.hasMoreTokens())
-			{ // 当收到的用户信息列表中存在数据时
-				String user = (String) userToken.nextToken(" "); // 取得用户信息
+			{ // the user is here
+				String user = (String) userToken.nextToken(" "); // get the user information
 				if (userNumber > 0 && !user.startsWith("[inchess]"))
-				{ // 用户信息有效时
-					firClient.userListPad.userList.add(user);// 将用户信息添加到用户列表中
-					firClient.userInputPad.userChoice.addItem(user); // 将用户信息添加到用户下拉框中
+				{ // the information of user has time
+					firClient.userListPad.userList.add(user);// add the user information to the list
+					firClient.userInputPad.userChoice.addItem(user); 
 				}
 				userNumber++;
 			}
-			firClient.userInputPad.userChoice.setSelectedIndex(0);// 下拉框默认选中所有人
+			firClient.userInputPad.userChoice.setSelectedIndex(0);
 		}
 		else if (msgReceived.startsWith("/yourname "))
-		{ // 收到的信息为用户本名时
-			firClient.chessClientName = msgReceived.substring(10); // 取得用户本名
-			firClient.setTitle("Java 五子棋客户端 " + "用户名:"
-					+ firClient.chessClientName); // 设置程序Frame的标题
+		{ // get the information is the name of the user
+			firClient.chessClientName = msgReceived.substring(10); // get the user name
+			firClient.setTitle("chess client " + "user name:"
+					+ firClient.chessClientName); 
 		}
 		else if (msgReceived.equals("/reject"))
-		{ // 收到的信息为拒绝用户时
+		{ //get the message is that refuse
 			try
 			{
-				firClient.userControlPad.tipsField.setText("不能加入游戏!");
+				firClient.userControlPad.tipsField.setText("can't join the game!");
 				firClient.userControlPad.cancelButton.setEnabled(false);
 				firClient.userControlPad.joinButton.setEnabled(true);
 				firClient.userControlPad.createButton.setEnabled(true);
@@ -62,37 +62,37 @@ public class ClientThread extends Thread
 			firClient.userControlPad.joinButton.setEnabled(true);
 		}
 		else if (msgReceived.startsWith("/peer "))
-		{ // 收到信息为游戏中的等待时
+		{ 
 			firClient.jpanel.chessPeerName = msgReceived.substring(6);
 			if (firClient.isCreator)
-			{ // 若用户为游戏建立者
-				firClient.jpanel.chessPlayClick=2;// 设定其为白棋先行
+			{ // if user create the game
+				firClient.jpanel.chessPlayClick=2;// let white move firstly
 //				firClient.jpanel.isMouseEnabled = true;
 				firClient.jpanel.whoismaster="Master";
-				firClient.userControlPad.tipsField.setText("白方下...");
+				firClient.userControlPad.tipsField.setText("white...");
 			}
 			else if (firClient.isParticipant)
-			{ // 若用户为游戏加入者
-				firClient.jpanel.chessPlayClick = 1; // 设定其为黑棋后行
+			{ // if user is the joined player
+				firClient.jpanel.chessPlayClick = 1; // let black move later
 				firClient.jpanel.whoismaster="Guest";
-				firClient.userControlPad.tipsField.setText("游戏加入，等待对手.");
+				firClient.userControlPad.tipsField.setText("game join wait other.");
 			}
 		}
 		else if (msgReceived.equals("/youwin"))
-		{ // 收到信息为胜利信息
+		{ // get the message is that victory
 			firClient.isOnChess = false;
 //			firClient.jpanel.setVicStatus(firClient.jpanel.chessColor);
-			firClient.userControlPad.tipsField.setText("对手退出");
+			firClient.userControlPad.tipsField.setText("rival exit");
 //			firClient.jpanel.isMouseEnabled = false;
 		}
 		else if (msgReceived.equals("/OK"))
-		{ // 收到信息为成功创建游戏
-			firClient.userControlPad.tipsField.setText("游戏创建等待对手");
+		{ // get the message is that creating game successfully
+			firClient.userControlPad.tipsField.setText("game created,waiting rivail");
 		}
 
 		else if (msgReceived.equals("/error"))
-		{ // 收到信息错误
-			firClient.userChatPad.chatTextArea.append("错误，退出程序.\n");
+		{ // get the wrong message
+			firClient.userChatPad.chatTextArea.append("error,exit.\n");
 		}
 		else
 		{
@@ -109,7 +109,6 @@ public class ClientThread extends Thread
 		{
 			while (true)
 			{
-				// 等待聊天信息，进入wait状态
 				message = firClient.inputStream.readUTF();
 				dealWithMsg(message);
 			}

@@ -325,8 +325,13 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button3);
         imagePanel.add(button4);
         imagePanel.add(musicb);
+<<<<<<< HEAD
         //imagePanel.add(onlineb);
         //repaint();
+=======
+       
+        repaint();
+>>>>>>> origin/master
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  
   

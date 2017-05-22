@@ -10,9 +10,9 @@ import java.net.Socket;
 
 public class ChessBoard2 extends JPanel implements MouseListener{
 
-	public final static int gap=30;//实际棋盘和边框的间距
+	public final static int gap=30;//the chess board
 	public final static int gap2=30;
-	public  final static int side=85;//小正方形的边框
+	public  final static int side=85;//frame of little square
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint2 Point;
@@ -29,13 +29,13 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 	public  boolean win;
 	public JLabel label5=null;
 	public JLabel label6=null;
-	/*chessPlayClick=3黑棋走棋*/
-	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
-	/*chessPlayClick=1 双方都不能走棋*/	
+	/*chessPlayClick=3 black is not move*/
+	/*chessPlayClick=2 white move firstly*/
+	/*chessPlayClick=1 both*/	
 	public int chessPlayClick=2;
 	//The thread which could control the chess to flash
 		thread2 hThread;
-		// 套接口
+		// socket
 	public String whoismaster;
 	public Socket chessSocket;
 	public DataInputStream inputData;
@@ -146,7 +146,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);//利用余数来错位
+				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);
 			}
 		}
 	}
@@ -825,16 +825,16 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 		}
 	
 	}
-	// 连接到主机
+	// connect host
 	public boolean connectServer(String ServerIP, int ServerPort) throws Exception
 		{
 			try
 			{
-				// 取得主机端口
+				// get the port of host
 				chessSocket = new Socket(ServerIP, ServerPort);
-				// 取得输入流
+				// get input stream
 				inputData = new DataInputStream(chessSocket.getInputStream());
-				// 取得输出流
+				// get out put stream
 				outputData = new DataOutputStream(chessSocket.getOutputStream());
 				firThread.start();// where the thread start 
 				
@@ -843,7 +843,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 			}
 			catch (IOException ex)
 			{
-				statusText.setText("连接失败! \n");
+				statusText.setText("connect failed! \n");
 			}
 			return false;
 		}

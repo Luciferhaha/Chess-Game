@@ -24,25 +24,25 @@ import UI.Modechoose;
 
 public class LocalChess extends JFrame implements ActionListener{
 	
-	public final static int gap=50;//实际棋盘和边框的间距
-	public  final static int side=85;//小正方形的边框
+	public final static int gap=50;//the chessboard and frame
+	public  final static int side=85;//frame of little square
 	public int row=8,column=8;
 	public ChessBoard jpanel;
 	Container con;
 
-	//工具栏
+	//tool
 	JToolBar jmain;
 	JButton anew;
 	JButton repent;
 	JButton showOpen;
 	JButton showSave;
 	JButton exit;
-	//当前信息
+	//current information
 	JLabel text;
 	JMenuBar jBar;
 	JTextArea jArea;
 	JScrollPane jsp;
-	//保存当前操作
+	//save the current operation
 	Vector fileVar;
 	Vector Var;
 	public LocalChess() {
@@ -51,17 +51,17 @@ public class LocalChess extends JFrame implements ActionListener{
 		
 		jmain = new JToolBar();
 		text = new JLabel("       WElCOME");
-		text.setToolTipText("提示信息");
+		text.setToolTipText("note");
 		anew = new JButton(" New Game "	);
-		anew.setToolTipText("重新开始新的一局");
+		anew.setToolTipText("new again");
 		exit = new JButton("Exit");
-		exit.setToolTipText("退出本程序");
+		exit.setToolTipText("exist");
 		repent = new JButton("Undo ");
-		repent.setToolTipText("返回到上次走棋的位置");				
+		repent.setToolTipText("return last position");				
 		showOpen = new JButton("Back");
-		showOpen.setToolTipText("打开以前棋局");		
+		showOpen.setToolTipText("open last game");		
 		showSave = new JButton("Record");
-		showSave.setToolTipText("保存当前棋局");
+		showSave.setToolTipText("save current game");
 		jArea=new JTextArea();
 		jsp=new JScrollPane(jArea);
 		jsp.setBounds(720, 200, 200, 400);
