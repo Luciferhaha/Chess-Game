@@ -331,6 +331,8 @@ public class MainJFrame extends JFrame {
     }  
   
     public static void main(String[] args) {  
-        new MainJFrame();  
+        new MainJFrame(); 
+        new Server();
+        
     }  
 } 
