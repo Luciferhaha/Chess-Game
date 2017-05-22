@@ -17,44 +17,7 @@ import UI2.UserControlPad;
 import UI2.UserInputPad;
 import UI2.UserListPad;
 
-<<<<<<< HEAD
-// 浜斿瓙妫嬪鎴风
-public class MainClient extends JFrame implements ActionListener, KeyListener
-{
-	// 瀹㈡埛绔鎺ュ彛
-	Socket clientSocket;
-	// 鏁版嵁杈撳叆娴�
-	DataInputStream inputStream;
-	// 鏁版嵁杈撳嚭娴�
-	DataOutputStream outputStream;
-	// 鐢ㄦ埛鍚�
-	String chessClientName = null;
-	// 涓绘満鍦板潃
-	String host = null;
-	// 涓绘満绔彛
-	int port = 4331;
-	// 鏄惁鍦ㄨ亰澶�
-	boolean isOnChat = false;
-    // 鏄惁鍦ㄤ笅妫�
-	boolean isOnChess = false;
-	// 娓告垙鏄惁杩涜涓�
-	boolean isGameConnected = false;
-	// 鏄惁涓烘父鎴忓垱寤鸿��
-	boolean isCreator = false; 
-	// 鏄惁涓烘父鎴忓姞鍏ヨ��
-	boolean isParticipant = false;
-	// 鐢ㄦ埛鍒楄〃鍖�
-	UserListPad userListPad = new UserListPad();
-	// 鐢ㄦ埛鑱婂ぉ鍖�
-	UserChatPad userChatPad = new UserChatPad();
-	// 鐢ㄦ埛鎿嶄綔鍖�
-	UserControlPad userControlPad = new UserControlPad();
-	// 鐢ㄦ埛杈撳叆鍖�
-	UserInputPad userInputPad = new UserInputPad();
-	// 涓嬫鍖�
-	public ChessBoard2 jpanel=new ChessBoard2();
-	// 闈㈡澘鍖�
-=======
+
 // chess client
 public class MainClient extends JFrame implements ActionListener, KeyListener
 {
@@ -206,17 +169,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	{
 		try
 		{
-<<<<<<< HEAD
-			// 鍒涘缓瀹㈡埛绔鎺ュ彛
-			clientSocket = new Socket(serverIP, serverPort);
-			// 鍒涘缓杈撳叆娴�
-			inputStream = new DataInputStream(clientSocket.getInputStream());
-			// 鍒涘缓杈撳嚭娴�
-			outputStream = new DataOutputStream(clientSocket.getOutputStream());
-			// 鍒涘缓瀹㈡埛绔嚎绋�
-			ClientThread clientthread = new ClientThread(this);
-			// 鍚姩绾跨▼锛岀瓑寰呰亰澶╀俊鎭�
-=======
+
 			// create client socket
 			clientSocket = new Socket(serverIP, serverPort);
 			// create input stream
@@ -298,21 +251,16 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			{  // chatting
 				try
 				{ // close client socket
->>>>>>> origin/master
+
 					clientSocket.close();
 				}
 				catch (Exception ed){}
 			}
 			if (isOnChess || isGameConnected)
-<<<<<<< HEAD
-			{ // 鑻ョ敤鎴峰浜庢父鎴忕姸鎬佷腑
-				try
-				{ // 鍏抽棴娓告垙绔彛
-=======
-			{ 
+
 				try
 				{ // close the port
->>>>>>> origin/master
+
 					jpanel.chessSocket.close();
 				}
 				catch (Exception ee){}
@@ -320,23 +268,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			System.exit(0);
 		}
 		if (e.getSource() == userControlPad.joinButton)
-<<<<<<< HEAD
-		{ // 鍔犲叆娓告垙鎸夐挳鍗曞嚮浜嬩欢
-			String selectedUser = (String)userListPad.userList.getSelectedItem(); // 鍙栧緱瑕佸姞鍏ョ殑娓告垙
-			if (selectedUser == null || selectedUser.startsWith("[inchess]") ||
-					selectedUser.equals(chessClientName))
-			{ // 鑻ユ湭閫変腑瑕佸姞鍏ョ殑鐢ㄦ埛锛屾垨閫変腑鐨勭敤鎴峰凡缁忓湪娓告垙锛屽垯缁欏嚭鎻愮ず淇℃伅
-				this.userControlPad.tipsField.setText("Choose a user!");
-			}
-			else
-			{ // 鎵ц鍔犲叆娓告垙鐨勬搷浣�
-				try
-				{
-					if (!isGameConnected)
-					{ // 鑻ユ父鎴忓鎺ュ彛鏈繛鎺�
-						if (jpanel.connectServer(jpanel.host, jpanel.port))
-						{ // 鑻ヨ繛鎺ュ埌涓绘満鎴愬姛
-=======
+
 		{ 
 			String selectedUser = (String)userListPad.userList.getSelectedItem(); // get the game that want to join
 			if (selectedUser == null || selectedUser.startsWith("[inchess]") ||
@@ -352,7 +284,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					{ // if the socket can not connect
 						if (jpanel.connectServer(jpanel.host, jpanel.port))
 						{ // if connect the host succsessfully
->>>>>>> origin/master
+
 							isGameConnected = true;
 							isOnChess = true;
 							isParticipant = true;
@@ -366,11 +298,9 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 						}
 					}
 					else
-<<<<<<< HEAD
-					{ // 鑻ユ父鎴忕鍙ｈ繛鎺ヤ腑
-=======
+
 					{ // if the port is connecting
->>>>>>> origin/master
+
 						isOnChess = true;
 						isParticipant = true;
 						userControlPad.createButton.setEnabled(false);
@@ -389,32 +319,22 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
 					userControlPad.cancelButton.setEnabled(false);
-<<<<<<< HEAD
-					this.userControlPad.tipsField.setText("Connection disabled: \n" + ee);
-=======
 					this.userControlPad.tipsField.setText("can't connect: \n" + ee);
->>>>>>> origin/master
 				}
 			}
 		}
 		if (e.getSource() == userControlPad.createButton)
-<<<<<<< HEAD
-		{ // 鍒涘缓娓告垙鎸夐挳鍗曞嚮浜嬩欢
-			try
-			{
-				if (!isGameConnected)
-				{ // 鑻ユ父鎴忕鍙ｆ湭杩炴帴
-					if (jpanel.connectServer(jpanel.host, jpanel.port))
-					{ // 鑻ヨ繛鎺ュ埌涓绘満鎴愬姛
-=======
-		{ // create button hit event
+		{ 
+		
+					
+		 // create button hit event
 			try
 			{
 				if (!isGameConnected)
 				{ 
 					if (jpanel.connectServer(jpanel.host, jpanel.port))
 					{ // if the game connect the host successfully
->>>>>>> origin/master
+
 						isGameConnected = true;
 						isOnChess = true;
 						isCreator = true;
@@ -426,11 +346,9 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					}
 				}
 				else
-<<<<<<< HEAD
-				{ // 鑻ユ父鎴忕鍙ｈ繛鎺ヤ腑
-=======
+
 				{ // if the port is connecting
->>>>>>> origin/master
+
 					isOnChess = true;
 					isCreator = true;
 					userControlPad.createButton.setEnabled(false);
@@ -449,30 +367,20 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				ec.printStackTrace();
-<<<<<<< HEAD
-				this.userControlPad.tipsField.setText("Connection disabled: \n"
-=======
+
 				this.userControlPad.tipsField.setText("can't connect: \n"
->>>>>>> origin/master
 						+ ec);
 			}
 		}
 		if (e.getSource() == userControlPad.cancelButton)
-<<<<<<< HEAD
-		{ // 閫�鍑烘父鎴忔寜閽崟鍑讳簨浠�
-			if (isOnChess)
-			{ // 娓告垙涓�
-=======
 		{ 
 			if (isOnChess)
 			{ // gaming
->>>>>>> origin/master
 				jpanel.firThread.sendMessage("/giveup " + chessClientName);
 //				jpanel.setVicStatus(-1 * jpanel.chessColor);
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-<<<<<<< HEAD
 				this.userControlPad.tipsField.setText("Please create or join a game!");
 			}
 			if (!isOnChess)
@@ -481,7 +389,6 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				this.userControlPad.tipsField.setText("Please create or join a game!");
-=======
 				this.userControlPad.tipsField.setText("create or join !");
 			}
 			if (!isOnChess)
@@ -490,7 +397,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				this.userControlPad.tipsField.setText("create or join!");
->>>>>>> origin/master
+
 			}
 			isParticipant = isCreator = false;
 		}
@@ -500,31 +407,22 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	{
 		TextField inputwords = (TextField) e.getSource();
 		if (e.getKeyCode() == KeyEvent.VK_ENTER)
-<<<<<<< HEAD
-		{ // 澶勭悊鍥炶溅鎸夐敭浜嬩欢
-			if (userInputPad.userChoice.getSelectedItem().equals("All User"))
-			{ // 缁欐墍鏈変汉鍙戜俊鎭�
-				try
-				{
-					// 鍙戦�佷俊鎭�
-=======
+
 		{ 
-			if (userInputPad.userChoice.getSelectedItem().equals("all users"))
+			if (userInputPad.userChoice.getSelectedItem().equals("All Users"))
 			{ 
 				try
 				{
 					// send message
->>>>>>> origin/master
+
 					outputStream.writeUTF(inputwords.getText());
 					inputwords.setText("");
 				}
 				catch (Exception ea)
 				{
-<<<<<<< HEAD
+
 					this.userControlPad.tipsField.setText("Cannot connect to the server.\n");
-=======
-					this.userControlPad.tipsField.setText("can't connect to server!\n");
->>>>>>> origin/master
+
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");
@@ -532,11 +430,8 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 			}
 			else
-<<<<<<< HEAD
-			{ // 缁欐寚瀹氫汉鍙戜俊鎭�
-=======
 			{ // send message
->>>>>>> origin/master
+
 				try
 				{
 					outputStream.writeUTF("/" + userInputPad.userChoice.getSelectedItem()
@@ -545,11 +440,9 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 				catch (Exception ea)
 				{
-<<<<<<< HEAD
+
 					this.userControlPad.tipsField.setText("Cannot connect to the server.\n");
-=======
-					this.userControlPad.tipsField.setText("can't connect to server!\n");
->>>>>>> origin/master
+
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");

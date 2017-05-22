@@ -45,7 +45,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 			pieces[i][j].addMouseListener(this);
 			}
 		}
-//		this.setSize(row*side, column);
+
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove(check);

@@ -10,11 +10,9 @@ import javax.swing.JTextArea;
 
 public class UserChatPad extends JPanel
 {
-<<<<<<< HEAD
+
 	public JTextArea chatTextArea = new JTextArea("Command Area", 18, 20);
-=======
-	public JTextArea chatTextArea = new JTextArea("Command area", 18, 20);
->>>>>>> origin/master
+
 	public UserChatPad()
 	{
 		
