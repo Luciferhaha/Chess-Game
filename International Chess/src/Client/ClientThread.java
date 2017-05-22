@@ -42,7 +42,7 @@ public class ClientThread extends Thread
 		else if (msgReceived.startsWith("/yourname "))
 		{ // get the information is the name of the user
 			firClient.chessClientName = msgReceived.substring(10); // get the user name
-			firClient.setTitle("chess client " + "user name:"
+			firClient.setTitle("Chess Client " + "user name:"
 					+ firClient.chessClientName); 
 		}
 		else if (msgReceived.equals("/reject"))

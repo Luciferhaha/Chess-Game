@@ -508,8 +508,8 @@ public class PiecesMove {
 		int d1=y2-y1;
 		if (Math.abs(d)==Math.abs(d1)) {
 			 if (!Judgehaspieces(x1,y1,x2,y2)) {
-			label.setLocation(king.getLocation().x, king.getLocation().y);
-			haseaten=true;
+				 inthreat=true;
+				 return true;
 			 }
 		}
 		return false;

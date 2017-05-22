@@ -325,24 +325,14 @@ public class MainJFrame extends JFrame {
         imagePanel.add(button3);
         imagePanel.add(button4);
         imagePanel.add(musicb);
-<<<<<<< HEAD
-        //imagePanel.add(onlineb);
-        //repaint();
-=======
-       
         repaint();
->>>>>>> origin/master
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }  
   
     public static void main(String[] args) {  
-<<<<<<< HEAD
+
         new MainJFrame(); 
         new Server();
-        
-=======
-    	new MainJFrame();  
-    	Server firServer = new Server();
->>>>>>> origin/master
+
     }  
 } 
