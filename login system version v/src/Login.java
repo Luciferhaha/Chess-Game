@@ -5,33 +5,33 @@ import java.awt.event.*;
 public class Login {
 	private JFrame jf;
 	private Container con;
-	private JPanel userJPanel, passJPanel, regJPanel, emailJPanel;
+	private JPanel userJPanel, passJPanel, regJPanel, emailJPanel,loginJPanel;
 	private JLabel userJLabel, passJLabel, emailJLabel;
 	
 	private JTextField emailJtf;
 	private JTextField userJtf;
 	private JPasswordField passJtf;
-	private JButton login;
+	private JButton login, register;
 	
 	public void init() {
 		jf = new JFrame("Login");
 		con = jf.getContentPane();
-		con.setLayout(new GridLayout(5, 1));
-		
-		userJLabel = new JLabel("                                  User name：                                         ");
+		con.setLayout(new FlowLayout());
+		 
+		userJLabel = new JLabel("User name:     ");
 		userJtf = new JTextField(10);
 		userJPanel = new JPanel();
 		userJPanel.add(userJLabel);
 		userJPanel.add(userJtf);
 		
-		emailJLabel = new JLabel("Email address：");
-		emailJtf = new JTextField(20);
+		emailJLabel = new JLabel("Email address:");
+		emailJtf = new JTextField(10);
 		emailJPanel = new JPanel();
 		emailJPanel.add(emailJLabel);
 		emailJPanel.add(emailJtf);
 		
 		
-		passJLabel = new JLabel("                                   Password：                                              ");
+		passJLabel = new JLabel(" Password:     ");
 		passJtf = new JPasswordField(10);
 		passJPanel = new JPanel();
 		passJPanel.add(passJLabel);
@@ -57,16 +57,39 @@ public class Login {
 					}
 				}
 			});
-		regJPanel = new JPanel();
 		
+		
+		register = new JButton("Register");
+		register.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			
+			Register reg = new Register();
+	       reg.init();
+					}
+		});
+					
+					
+					
+		
+		
+		
+		loginJPanel = new JPanel();
+		regJPanel = new JPanel();
+		loginJPanel.add(register);
 		regJPanel.add(login);//显示
 		
 		con.add(userJPanel);
+		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(passJPanel);
+		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(emailJPanel);
+		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(regJPanel);
+		con.add(Box.createHorizontalStrut(30000));//用来换行
+		con.add(loginJPanel);
 		
-		jf.setSize(300, 400);
+		
+		jf.setSize(400, 300);
 		jf.setVisible(true);
 	}
 	public static void main(String[] args) {

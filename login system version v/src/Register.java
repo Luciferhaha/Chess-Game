@@ -28,30 +28,44 @@ public class Register {
 		
 		
 		jf = new JFrame("Register");
-		con = jf.getContentPane();
-		con.setLayout(new GridLayout(10, 3));
-		titleJLabel=new JLabel("<html><body><h1> Welcome to Chess Game ! \n <br> </h1> </body>  </html>");
+	
+		
+		Dimension   screensize   =   Toolkit.getDefaultToolkit().getScreenSize();   
+        jf.setSize(400,400);   
+        Dimension   framesize   =   jf.getSize();   
+        int   x   =   (int)screensize.getWidth()/2   -   (int)framesize.getWidth()/2;   
+        int   y   =   (int)screensize.getHeight()/2   -   (int)framesize.getHeight()/2;   
+        jf.setLocation(x,y);   
+        jf.setVisible(true);   
+		
+    	con = jf.getContentPane();
+    	con.setLayout(new FlowLayout());
+		
+
 		
 		
-		userJLabel = new JLabel("User name：");
+		titleJLabel=new JLabel("<html><body><h1>                Welcome to Chess Game !              \n <br> </h2> </body>  </html>");
+		
+		
+		userJLabel = new JLabel( "                           User name:                       ");
 		userJtf = new JTextField(15); 
 		userJPanel = new JPanel();
 		userJPanel.add(userJLabel);
 		userJPanel.add(userJtf);
 		
-		passJLabel = new JLabel("  Pass word： ");
-		passJtf = new JPasswordField(15);
+		passJLabel = new JLabel("                           Pass word:                        ");
+		passJtf = new JPasswordField(15); 
 		passJPanel = new JPanel();
 		passJPanel.add(passJLabel);
 		passJPanel.add(passJtf);
 		
-		emailJLabel = new JLabel("Email address： ");
+		emailJLabel = new JLabel("                         Email address:                  ");
 		emailJtf = new JTextField(15);
 		emailJPanel = new JPanel();
 		emailJPanel.add(emailJLabel);
 		emailJPanel.add(emailJtf);
 		
-		spassJLabel = new JLabel("Confirm your password：");
+		spassJLabel = new JLabel("                Confirm your password:          ");
 		spassJtf = new JPasswordField(15);
 		spassJPanel = new JPanel();
 		spassJPanel.add(spassJLabel);
@@ -99,7 +113,7 @@ public class Register {
 					user.setPwd(pass);
 					RegisterService service = new RegisterService();
 					service.register(user);
-					msg.setText("Register success");
+					msg.setText("<html><body><h1> Register success \n <br> </h2> </body>  </html>");
 					jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//这里有一个没解决的bug， 我无法关闭页面
 					  Login login = new Login();
 				        login.init(); 
@@ -126,8 +140,9 @@ public class Register {
 		con.add(regJPanel);
 
 		
-		jf.setSize(400, 600);
+		jf.setSize(500, 400);
 		jf.setVisible(true);
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String[] args) {
         Register ref = new Register();
