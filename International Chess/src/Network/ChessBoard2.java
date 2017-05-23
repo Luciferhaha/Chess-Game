@@ -10,9 +10,9 @@ import java.net.Socket;
 
 public class ChessBoard2 extends JPanel implements MouseListener{
 
-	public final static int gap=30;//the chess board
+	public final static int gap=30;//实际棋盘和边框的间距
 	public final static int gap2=30;
-	public  final static int side=85;//frame of little square
+	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint2 Point;
@@ -26,16 +26,16 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 	public Point_Operation2 check=new Point_Operation2();
 	public int count=0;
 	public int nq,nq2;
-	public  boolean win;
+	public  boolean win=false;
 	public JLabel label5=null;
 	public JLabel label6=null;
-	/*chessPlayClick=3 black is not move*/
-	/*chessPlayClick=2 white move firstly*/
-	/*chessPlayClick=1 both*/	
+	/*chessPlayClick=3黑棋走棋*/
+	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
+	/*chessPlayClick=1 双方都不能走棋*/	
 	public int chessPlayClick=2;
 	//The thread which could control the chess to flash
 		thread2 hThread;
-		// socket
+		// 套接口
 	public String whoismaster;
 	public Socket chessSocket;
 	public DataInputStream inputData;
@@ -47,6 +47,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 	public String host = null;
 	public boolean isEnabled ;
 	public int port = 4331;
+	private boolean win2=false;
 	public ChessBoard2() {
 		// TODO Auto-generated constructor stub
 		insertimage();
@@ -146,7 +147,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 		for (int i = 0; i < row; i=i+1) {//row
 			for (int j = 0; j < column; j=j+2) {//column
 				g.setColor(Color.white);
-				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);
+				g.fillRect(gap+j*side+(i%2)*side,i*side+gap2, side, side);//利用余数来错位
 			}
 		}
 	}
@@ -607,9 +608,10 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 					}
 				}
 			
+			
+			}
 		}
-		}
-		
+
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {
@@ -817,23 +819,27 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 			System.out.println("The white side succeed!");
 			win=true;
 			new wVictory();
+				firThread.sendMessage("/" + chessPeerName + " /chess "
+										+"Win");
 		}else if (label2.getName()=="2King") {
 			System.out.println("The black side succeed!");
-			win=true;
+			win2=true;
 			new bVictory();
+				firThread.sendMessage("/" + chessPeerName + " /chess "
+						+"Win2");
 		}
 	
 	}
-	// connect host
+	// 连接到主机
 	public boolean connectServer(String ServerIP, int ServerPort) throws Exception
 		{
 			try
 			{
-				// get the port of host
+				// 取得主机端口
 				chessSocket = new Socket(ServerIP, ServerPort);
-				// get input stream
+				// 取得输入流
 				inputData = new DataInputStream(chessSocket.getInputStream());
-				// get out put stream
+				// 取得输出流
 				outputData = new DataOutputStream(chessSocket.getOutputStream());
 				firThread.start();// where the thread start 
 				
@@ -842,7 +848,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 			}
 			catch (IOException ex)
 			{
-				statusText.setText("connect failed! \n");
+				statusText.setText("连接失败! \n");
 			}
 			return false;
 		}
@@ -1088,6 +1094,15 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 	public void arrivePromotionandThreat(String  paString) {
 		// TODO Auto-generated method stub
 		System.out.println("arrived 4");
+		if (paString.equals("Win")) {
+			if (isEnabled&&whoismaster.equals("Guest")) {
+				new wVictory();
+			}
+		}if (paString.equals("Win2")) {
+			 if(isEnabled&&whoismaster.equals("Master")){
+				 new bVictory();
+			}
+		}
 		if (paString.equals("AThreat")) {
 			if (isEnabled&&whoismaster.equals("Guest")) {
 				JOptionPane.showMessageDialog(null, "Black King Is In AThreat Now","Warning",
@@ -1109,7 +1124,6 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				pieces[2][i].setName("3Queen");
 				label6=pieces[2][i];
 				this.repaint();
-				
 				nq=i;
 			}
 		}

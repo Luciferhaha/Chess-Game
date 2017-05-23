@@ -26,7 +26,6 @@ public class ServerThread extends Thread
 		this.clientNameHash = clientNameHash;
 		this.chessPeerHash = chessPeerHash;
 		this.serverMsgPanel = server;
-		System.out.println("Mark9");
 	}
 
 	public void dealWithMsg(String msgReceived)
@@ -163,7 +162,7 @@ public class ServerThread extends Thread
 	}
 
 	// Send public information
-	public void sendPublicMsg(String publicMsg)//10
+	public void sendPublicMsg(String publicMsg)
 	{
 		synchronized (clientDataHash)
 		{
@@ -181,11 +180,10 @@ public class ServerThread extends Thread
 				}
 			}
 		}
-		System.out.println("Mark10");
 	}
 
 	// Send a message to a player in the specified game
-	public boolean sendGamePeerMsg(String gamePeerTarget, String gamePeerMsg)//11
+	public boolean sendGamePeerMsg(String gamePeerTarget, String gamePeerMsg)
 	{
 		for (Enumeration enu = clientDataHash.keys(); enu.hasMoreElements();)
 		{ // Traverse to get the user's socket in the game
@@ -212,12 +210,11 @@ public class ServerThread extends Thread
 				return false;
 			}
 		}
-		System.out.println("Mark11");
 		return true;
 	}
 
 	// Send feedback to the person connected to the host
-	public void Feedback(String feedBackMsg)//12
+	public void Feedback(String feedBackMsg)
 	{
 		synchronized (clientDataHash)
 		{
@@ -232,23 +229,21 @@ public class ServerThread extends Thread
 				eb.printStackTrace();
 			}
 		}
-		System.out.println("Mark12");
 	}
 
 	// Get the player list
-	public String getUserList()//13
+	public String getUserList()
 	{
 		String userList = "/userlist";
 		for (Enumeration enu = clientNameHash.elements(); enu.hasMoreElements();)
 		{
 			userList = userList + " " + (String) enu.nextElement();
 		}
-		System.out.println("Mark13");
 		return userList;
 	}
 
 	// Obtain the corresponding key from the Hashtable based on the value
-	public Object getHashKey(Hashtable targetHash, Object hashValue)//14
+	public Object getHashKey(Hashtable targetHash, Object hashValue)
 	{
 		Object hashKey;
 		for (Enumeration enu = targetHash.keys(); enu.hasMoreElements();)
@@ -257,12 +252,11 @@ public class ServerThread extends Thread
 			if (hashValue.equals((Object) targetHash.get(hashKey)))
 				return hashKey;
 		}
-		System.out.println("Mark14");
 		return null;
 	}
 
 	// The method that was executed when you were connected to the host
-	public void sendInitMsg()//15
+	public void sendInitMsg()
 	{
 		sendPublicMsg(getUserList());
 		Feedback("/yourname " + (String) clientNameHash.get(clientSocket));
@@ -270,10 +264,9 @@ public class ServerThread extends Thread
 		Feedback("/list --update user list");
 		Feedback("/<username> <talk> --chat");
 		Feedback("Note: The command must be sent to all users");
-		System.out.println("Mark15");
 	}
 
-	public void closeClient()//16
+	public void closeClient()
 	{
 		serverMsgPanel.msgTextArea.append("The user is disconnected:" + clientSocket + "\n");
 		synchronized (chessPeerHash)
@@ -308,10 +301,9 @@ public class ServerThread extends Thread
 			exx.printStackTrace();
 		}
 		isClientClosed = true;
-		System.out.println("Mark16");
 	}
 
-	public void run()//17
+	public void run()
 	{
 		DataInputStream inputData;
 		synchronized (clientDataHash)
@@ -336,6 +328,5 @@ public class ServerThread extends Thread
 				closeClient();
 			}
 		}
-		System.out.println("Mark17");
 	}
 }

@@ -1,5 +1,5 @@
 package Network;
-// class about position
+//位置class
 
 	public class ChessPoint2 {
 		private int row = 0;

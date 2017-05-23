@@ -24,44 +24,45 @@ import UI.Modechoose;
 
 public class LocalChess extends JFrame implements ActionListener{
 	
-	public final static int gap=50;//the chessboard and frame
-	public  final static int side=85;//frame of little square
+	public final static int gap=50;//实际棋盘和边框的间距
+	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public ChessBoard jpanel;
 	Container con;
 
-	//tool
+	//工具栏
 	JToolBar jmain;
 	JButton anew;
 	JButton repent;
 	JButton showOpen;
 	JButton showSave;
 	JButton exit;
-	//current information
+	//当前信息
 	JLabel text;
 	JMenuBar jBar;
 	JTextArea jArea;
 	JScrollPane jsp;
-	//save the current operation
+	//保存当前操作
 	Vector fileVar;
 	Vector Var;
+	Thread tipThread;
 	public LocalChess() {
 		// TODO Auto-generated constructor stub
 	
 		
 		jmain = new JToolBar();
 		text = new JLabel("       WElCOME");
-		text.setToolTipText("note");
+		text.setToolTipText("提示信息");
 		anew = new JButton(" New Game "	);
-		anew.setToolTipText("new again");
+		anew.setToolTipText("重新开始新的一局");
 		exit = new JButton("Exit");
-		exit.setToolTipText("exist");
+		exit.setToolTipText("退出本程序");
 		repent = new JButton("Undo ");
-		repent.setToolTipText("return last position");				
+		repent.setToolTipText("返回到上次走棋的位置");				
 		showOpen = new JButton("Back");
-		showOpen.setToolTipText("open last game");		
+		showOpen.setToolTipText("打开以前棋局");		
 		showSave = new JButton("Record");
-		showSave.setToolTipText("save current game");
+		showSave.setToolTipText("保存当前棋局");
 		jArea=new JTextArea();
 		jsp=new JScrollPane(jArea);
 		jsp.setBounds(720, 200, 200, 400);
@@ -82,7 +83,7 @@ public class LocalChess extends JFrame implements ActionListener{
 		exit.addActionListener(this);		
 		showOpen.addActionListener(this);
 		showSave.addActionListener(this);
-
+		
 		this.setTitle("INTERNETIONAL CHESS");
 		//acquire the size of screen.
 		Dimension   screensize   =   Toolkit.getDefaultToolkit().getScreenSize();
@@ -120,4 +121,6 @@ public class LocalChess extends JFrame implements ActionListener{
 			new Modechoose();
 		}
 	}
+
+
 }

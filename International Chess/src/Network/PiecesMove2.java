@@ -1,7 +1,7 @@
 package Network;
 import java.awt.TextField;
 import java.awt.TexturePaint;
-
+//不能连续同一方走棋按照count和getname来解决
 import java.awt.event.MouseEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,16 +12,20 @@ import java.time.LocalDate;
 import javax.swing.JLabel;
 
 
-//process the algorithms of different pieces
-
+//处理不同棋子的算法
+//兵，后，王，车，象，马
+//兵变身，兵吃过路兵，王车短易位和长易位
+//行棋权 白棋先走，双方轮流走棋
+//一着棋，除参与易位的车以外，任何棋子都不能越过被其他棋子占据的格子
+//一旦吃掉，必须从棋盘上拿走
+//让不同类比的棋子各司其职（执行各自的方法）
 public class PiecesMove2 {
 	public JLabel[][] pieces;
 	public int start[][];
 	public int end[][];
 	public int side=85;
-	
-	public final static int gap=30;//the chessboard and frame
-	public final static int gap2=30;//the chessboard and frame
+	public final static int gap=30;//实际棋盘和边框的间距
+	public final static int gap2=30;//实际棋盘和边框的间距
 	public boolean hasExisted;
 	public Point_Operation2 findPoint=new Point_Operation2();
 	public  boolean rightmove;
@@ -40,7 +44,7 @@ public class PiecesMove2 {
 //	public int port = 4331;
 	public PiecesMove2(Point_Operation2 check) {
 		// TODO Auto-generated constructor stub
-		//32 pieces tatally
+		//总共32个棋子
 		start=new int[8][8];
 		end=new int[8][8];
 //		pieces =new JLabel[4][8];
@@ -49,17 +53,16 @@ public class PiecesMove2 {
 	}
 	//move rule 
 	public void Pawn(JLabel pieces, int x, int y, ChessPoint2 point){
-	//firstly step, it can move 2
-	//
-		//black pieces
-		
+	//其第一步可以向前走一或两格，以后每次只可向前走一步，不可往后走
+	//吃对方的棋子则是向前打斜来吃
+		//黑棋
 		int d=(point.col()-y);
 		int d1=Math.abs(d);
 		int d2=point.row()-x;
 		char value=pieces.getName().charAt(0);
 		if ((d2==0&&(d1==1||d1==2))) {
 			switch (value) {
-			//black pieces
+			//黑棋
 			case '1':
 				if (point.col()==1&&d1==2) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
@@ -76,7 +79,7 @@ public class PiecesMove2 {
 					rightmove=true;
 				}
 				break;
-				//white pieces
+				//白棋
 			case '2':
 				if (point.col()==6&&d1==2) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
@@ -98,7 +101,7 @@ public class PiecesMove2 {
 	}
 
 	public void Queen(JLabel pieces, int x,int y,ChessPoint2 point) {
-		//for directions
+		//上下左右，四个方向斜
 		int dx=(point.row()-x);
 		int dy=(point.col()-y);
 			if (!(dy==0&&dx==0)) {//prevent it haven't move
@@ -412,16 +415,18 @@ public class PiecesMove2 {
 		int d1=y2-y1;
 		if (Math.abs(d)==Math.abs(d1)) {
 			 if (!Judgehaspieces(x1,y1,x2,y2)) {
-			label.setLocation(king.getLocation().x, king.getLocation().y);
-			haseaten=true;
+			inthreat=true;
+			return true;
 			 }
 		}
 		return false;
 	}
 	public void Castling(JLabel label, JLabel label2) {//this part l haven't done
-		//exchange the king and root
-		//.king never move
-		
+		//王车长短易位
+		//1.王车从来没有移位
+		//2.王和车之间没有棋子
+		//3.王的原始格子或者将要越过的格子或者将要占据的格子正受到对方棋子的攻击
+		//王往右两个或者往左两个，车换到王的里侧
 		findPoint.SetChessPoint(label);
 		int x1=findPoint.x;
 		int y1=findPoint.y;

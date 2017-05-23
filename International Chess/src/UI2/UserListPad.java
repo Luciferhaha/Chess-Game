@@ -9,7 +9,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
-//user list
+//用户列表面板
 public class UserListPad extends Panel
 {
 	public List userList = new List(10);
@@ -19,14 +19,12 @@ public class UserListPad extends Panel
 		setLayout(null);
 		for (int i = 0; i < 10; i++)
 		{
-
-			userList.add(i + "." + "No User");
-
+			userList.add(i + "." + "无用户");
 		}
 		userList.setSize(185, 200);
 		this.add(userList);
 		this.setBounds(185, 0, 185, 200);
 		
-		
+		//		add(userList, BorderLayout.EAST);
 	}
 }

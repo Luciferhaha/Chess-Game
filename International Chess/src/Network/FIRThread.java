@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class FIRThread extends Thread
 {
-	ChessBoard2 currPad; // the chessboard about thread
+	ChessBoard2 currPad; // 当前线程的棋盘
 	PiecesMove2 move;
 	public FIRThread(ChessBoard2 currPad)
 	{
@@ -16,17 +16,17 @@ public class FIRThread extends Thread
 		// TODO Auto-generated constructor stub
 		this.move=move2;
 	}
-	// process the gotten information
+	// 处理取得的信息
 	public void dealWithMsg(String msgReceived)
 	{
 		if (msgReceived.startsWith("/chess "))
-		{ // the information is move the piece
+		{ // 收到的信息为下棋
 			System.out.println(msgReceived);
 			StringTokenizer userMsgToken = new StringTokenizer(msgReceived, " ");
-			
+			// 表示棋子信息的数组、0索引为：x坐标；1索引位：y坐标；2索引位：棋子类型
 			String chessInfo[]=new String[5];
 			String chessInfo2[]=new String[6];
-			int i = 0,j=0,k=0; 
+			int i = 0,j=0,k=0; // 标志位
 			String chessInfoToken;
 			System.out.println(userMsgToken.countTokens());
 			if (userMsgToken.countTokens()==6) {
@@ -74,18 +74,17 @@ public class FIRThread extends Thread
 				currPad.arrivePromotionandThreat(userMsgToken.nextToken(" "));
 			}
 		}
-		
 		else if (msgReceived.startsWith("/yourname "))
-		{ // change name
+		{ // 收到的信息为改名
 			currPad.chessSelfName = msgReceived.substring(10);
 		}
 		else if (msgReceived.equals("/error"))
-		{ // get the wrong information
-			System.out.println("user not exist, put in again!");
+		{ // 收到的为错误信息
+			System.out.println("用户不存在，请重新加入!");
 		}
 	}
 	
-	// send message
+	// 发送信息
 	public void sendMessage(String sndMessage)
 	{
 		try
@@ -106,7 +105,7 @@ public class FIRThread extends Thread
 		try
 		{
 			while (true)
-			{ // waiting the information that put
+			{ // 等待信息输入
 				msgReceived = currPad.inputData.readUTF();
 				System.out.println(msgReceived);
 				dealWithMsg(msgReceived);

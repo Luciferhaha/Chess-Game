@@ -1,95 +1,110 @@
 package LoginSystem;
+import java.awt.*;
 import javax.swing.*;
 
-
+import Server.Server;
 import UI.MainJFrame;
 
-import java.awt.*;
 import java.awt.event.*;
-
-public class Login implements ActionListener{
-
-	JFrame mainJFrame;
-	Container con;
-	JLabel labName,labPass,labID,labTitle,labEmpty;
-	JTextField txtName,txtID;
-	JPasswordField txtPass;
-	JButton login1,register,cancel;
-	public int width ,height;
-
-public Login(){
-	 width = Toolkit.getDefaultToolkit().getScreenSize().width;
-     height = Toolkit.getDefaultToolkit().getScreenSize().height;
-	mainJFrame=new JFrame("User log in");
-	con=mainJFrame.getContentPane();
-	con.setLayout(new FlowLayout());
-	labTitle=new JLabel("<html><body><h1> Welcome to Chess Game ! \n <br> </h1> </body>  </html>");
+public class Login {
+	private JFrame jf;
+	private Container con;
+	private JPanel userJPanel, passJPanel, regJPanel, emailJPanel,loginJPanel;
+	private JLabel userJLabel, passJLabel, emailJLabel;
 	
-	labID=new JLabel("Email address:");
-	txtID=new JTextField();
-	txtID.setColumns(20);
+	private JTextField emailJtf;
+	private JTextField userJtf;
+	private JPasswordField passJtf;
+	private JButton login, register;
 	
-	labName=new JLabel(" User name:     ");
-	txtName=new JTextField();
-	txtName.setColumns(20);
-	
-	labPass=new JLabel(" password:      ");
-	txtPass=new JPasswordField();
-	txtPass.setColumns(20);
-	
-	login1=new JButton("Log in");
-	login1.addActionListener(this);
-	
-	register=new JButton("Register");
-	register.addActionListener(this);
-	
-	cancel=new JButton("Cancel");
-	cancel.addActionListener(this);
+	public void init() {
+		jf = new JFrame("Login");
+		con = jf.getContentPane();
+		con.setLayout(new FlowLayout());
+		 
+		userJLabel = new JLabel("User name:     ");
+		userJtf = new JTextField(10);
+		userJPanel = new JPanel();
+		userJPanel.add(userJLabel);
+		userJPanel.add(userJtf);
+		
+		emailJLabel = new JLabel("Email address:");
+		emailJtf = new JTextField(10);
+		emailJPanel = new JPanel();
+		emailJPanel.add(emailJLabel);
+		emailJPanel.add(emailJtf);
+		
+		
+		passJLabel = new JLabel(" Password:     ");
+		passJtf = new JPasswordField(10);
+		passJPanel = new JPanel();
+		passJPanel.add(passJLabel);
+		passJPanel.add(passJtf);
+		
 	
 	
-	con.add(labTitle);
-	con.add(Box.createHorizontalStrut(30000));//��������
-	
-	con.add(labID);
-	con.add(txtID);
-	con.add(Box.createHorizontalStrut(30000));
-	
-	con.add(labName);
-	con.add(txtName);
-	con.add(Box.createHorizontalStrut(30000));
-	
-	con.add(labPass);
-	con.add(txtPass);
-	con.add(Box.createHorizontalStrut(30000));
-	
-	con.add(login1);
-	con.add(register);
-	con.add(cancel);
-	
-	mainJFrame.setSize(350, 350);
-	mainJFrame.setBounds((width - 350) / 2,
-            (height - 350) / 2, 350, 350);
-	mainJFrame.setVisible(true);
-	mainJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-}
-public void actionPerformed(ActionEvent e){
-	if(e.getSource()==login1){
-		mainJFrame.dispose();
-		new MainJFrame();
+		login = new JButton("Log in ");
+		login.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e) {
+					String userName = userJtf.getText();
+					String pwd = new String(passJtf.getPassword());
+					User user = new User();
+					user.setUserName(userName);
+					user.setPwd(pwd);
+					LoginService service = new LoginService();
+					boolean b = service.login(user);
+					if(b) {
+						JOptionPane.showMessageDialog(jf, "Log in success!");
+						new MainJFrame();
+						
+					} else {
+						JOptionPane.showMessageDialog(jf, "Log in fell!");
+					}
+				}
+			});
+		
+		
+		register = new JButton("Register");
+		register.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+			
+			Register reg = new Register();
+	       reg.init();
+					}
+		});
+					
+					
+					
+		
+		
+		
+		loginJPanel = new JPanel();
+		regJPanel = new JPanel();
+		loginJPanel.add(register);
+		regJPanel.add(login);//��ʾ
+		
+		con.add(userJPanel);
+		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(passJPanel);
+		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(emailJPanel);
+		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(regJPanel);
+		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(loginJPanel);
+		
+		
+		Dimension   screensize   =   Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int)screensize.getWidth();
+		int height = (int)screensize.getHeight();
+		jf.setBounds((width - 400) / 2,
+	            (height - 400) / 2, 400, 400);
+		jf.setVisible(true);
 	}
-	if(e.getSource()==register){
-		mainJFrame.setVisible(false);
-		Registry reg=new Registry();
-		reg.mainJFrame.setVisible(true);
-	}
-	if(e.getSource()==cancel){
-		txtID.setText(null);
-		txtName.setText(null);
-		txtPass.setText(null);
-		mainJFrame.setVisible(false);
-	}
-}
-public static void main(String[] args){
-	new Login();
-  }
+	public static void main(String[] args) {
+        Login login = new Login();
+        login.init(); 
+        new Server();
+    }
+	
 }

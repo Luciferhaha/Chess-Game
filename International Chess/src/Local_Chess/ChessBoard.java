@@ -11,9 +11,9 @@ import java.net.Socket;
 
 public class ChessBoard extends JPanel implements MouseListener{
 
-	public final static int gap=35;//the chessboard and frame
+	public final static int gap=35;//实际棋盘和边框的间距
 	public final static int gap2=30;
-	public  final static int side=85;//frame of little square
+	public  final static int side=85;//小正方形的边框
 	public int row=8,column=8;
 	public JLabel pieces[][]=new JLabel[6][8];
 	public ChessPoint Point;
@@ -28,9 +28,9 @@ public class ChessBoard extends JPanel implements MouseListener{
 	public int count=0;
 	public int nq,nq2;
 	public  boolean win;
-	/*chessPlayClick=3black move*/
-	/*chessPlayClick=2 white move*/
-	/*chessPlayClick=1 both don't move*/	
+	/*chessPlayClick=3黑棋走棋*/
+	/*chessPlayClick=2 白棋走棋 默认白棋先走*/
+	/*chessPlayClick=1 双方都不能走棋*/	
 	public int chessPlayClick=2;
 	//The thread which could control the chess to flash
 		thread hThread;
@@ -45,7 +45,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 			pieces[i][j].addMouseListener(this);
 			}
 		}
-
+//		this.setSize(row*side, column);
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove(check);
@@ -53,7 +53,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 	public void insertimage() {
 		//pawns
 		for (int i = 0; i <8; i++) {
-			pieces[1][i]=new JLabel(new ImageIcon("src/Graph/BPawn.png"));
+			pieces[1][i]=new JLabel(new ImageIcon(("src/Graph/BPawn.png")));
 			pieces[1][i].setName("1Pawn");
 			pieces[2][i]=new JLabel(new ImageIcon("src/Graph/Pawn.png"));
 			pieces[2][i].setName("2Pawn");

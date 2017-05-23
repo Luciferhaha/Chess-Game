@@ -6,8 +6,6 @@ import java.util.*;
 import java.awt.event.*;
 import javax.swing.JButton;
 
-import Client.MainClient;
-
 // The class about the frame of the server
 public class Server extends Frame implements ActionListener
 {
@@ -26,23 +24,17 @@ public class Server extends Frame implements ActionListener
 		super("The server of chess");
 		setBackground(Color.LIGHT_GRAY);
 		buttonPanel.setLayout(new FlowLayout());
-		System.out.println("Mark1");
 		clearMsgButton.setSize(60, 25);
 		buttonPanel.add(clearMsgButton);
 		clearMsgButton.addActionListener(this);
-		System.out.println("Mark2");
 		serverStatusButton.setSize(75, 25);
 		buttonPanel.add(serverStatusButton);
 		serverStatusButton.addActionListener(this);
-		System.out.println("Mark3");
 		closeServerButton.setSize(75, 25);
 		buttonPanel.add(closeServerButton);
 		closeServerButton.addActionListener(this);
-		System.out.println("Mark4");
 		add(serverMsgPanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
-		repaint();
-		setVisible(false);
 		
 		addWindowListener(new WindowAdapter()
 		{
@@ -69,7 +61,6 @@ public class Server extends Frame implements ActionListener
 		{
 			e.printStackTrace();
 		}
-		
 	}
 
 	// Create a server with the specified port and panel
@@ -133,9 +124,10 @@ public class Server extends Frame implements ActionListener
 			System.exit(0);
 		}
 	}
-	public static void main(String[] args) {
+
+	public static void main(String args[])
+	{
 		new Server();
 	}
-	
 }
 

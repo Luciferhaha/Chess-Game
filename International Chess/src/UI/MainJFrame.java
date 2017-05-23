@@ -30,7 +30,7 @@ public class MainJFrame extends JFrame {
     File f1 = new File("1.wav");
 
 	@SuppressWarnings("deprecation")
-	public MainJFrame() {
+	public MainJFrame() {   
         super("International Chess");   
         setSize(900, 600); 
         this.setResizable(false);
@@ -317,22 +317,22 @@ public class MainJFrame extends JFrame {
         label.setBounds(0, 0, this.getWidth(), this.getHeight());   
         JPanel imagePanel = (JPanel) this.getContentPane();  
         imagePanel.setOpaque(false); 
-        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
         
+        this.getLayeredPane().add(label, new Integer(Integer.MIN_VALUE));   
         setVisible(true); 
         imagePanel.add(button1);
         imagePanel.add(button2);
         imagePanel.add(button3);
         imagePanel.add(button4);
         imagePanel.add(musicb);
+        
         repaint();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        Server server=new Server();
     }  
   
-    public static void main(String[] args) {  
-
-        new MainJFrame(); 
-        new Server();
-
+    public static void main(String[] args) { 
+        new MainJFrame();
+//        Server server=new Server();
     }  
 } 
