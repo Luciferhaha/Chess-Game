@@ -17,7 +17,7 @@ public class Register {
 	private JTextField userJtf;
 	private JTextField emailJtf;
 	private JPasswordField passJtf, spassJtf;
-	private JButton reset, register;
+	private JButton reset, register, login;
 	
 	
 	
@@ -29,30 +29,30 @@ public class Register {
 		
 		jf = new JFrame("Register");
 		con = jf.getContentPane();
-		con.setLayout(new GridLayout(5, 1));
+		con.setLayout(new GridLayout(10, 3));
 		titleJLabel=new JLabel("<html><body><h1> Welcome to Chess Game ! \n <br> </h1> </body>  </html>");
 		
 		
-		userJLabel = new JLabel("User name：                      ");
-		userJtf = new JTextField(10); 
+		userJLabel = new JLabel("User name：");
+		userJtf = new JTextField(15); 
 		userJPanel = new JPanel();
 		userJPanel.add(userJLabel);
 		userJPanel.add(userJtf);
 		
-		passJLabel = new JLabel("  Pass word：                   ");
-		passJtf = new JPasswordField(10);
+		passJLabel = new JLabel("  Pass word： ");
+		passJtf = new JPasswordField(15);
 		passJPanel = new JPanel();
 		passJPanel.add(passJLabel);
 		passJPanel.add(passJtf);
 		
-		emailJLabel = new JLabel("Email address：              ");
-		emailJtf = new JTextField(10);
+		emailJLabel = new JLabel("Email address： ");
+		emailJtf = new JTextField(15);
 		emailJPanel = new JPanel();
 		emailJPanel.add(emailJLabel);
 		emailJPanel.add(emailJtf);
 		
 		spassJLabel = new JLabel("Confirm your password：");
-		spassJtf = new JPasswordField(10);
+		spassJtf = new JPasswordField(15);
 		spassJPanel = new JPanel();
 		spassJPanel.add(spassJLabel);
 		spassJPanel.add(spassJtf);
@@ -81,6 +81,18 @@ public class Register {
 						return ;
 					} 
 					
+					
+					
+		login = new JButton("login");
+		login.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			
+			}
+			});
+		        	
+			
+					
 					String userName = userJtf.getText();
 					User user = new User();
 					user.setUserName(userName);
@@ -96,11 +108,10 @@ public class Register {
 		regJPanel = new JPanel();
 		regJPanel.add(reset);
 		regJPanel.add(register);
-		
-		
+
 		
 		con.add(titleJLabel);
-
+		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(userJPanel);
 		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(passJPanel);
@@ -110,12 +121,12 @@ public class Register {
 		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(emailJPanel);
 		con.add(Box.createHorizontalStrut(30000));//用来换行
-		
+		con.add(Box.createHorizontalStrut(30000));//用来换行
 		con.add(msgJPanel);
 		con.add(regJPanel);
 
 		
-		jf.setSize(600, 400);
+		jf.setSize(400, 600);
 		jf.setVisible(true);
 	}
 	public static void main(String[] args) {

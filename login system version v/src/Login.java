@@ -18,7 +18,7 @@ public class Login {
 		con = jf.getContentPane();
 		con.setLayout(new GridLayout(5, 1));
 		
-		userJLabel = new JLabel("User name£º");
+		userJLabel = new JLabel("                                  User name£º                                         ");
 		userJtf = new JTextField(10);
 		userJPanel = new JPanel();
 		userJPanel.add(userJLabel);
@@ -31,7 +31,7 @@ public class Login {
 		emailJPanel.add(emailJtf);
 		
 		
-		passJLabel = new JLabel("Password£º");
+		passJLabel = new JLabel("                                   Password£º                                              ");
 		passJtf = new JPasswordField(10);
 		passJPanel = new JPanel();
 		passJPanel.add(passJLabel);
@@ -66,7 +66,7 @@ public class Login {
 		con.add(emailJPanel);
 		con.add(regJPanel);
 		
-		jf.setSize(300, 300);
+		jf.setSize(300, 400);
 		jf.setVisible(true);
 	}
 	public static void main(String[] args) {
