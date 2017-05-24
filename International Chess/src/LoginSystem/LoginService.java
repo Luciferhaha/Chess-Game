@@ -1,7 +1,7 @@
 package LoginSystem;
 import java.io.*;
 public class LoginService {
-	private static final String FILE_PATH = "c:\\user.txt";
+	private static final String FILE_PATH = "user.txt";
 	public boolean login(User user) {
 		//��ȡ�ļ����д洢���û���������
 		//�������ǰ̨�����������û������������ƥ��

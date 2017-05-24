@@ -2,6 +2,7 @@ package LoginSystem;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;  
 import javax.swing.JFrame;  
@@ -113,7 +114,12 @@ public class Register {
 					user.setUserName(userName);
 					user.setPwd(pass);
 					RegisterService service = new RegisterService();
-					service.register(user);
+					try {
+						service.register(user);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					msg.setText("<html><body><h1> Register success \n <br> </h2> </body>  </html>");
 					jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//������һ��û�����bug�� ���޷��ر�ҳ��
 					  Login login = new Login();
