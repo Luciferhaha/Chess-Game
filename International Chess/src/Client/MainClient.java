@@ -13,42 +13,42 @@ import UI2.UserControlPad;
 import UI2.UserInputPad;
 import UI2.UserListPad;
 
-// 五子棋客户端
+//chess client
 public class MainClient extends JFrame implements ActionListener, KeyListener
 {
-	// 客户端套接口
+	// client socket
 	Socket clientSocket;
-	// 数据输入流
+	// data input stream
 	DataInputStream inputStream;
-	// 数据输出流
+	// data output stream
 	DataOutputStream outputStream;
-	// 用户名
+	// name of user
 	String chessClientName = null;
-	// 主机地址
+	// ip of host
 	String host = null;
-	// 主机端口
+	// host port
 	int port = 4331;
-	// 是否在聊天
+	//  whether chatting
 	boolean isOnChat = false;
-    // 是否在下棋
+    // whether move
 	boolean isOnChess = false;
-	// 游戏是否进行中
+	// whether the game is going
 	boolean isGameConnected = false;
-	// 是否为游戏创建者
+	// whether it is the creator of the game
 	boolean isCreator = false; 
-	// 是否为游戏加入者
+
 	boolean isParticipant = false;
-	// 用户列表区
+	//  the area of user list
 	UserListPad userListPad = new UserListPad();
-	// 用户聊天区
+	// the area of user chat
 	UserChatPad userChatPad = new UserChatPad();
-	// 用户操作区
+	// the area of user operation
 	UserControlPad userControlPad = new UserControlPad();
-	// 用户输入区
+	// the area of input
 	UserInputPad userInputPad = new UserInputPad();
-	// 下棋区
+	//move
 	public ChessBoard2 jpanel=new ChessBoard2();
-	// 面板区
+	// board
 	Panel southPanel = new Panel();
 	Panel northPanel = new Panel();
 	Panel centerPanel = new Panel();
@@ -89,17 +89,17 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			public void windowClosing(WindowEvent e)
 			{
 				if (isOnChat)
-				{ // 聊天中
+				{ // chatting
 					try
-					{  // 关闭客户端套接口
+					{  // close port
 						clientSocket.close();
 					}
 					catch (Exception ed){}
 				}
 				if (isOnChess || isGameConnected)
-				{ // 下棋中
+				{ 
 					try
-					{   // 关闭下棋端口
+					{   // close port
 						jpanel.chessSocket.close();
 					}
 					catch (Exception ee){}
@@ -131,20 +131,20 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	// 按指定的IP地址和端口连接到服务器
+	
 	public boolean connectToServer(String serverIP, int serverPort) throws Exception
 	{
 		try
 		{
-			// 创建客户端套接口
+			// create client socket
 			clientSocket = new Socket(serverIP, serverPort);
-			// 创建输入流
+			// create input stream
 			inputStream = new DataInputStream(clientSocket.getInputStream());
-			// 创建输出流
+			// create output stream
 			outputStream = new DataOutputStream(clientSocket.getOutputStream());
-			// 创建客户端线程
+			// create the thread of the client
 			ClientThread clientthread = new ClientThread(this);
-			// 启动线程，等待聊天信息
+			// start client
 			clientthread.start();
 			isOnChat = true;
 			return true;
@@ -156,21 +156,21 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		return false;
 	}
 
-	// 客户端事件处理
+	// process the client event
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getSource() == userControlPad.connectButton)
-		{ // 连接到主机按钮单击事件
-			host = jpanel.host = userControlPad.ipInputted.getText(); // 取得主机地址
+		{ 
+			host = jpanel.host = userControlPad.ipInputted.getText(); //get the host ip
 			try
 			{
 				if (connectToServer(host, port))
-				{   // 成功连接到主机时，设置客户端相应的界面状态
+				{   
 					userChatPad.chatTextArea.setText("");
 					userControlPad.connectButton.setEnabled(false);
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
-					this.userControlPad.tipsField.setText("连接成功，请等待!");
+					this.userControlPad.tipsField.setText("connet well!");
 				}
 			}
 			catch (Exception ei)
@@ -179,19 +179,19 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			}
 		}
 		if (e.getSource() == userControlPad.exitButton)
-		{ // 离开游戏按钮单击事件
+		{ 
 			if (isOnChat)
-			{  // 若用户处于聊天状态中
+			{  // if chatting
 				try
-				{ // 关闭客户端套接口
+				{ // close client port
 					clientSocket.close();
 				}
 				catch (Exception ed){}
 			}
 			if (isOnChess || isGameConnected)
-			{ // 若用户处于游戏状态中
+			{ // if the game is going
 				try
-				{ // 关闭游戏端口
+				{ // close the game port
 					jpanel.chessSocket.close();
 				}
 				catch (Exception ee){}
@@ -199,21 +199,21 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 			System.exit(0);
 		}
 		if (e.getSource() == userControlPad.joinButton)
-		{ // 加入游戏按钮单击事件
-			String selectedUser = (String)userListPad.userList.getSelectedItem(); // 取得要加入的游戏
+		{ //join game event
+			String selectedUser = (String)userListPad.userList.getSelectedItem(); // get the game
 			if (selectedUser == null || selectedUser.startsWith("[inchess]") ||
 					selectedUser.equals(chessClientName))
-			{ // 若未选中要加入的用户，或选中的用户已经在游戏，则给出提示信息
-				this.userControlPad.tipsField.setText("必须选择一个用户!");
+			{ 
+				this.userControlPad.tipsField.setText("choose a player!");
 			}
 			else
-			{ // 执行加入游戏的操作
+			{ 
 				try
 				{
 					if (!isGameConnected)
-					{ // 若游戏套接口未连接
+					{ // if the socket is not connected
 						if (jpanel.connectServer(jpanel.host, jpanel.port))
-						{ // 若连接到主机成功
+						{ //if connect to host successfully
 							isGameConnected = true;
 							isOnChess = true;
 							isParticipant = true;
@@ -227,7 +227,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 						}
 					}
 					else
-					{ // 若游戏端口连接中
+					{ 
 						isOnChess = true;
 						isParticipant = true;
 						userControlPad.createButton.setEnabled(false);
@@ -246,18 +246,18 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					userControlPad.createButton.setEnabled(true);
 					userControlPad.joinButton.setEnabled(true);
 					userControlPad.cancelButton.setEnabled(false);
-					this.userControlPad.tipsField.setText("不能连接: \n" + ee);
+					this.userControlPad.tipsField.setText("can't connect: \n" + ee);
 				}
 			}
 		}
 		if (e.getSource() == userControlPad.createButton)
-		{ // 创建游戏按钮单击事件
+		{ 
 			try
 			{
 				if (!isGameConnected)
-				{ // 若游戏端口未连接
+				{ 
 					if (jpanel.connectServer(jpanel.host, jpanel.port))
-					{ // 若连接到主机成功
+					{ // if connect successfully
 						isGameConnected = true;
 						isOnChess = true;
 						isCreator = true;
@@ -269,7 +269,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 					}
 				}
 				else
-				{ // 若游戏端口连接中
+				{ // if the game is connecting
 					isOnChess = true;
 					isCreator = true;
 					userControlPad.createButton.setEnabled(false);
@@ -288,27 +288,27 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
 				ec.printStackTrace();
-				this.userControlPad.tipsField.setText("不能连接: \n"
+				this.userControlPad.tipsField.setText("can't connect: \n"
 						+ ec);
 			}
 		}
 		if (e.getSource() == userControlPad.cancelButton)
-		{ // 退出游戏按钮单击事件
+		{ 
 			if (isOnChess)
-			{ // 游戏中
+			{ // gaming
 				jpanel.firThread.sendMessage("/giveup " + chessClientName);
 //				jpanel.setVicStatus(-1 * jpanel.chessColor);
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				this.userControlPad.tipsField.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("create or join!");
 			}
 			if (!isOnChess)
-			{ // 非游戏中
+			{ // not gaming
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				this.userControlPad.tipsField.setText("请创建或加入游戏!");
+				this.userControlPad.tipsField.setText("create or gaming!");
 			}
 			isParticipant = isCreator = false;
 		}
@@ -318,18 +318,18 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 	{
 		TextField inputwords = (TextField) e.getSource();
 		if (e.getKeyCode() == KeyEvent.VK_ENTER)
-		{ // 处理回车按键事件
-			if (userInputPad.userChoice.getSelectedItem().equals("所有用户"))
-			{ // 给所有人发信息
+		{ 
+			if (userInputPad.userChoice.getSelectedItem().equals("all users"))
+			{ 
 				try
 				{
-					// 发送信息
+					// send message
 					outputStream.writeUTF(inputwords.getText());
 					inputwords.setText("");
 				}
 				catch (Exception ea)
 				{
-					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("can't connect to server!\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");
@@ -337,7 +337,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 			}
 			else
-			{ // 给指定人发信息
+			{ 
 				try
 				{
 					outputStream.writeUTF("/" + userInputPad.userChoice.getSelectedItem()
@@ -346,7 +346,7 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				}
 				catch (Exception ea)
 				{
-					this.userControlPad.tipsField.setText("不能连接到服务器!\n");
+					this.userControlPad.tipsField.setText("can't connect to server!\n");
 					userListPad.userList.removeAll();
 					userInputPad.userChoice.removeAll();
 					inputwords.setText("");

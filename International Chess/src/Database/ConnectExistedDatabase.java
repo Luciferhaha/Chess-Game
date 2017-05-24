@@ -12,7 +12,7 @@ public class ConnectExistedDatabase {
 		String password = "new";
 		Connection conn = null;
 		try {
-			Class.forName(driver); //classLoader,加载对应驱动
+			Class.forName(driver); //classLoader
 			conn = (Connection) DriverManager.getConnection(url, username, password);
 			System.out.println("Connected");
 		} catch (ClassNotFoundException e) {
