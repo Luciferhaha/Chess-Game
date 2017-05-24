@@ -27,7 +27,7 @@ public class MainJFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private URL url;
     private AudioClip ac;
-    File f1 = new File("1.wav");
+    File f1 = new File("src/Graph/1.wav");
 
 	@SuppressWarnings("deprecation")
 	public MainJFrame() {   
@@ -47,7 +47,7 @@ public class MainJFrame extends JFrame {
         	Music.flag = false;
         }
         
-        String path0 = "icon.png";
+        String path0 = "src/Graph/icon.png";
         ImageIcon icon = new ImageIcon(path0);
         setIconImage(icon.getImage());
         
@@ -310,7 +310,7 @@ public class MainJFrame extends JFrame {
 				
 			}});
 
-        String path1 = "background.jpg";   
+        String path1 = "src/Graph/background.jpg";   
         
         ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   

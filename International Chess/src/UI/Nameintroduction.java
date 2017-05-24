@@ -25,7 +25,7 @@ public class Nameintroduction extends JFrame{
         this.setResizable(true);
         setLocation(225, 60); 
         
-        String path0 = "icon.png";
+        String path0 = "src/Graph/icon.png";
         ImageIcon icon = new ImageIcon(path0);
         setIconImage(icon.getImage());
         
@@ -71,7 +71,7 @@ public class Nameintroduction extends JFrame{
 				// TODO Auto-generated method stub
 				
 			}});
-        String path1 = "timg3.jpg";   
+        String path1 = "src/Graph/timg3.jpg";   
         
         ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   

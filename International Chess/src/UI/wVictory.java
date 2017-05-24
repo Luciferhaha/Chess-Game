@@ -24,7 +24,7 @@ public class wVictory extends JFrame{
         this.setResizable(false);
         setLocation(450, 220); 
         
-        String path0 = "icon.png";
+        String path0 = "src/Graph/icon.png";
         ImageIcon icon = new ImageIcon(path0);
         setIconImage(icon.getImage());
         
@@ -70,7 +70,7 @@ public class wVictory extends JFrame{
 				
 			}});
         
-        String path1 = "ww.jpg";
+        String path1 = "src/Graph/ww.jpg";
         
         ImageIcon background = new ImageIcon(path1);   
         JLabel label = new JLabel(background);   

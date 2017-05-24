@@ -27,7 +27,7 @@ public class Modechoose extends JFrame{
         this.setResizable(true);
         setLocation(225, 60); 
         
-        String path0 = "icon.png";
+        String path0 = "src/Graph/icon.png";
         ImageIcon icon = new ImageIcon(path0);
         setIconImage(icon.getImage());
         
@@ -74,7 +74,7 @@ public class Modechoose extends JFrame{
 				
 			}});
         
-        String path1 = "timg2.jpg";   
+        String path1 = "src/Graph/timg2.jpg";   
 
         @SuppressWarnings("unused")
 		Container container2 = getContentPane();

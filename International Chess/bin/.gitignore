@@ -1,9 +1,6 @@
-/Client/
-/Database/
-/Graph/
+/UI/
+/UI2/
 /Local_Chess/
 /LoginSystem/
 /Network/
-/Server/
-/UI/
-/UI2/
+/Graph/

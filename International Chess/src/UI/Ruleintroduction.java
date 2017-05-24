@@ -24,7 +24,7 @@ public class Ruleintroduction extends JFrame{
         this.setResizable(true);
         setLocation(225, 60); 
         
-        String path0 = "icon.png";
+        String path0 = "src/Graph/icon.png";
         ImageIcon icon = new ImageIcon(path0);
         setIconImage(icon.getImage());
         
@@ -35,7 +35,7 @@ public class Ruleintroduction extends JFrame{
         button1.setBounds(700, 475, 150, 60);
         button1.setContentAreaFilled(false);
         button1.setFont(new Font("Arial",Font.BOLD,26));
-        button1.setForeground(Color.WHITE);
+        button1.setForeground(Color.BLACK);
         button1.addMouseListener(new MouseListener(){
 
 			@Override
@@ -70,7 +70,7 @@ public class Ruleintroduction extends JFrame{
 				// TODO Auto-generated method stub
 				
 			}});
-        String path1 = "timg2.jpg";  
+        String path1 = "src/Graph/timg2.jpg";  
         
         Container container2 = getContentPane();
         container2.setLayout(null);
@@ -79,7 +79,7 @@ public class Ruleintroduction extends JFrame{
         button3.setBounds(200, 150, 150, 60);
         button3.setContentAreaFilled(false);
         button3.setFont(new Font("Arial",Font.BOLD,26));
-        button3.setForeground(Color.WHITE);
+        button3.setForeground(Color.BLACK);
         button3.addMouseListener(new MouseListener()
 		{
 			@Override
@@ -121,7 +121,7 @@ public class Ruleintroduction extends JFrame{
         button4.setBounds(550, 150, 150, 60);
         button4.setContentAreaFilled(false);
         button4.setFont(new Font("Arial",Font.BOLD,22));
-        button4.setForeground(Color.WHITE);
+        button4.setForeground(Color.BLACK);
         button4.addMouseListener(new MouseListener(){
 
 			@Override
