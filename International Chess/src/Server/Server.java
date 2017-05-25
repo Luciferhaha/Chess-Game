@@ -48,8 +48,8 @@ public class Server extends Frame implements ActionListener
 		Dimension   screensize   =   Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int)screensize.getWidth();
 		int height = (int)screensize.getHeight();
-		this.setBounds((width - 400) / 2,
-	            (height - 300) / 2, 400, 300);
+		this.setBounds(0,
+	          0, 400, 300);
 		setResizable(false);
 		validate();
 		

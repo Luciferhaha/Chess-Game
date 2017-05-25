@@ -58,7 +58,7 @@ public class Login {
 						new MainJFrame();
 						
 					} else {
-						JOptionPane.showMessageDialog(jf, "Log in fell!");
+						JOptionPane.showMessageDialog(jf, "Log in fail!");
 					}
 				}
 			});
@@ -81,16 +81,16 @@ public class Login {
 		loginJPanel = new JPanel();
 		regJPanel = new JPanel();
 		loginJPanel.add(register);
-		regJPanel.add(login);//��ʾ
+		regJPanel.add(login);
 		
 		con.add(userJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(passJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(emailJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(regJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(loginJPanel);
 		
 		

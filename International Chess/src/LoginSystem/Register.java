@@ -121,7 +121,7 @@ public class Register {
 						e1.printStackTrace();
 					}
 					msg.setText("<html><body><h1> Register success \n <br> </h2> </body>  </html>");
-					jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//������һ��û�����bug�� ���޷��ر�ҳ��
+					jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 					  Login login = new Login();
 				        login.init(); 
 				}
@@ -132,17 +132,17 @@ public class Register {
 
 		
 		con.add(titleJLabel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(userJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(passJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(spassJPanel);
 		con.add(spassJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(emailJPanel);
-		con.add(Box.createHorizontalStrut(30000));//��������
-		con.add(Box.createHorizontalStrut(30000));//��������
+		con.add(Box.createHorizontalStrut(30000));
+		con.add(Box.createHorizontalStrut(30000));
 		con.add(msgJPanel);
 		con.add(regJPanel);
 

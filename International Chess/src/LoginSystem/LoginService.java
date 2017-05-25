@@ -3,9 +3,7 @@ import java.io.*;
 public class LoginService {
 	private static final String FILE_PATH = "user.txt";
 	public boolean login(User user) {
-		//��ȡ�ļ����д洢���û���������
-		//�������ǰ̨�����������û������������ƥ��
-		//���ڿ��������ݿ�ȡ��
+	
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(FILE_PATH));
 			String msg = br.readLine();

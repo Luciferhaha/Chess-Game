@@ -4,11 +4,9 @@ public class RegisterService{
 	
 	private static  String FILE_PATH = "user.txt";
 	public void register(User user) throws IOException {
-		//��ȡ���û���������
-		//�洢���ļ�����
-		//Ŀǰֻ�ܴ���һ���˵���Ϣ
+	
 		File file = new File("user.txt");
-	    // 创建文件
+	    // create file
 	    file.createNewFile();
 		String msg = user.getUserName() + "," + user.getPwd() + "," + user.getemail();
 		BufferedWriter bw = null;

@@ -3,15 +3,15 @@ package Network;
 
 import javax.swing.JLabel;
 public class Point_Operation2 {
-	public final static int gap=30;//实际棋盘和边框的间距
-	public final static int gap2=30;//实际棋盘和边框的间距
-	public  final static int side=85;//小正方形的边框
+	public final static int gap=30;
+	public final static int gap2=30;
+	public  final static int side=85;
 	public ChessPoint2 Point;
 	public int x,y;
 	public static int isexisted[][]=new int[8][8];
 	public Point_Operation2() {
 		// TODO Auto-generated constructor stub
-		//初始化位置
+		//initial the position
 		for (int i = 2; i <6; i++) {
 			for (int j = 0; j <8; j++) {
 				isexisted[i][j]=0;
