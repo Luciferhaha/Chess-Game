@@ -8,6 +8,7 @@ import java.net.*;
 import javax.swing.JFrame;
 
 import Network.ChessBoard2;
+import UI.Modechoose;
 import UI2.UserChatPad;
 import UI2.UserControlPad;
 import UI2.UserInputPad;
@@ -62,16 +63,10 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		host = userControlPad.ipInputted.getText();
 		eastPanel.setLayout(new BorderLayout());
 		eastPanel.add(userListPad, BorderLayout.NORTH);
-//		eastPanel.add(userChatPad, BorderLayout.CENTER);
 		eastPanel.add(userControlPad, BorderLayout.CENTER);
-//		eastPanel.setBackground(Color.LIGHT_GRAY);
 		userInputPad.contentInputted.addKeyListener(this);
-//		System.out.println(userControlPad.ipInputted.getText());
 		jpanel.host = userControlPad.ipInputted.getText();
-		
 		centerPanel.add(jpanel, BorderLayout.CENTER);
-//		centerPanel.add(userInputPad, BorderLayout.SOUTH);
-//		centerPanel.setBackground(Color.LIGHT_GRAY);
 		userControlPad.connectButton.addActionListener(this);
 		userControlPad.createButton.addActionListener(this);
 		userControlPad.joinButton.addActionListener(this);
@@ -80,9 +75,6 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		userControlPad.createButton.setEnabled(false);
 		userControlPad.joinButton.setEnabled(false);
 		userControlPad.cancelButton.setEnabled(false);
-		
-//		southPanel.add(userControlPad, BorderLayout.CENTER);
-//		southPanel.setBackground(Color.LIGHT_GRAY);
 
 		addWindowListener(new WindowAdapter()
 		{
@@ -296,11 +288,12 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 		{ 
 			if (isOnChess)
 			{ // gaming
-				jpanel.firThread.sendMessage("/giveup " + chessClientName);
-//				jpanel.setVicStatus(-1 * jpanel.chessColor);
+				jpanel.firThread.sendMessage("/Reset " + chessClientName);
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
+				this.dispose();
+				new MainClient();
 				this.userControlPad.tipsField.setText("create or join!");
 			}
 			if (!isOnChess)
@@ -308,7 +301,8 @@ public class MainClient extends JFrame implements ActionListener, KeyListener
 				userControlPad.createButton.setEnabled(true);
 				userControlPad.joinButton.setEnabled(true);
 				userControlPad.cancelButton.setEnabled(false);
-				this.userControlPad.tipsField.setText("create or gaming!");
+				this.dispose();
+				new Modechoose();
 			}
 			isParticipant = isCreator = false;
 		}

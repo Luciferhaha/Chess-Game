@@ -24,28 +24,25 @@ import UI.Modechoose;
 
 public class LocalChess extends JFrame implements ActionListener{
 	
-	public final static int gap=50;//the chessboard and frame
-	public  final static int side=85;//frame of little square
-	public int row=8,column=8;
-	public ChessBoard jpanel;
+	private  final static int gap=50;//the chessboard and frame
+	private   final static int side=85;//frame of little square
+	private  int row=8,column=8;
+	private  ChessBoard jpanel;
 	Container con;
 
 	//tool
-	JToolBar jmain;
-	JButton anew;
-	JButton repent;
-	JButton showOpen;
-	JButton showSave;
-	JButton exit;
+	private JToolBar jmain;
+	private JButton anew;
+	private JButton repent;
+	private JButton showOpen;
+	private JButton showSave;
+	private JButton exit;
 	//current information
-	JLabel text;
-	JMenuBar jBar;
-	JTextArea jArea;
-	JScrollPane jsp;
+	private JLabel text;
+	private JMenuBar jBar;
+	private JTextArea jArea;
+	private JScrollPane jsp;
 	//save the current operation
-	Vector fileVar;
-	Vector Var;
-	Thread tipThread;
 	public LocalChess() {
 		// TODO Auto-generated constructor stub
 	
@@ -93,9 +90,7 @@ public class LocalChess extends JFrame implements ActionListener{
 		this.setBounds((width - 900) / 2,
 	            (height - 750) / 2, 900, 750);
 		jpanel=new ChessBoard();
-		
 		this.add(jpanel);
-//		this.setLayout(new BorderLayout());
 		this.setVisible(true);
 		// fix the size first
 		repaint();

@@ -15,10 +15,8 @@ public class UserChatPad extends JPanel
 	public UserChatPad()
 	{
 		
-//		setLayout(new BorderLayout());
 		chatTextArea.setAutoscrolls(true);
 		chatTextArea.setLineWrap(true);
-//		add(chatTextArea, BorderLayout.WEST);
 		setLayout(null);
 		chatTextArea.setSize(185, 200);
 		add(chatTextArea);

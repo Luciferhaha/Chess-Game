@@ -27,7 +27,7 @@ public class MainJFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private URL url;
     private AudioClip ac;
-    File f1 = new File("src/Graph/1.wav");
+    File f1 = new File("1.wav");
 
 	@SuppressWarnings("deprecation")
 	public MainJFrame() {   

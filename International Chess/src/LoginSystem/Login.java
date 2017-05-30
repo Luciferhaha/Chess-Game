@@ -67,9 +67,9 @@ public class Login {
 		register = new JButton("Register");
 		register.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-			
+			jf.dispose();
 			Register reg = new Register();
-	       reg.init();
+			reg.init();
 					}
 		});
 					

@@ -67,7 +67,6 @@ public class ClientThread extends Thread
 			if (firClient.isCreator)
 			{ //if user create the game
 				firClient.jpanel.chessPlayClick=2;// let white move firstly
-//				firClient.jpanel.isMouseEnabled = true;
 				firClient.jpanel.whoismaster="Master";
 				firClient.userControlPad.tipsField.setText("white...");
 			}

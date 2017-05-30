@@ -96,16 +96,6 @@ public class Register {
 						msg.setText("Your passwords do not match");
 						return ;
 					} 
-					
-					
-					
-		login = new JButton("login");
-		login.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			
-			}
-			});
 		        	
 			
 					
@@ -122,6 +112,7 @@ public class Register {
 					}
 					msg.setText("<html><body><h1> Register success \n <br> </h2> </body>  </html>");
 					jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					  jf.dispose();
 					  Login login = new Login();
 				        login.init(); 
 				}
@@ -129,8 +120,6 @@ public class Register {
 		regJPanel = new JPanel();
 		regJPanel.add(reset);
 		regJPanel.add(register);
-
-		
 		con.add(titleJLabel);
 		con.add(Box.createHorizontalStrut(30000));
 		con.add(userJPanel);
@@ -145,7 +134,6 @@ public class Register {
 		con.add(Box.createHorizontalStrut(30000));
 		con.add(msgJPanel);
 		con.add(regJPanel);
-
 		
 		jf.setSize(500, 400);
 		jf.setVisible(true);

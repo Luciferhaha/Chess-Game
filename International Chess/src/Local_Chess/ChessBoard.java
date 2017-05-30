@@ -11,29 +11,29 @@ import java.net.Socket;
 
 public class ChessBoard extends JPanel implements MouseListener{
 
-	public final static int gap=35;//the chessboard and frame
-	public final static int gap2=30;
-	public  final static int side=85;//frame of little square
-	public int row=8,column=8;
-	public JLabel pieces[][]=new JLabel[6][8];
+	private  final static int gap=35;//the chessboard and frame
+	private  final static int gap2=30;
+	private   final static int side=85;//frame of little square
+	private int row=8,column=8;
+	protected JLabel pieces[][]=new JLabel[4][8];
 	public ChessPoint Point;
-	public  PiecesMove rule;
-	public JLabel text;
-	public JLabel label=null;
+	protected  PiecesMove rule;
+	private JLabel text;
+	protected JLabel label=null;
 	public JLabel label2=null;
 	// label3 for casting
-	public JLabel label3=null;
-	public JLabel label4=null;
-	public Point_Operation check=new Point_Operation();
-	public int count=0;
-	public int nq,nq2;
+	private JLabel label3=null;
+	private JLabel label4=null;
+	private Point_Operation check=new Point_Operation();
+	private int count=0;
+	private int nq,nq2;
 	public  boolean win;
 	/*chessPlayClick=3black move*/
 	/*chessPlayClick=2 white move*/
 	/*chessPlayClick=1 both don't move*/	
-	public int chessPlayClick=2;
+	protected int chessPlayClick=2;
 	//The thread which could control the chess to flash
-		thread hThread;
+	protected	thread hThread;
 	public ChessBoard() {
 		// TODO Auto-generated constructor stub
 		insertimage();
@@ -45,7 +45,6 @@ public class ChessBoard extends JPanel implements MouseListener{
 			pieces[i][j].addMouseListener(this);
 			}
 		}
-//		this.setSize(row*side, column);
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove(check);
@@ -758,11 +757,19 @@ public class ChessBoard extends JPanel implements MouseListener{
 				if (record==7) {
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
+					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
+						JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
 					nq2=i;
 				}
 				if (record2==0) {
 					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 					pieces[2][i].setName("3Queen");
+					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
+						JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
 					nq=i;
 				}
 			}

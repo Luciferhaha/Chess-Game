@@ -26,24 +26,14 @@ public class PiecesMove2 {
 	public  boolean  haseaten;
 	public boolean hascasting;
 	public boolean inthreat;
-//	public FIRThread netthread;
-//	public Socket chessSocket;
-//	public DataInputStream inputData;
-//	public DataOutputStream outputData;
-//	public FIRThread firThread;
-//	public TextField statusText;
-//	public String chessSelfName = null;
-//	public String chessPeerName = null;
-//	public String host = null;
-//	public int port = 4331;
+
 	public PiecesMove2(Point_Operation2 check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
 		start=new int[8][8];
 		end=new int[8][8];
-//		pieces =new JLabel[4][8];
 		findPoint=check;
-//		netthread=new FIRThread(this);
+
 	}
 	//move rule 
 	public void Pawn(JLabel pieces, int x, int y, ChessPoint2 point){

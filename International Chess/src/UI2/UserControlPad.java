@@ -18,11 +18,11 @@ public class UserControlPad extends JPanel
 	public JLabel ipLabel = new JLabel("IP", JLabel.LEFT);
 	public JTextField ipInputted = new JTextField("localhost", 10);
 	public JTextArea tipsField=new JTextArea("",10,10);
-	public JButton connectButton = new JButton("connect server");
-	public JButton createButton = new JButton("create game");
-	public JButton joinButton = new JButton("join game");
-	public JButton cancelButton = new JButton("give up");
-	public JButton exitButton = new JButton("exit");
+	public JButton connectButton = new JButton("Connect Server");
+	public JButton createButton = new JButton("Create Game");
+	public JButton joinButton = new JButton("Join Game");
+	public JButton cancelButton = new JButton("Reset");
+	public JButton exitButton = new JButton("Exit");
 	public JButton button[]=new JButton [5];
 	public  JPanel panel1=new JPanel();
 	

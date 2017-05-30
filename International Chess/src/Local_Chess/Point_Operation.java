@@ -33,10 +33,15 @@ public class Point_Operation {
 	}
 	public void SetChessPoint(JLabel label){
 		//pawn
-		 x=(label.getLocation().x-gap)/side;
-		 y=(label.getLocation().y-gap2)/side;
-		 Point=new ChessPoint(x, y);
+		try {
+			x=(label.getLocation().x-gap)/side;
+			y=(label.getLocation().y-gap2)/side;
+			Point=new ChessPoint(x, y);
 			isexisted[x][y]=1;
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	public void findChessPoint (JLabel label) {
 		 x=(label.getLocation().x-gap)/side;

@@ -427,6 +427,7 @@ public class PiecesMove {
 		return false;
 		}
 	public boolean queenThreat(JLabel label,JLabel king){
+		System.out.println("22");
 		findPoint.SetChessPoint(king);
 		int x2=findPoint.x;
 		int y2=findPoint.y;

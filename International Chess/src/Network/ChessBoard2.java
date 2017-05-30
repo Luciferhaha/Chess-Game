@@ -59,12 +59,11 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 			pieces[i][j].addMouseListener(this);
 			}
 		}
-//		this.setSize(row*side, column);
 		this.addMouseListener(this);
 		this.setLayout(null);
 		rule=new PiecesMove2(check);
 		firThread = new FIRThread(this);
-		statusText = new TextField("请连接服务器！");
+		statusText = new TextField("Please contect to server！");
 	}
 	public void insertimage() {
 		//pawns
@@ -796,12 +795,20 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				if (record==7) {
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
+					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
+						firThread.sendMessage("/" + chessPeerName + " /chess "
+								+ "AThreat");
+					}
 					nq2=i;
 					return true;
 				}
 				if (record2==0) {
 					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 					pieces[2][i].setName("3Queen");
+					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
+						firThread.sendMessage("/" + chessPeerName + " /chess "
+								+ "AThreat");
+					}
 					nq=i;
 					return true;
 				}
