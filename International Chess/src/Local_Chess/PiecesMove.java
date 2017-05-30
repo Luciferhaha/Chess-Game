@@ -24,10 +24,6 @@ public class PiecesMove {
 	public int count2;
 	public PiecesMove(Point_Operation check) {
 		// TODO Auto-generated constructor stub
-		//32 pieces totally
-		start=new int[8][8];
-		end=new int[8][8];
-//		pieces =new JLabel[4][8];
 		findPoint=check;
 	}
 	//move rule 
@@ -212,7 +208,6 @@ public class PiecesMove {
 		int d1=y2-y1;
 		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
 			if (!Judgehaspieces(x1,y1,x2,y2)) {
-
 				label.setLocation(label2.getLocation().x, label2.getLocation().y);
 				haseaten=true;
 			}
@@ -427,7 +422,7 @@ public class PiecesMove {
 		return false;
 		}
 	public boolean queenThreat(JLabel label,JLabel king){
-		System.out.println("22");
+	
 		findPoint.SetChessPoint(king);
 		int x2=findPoint.x;
 		int y2=findPoint.y;

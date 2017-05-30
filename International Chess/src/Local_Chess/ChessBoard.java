@@ -575,8 +575,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 		}
 		
 		}
-		System.out.println(label);
-		System.out.println(label2);
+	
 	}
 	public void selectPiece(MouseEvent e,int i) {
 		if (i==2) {
