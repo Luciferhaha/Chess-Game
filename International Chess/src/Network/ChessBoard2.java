@@ -798,7 +798,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 					pieces[1][i].setName("4Queen");
 					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
 						firThread.sendMessage("/" + chessPeerName + " /chess "
-								+ "AThreat");
+								+ "Promotion");
 					}
 					nq2=i;
 					return true;
@@ -808,7 +808,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 					pieces[2][i].setName("3Queen");
 					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
 						firThread.sendMessage("/" + chessPeerName + " /chess "
-								+ "AThreat");
+								+ "Promotion");
 					}
 					nq=i;
 					return true;
