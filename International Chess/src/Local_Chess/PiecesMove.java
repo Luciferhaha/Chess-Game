@@ -422,7 +422,7 @@ public class PiecesMove {
 		int d1=y2-y1;
 		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
 			if (Judgehaspieces(x1,y1,x2,y2)==false) {
-				System.out.println("in");
+				
 				inthreat=true;
 				return true;
 			}
@@ -472,13 +472,11 @@ public class PiecesMove {
 		int y1=findPoint.y;
 		int d=x2-x1;
 		int d1=y2-y1;
-		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
-			 if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
-				
-				 inthreat=true;
+	 if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
+				  inthreat=true;
 				 return true;
 			}
-		}
+		
 		return false;
 	}
 	public boolean bishopThreat(JLabel label ,JLabel king) {
