@@ -196,7 +196,8 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 								if (rule.rightmove==true) {
 									hThread.end();
 									firThread.sendMessage("/" + chessPeerName + " /chess "
-											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
+											+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x
+											+" "+label.getLocation().y+" "+ label.getName());
 									if (rule.queenThreat(label, pieces[0][4])) {
 										firThread.sendMessage("/" + chessPeerName + " /chess "
 											+ "AThreat");
