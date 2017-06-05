@@ -306,18 +306,6 @@ public class PiecesMove {
 		}
 		
 	}
-	boolean checkPawnPosition(JLabel label,int y){
-		if (label.getName().charAt(0)==1) {
-			if (y==7) {
-				return true;
-			}
-		}else {
-			if (y==0) {
-				return true;
-			}
-		}
-		return false;
-	}
 	public boolean Judgehaspieces(int x1,int y1, int x2, int y2) {
 		int d1=x2-x1;
 		int d2=y2-y1;
@@ -384,7 +372,8 @@ public class PiecesMove {
 			}
 			return false;
 		}else if (d1<0&&d2==0) {
-			for (int i = -1; i > d2; i--) {
+			for (int i = -1; i > d1; i--) {
+				System.out.println(findPoint.isexisted[x1+i][y1]);
 				if (findPoint.isexisted[x1+i][y1]!=0) {
 					return true;
 				}
@@ -406,14 +395,14 @@ public class PiecesMove {
 		int d1=y2-y1;
 		switch (c) {
 		case '1':
-			if (d1==1&&(d==1||d==-1)) {
+			if (d1==1&&Math.abs(d)==1) {
 				inthreat=true;
 				return true;
 			}
 			break;
 
 		case '2':
-			if (d1==-1&&(d==-1||d==1)) {
+			if (d1==-1&&Math.abs(d)==1) {
 				haseaten=true;
 				return true;
 			}
@@ -432,7 +421,8 @@ public class PiecesMove {
 		int d=x2-x1;
 		int d1=y2-y1;
 		if (d==0||d1==0||Math.abs(d)==Math.abs(d1)) {
-			if (!Judgehaspieces(x1,y1,x2,y2)) {
+			if (Judgehaspieces(x1,y1,x2,y2)==false) {
+				
 				inthreat=true;
 				return true;
 			}
@@ -449,7 +439,7 @@ public class PiecesMove {
 		int d=x2-x1;
 		int d1=y2-y1;
 		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
-			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+			if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
 				 inthreat=true;
 				 return true;
 			  }
@@ -484,6 +474,7 @@ public class PiecesMove {
 		int d1=y2-y1;
 		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
 			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+				
 				 inthreat=true;
 				 return true;
 			}

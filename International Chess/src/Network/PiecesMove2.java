@@ -381,7 +381,7 @@ public class PiecesMove2 {
 		int d=x2-x1;
 		int d1=y2-y1;
 		if ((Math.abs(d)==0&&Math.abs(d1)==1)||(Math.abs(d)==1&&Math.abs(d1)==0)||((Math.abs(d)==Math.abs(d1)&&(Math.abs(d)==1&&(Math.abs(d1)==1))))) {
-			 if (!Judgehaspieces(x1,y1,x2,y2)) {
+			 if ((Math.abs(d)==1&&Math.abs(d1)==2)||(Math.abs(d)==2&&Math.abs(d1)==1)) {
 				 inthreat=true;
 				 return true;
 			}
@@ -511,7 +511,7 @@ public class PiecesMove2 {
 			}
 			return false;
 		}else if (d1<0&&d2==0) {
-			for (int i = -1; i > d2; i--) {
+			for (int i = -1; i > d1; i--) {
 				if (findPoint.isexisted[x1+i][y1]!=0) {
 					return true;
 				}
@@ -521,9 +521,7 @@ public class PiecesMove2 {
 			return false;
 		}
 	}
-	public void Kingprotections(){
-		
-		}
+
 	public void justmove(int Sx, int Sy,int Dx, int Dy, JLabel pieces){
 		System.out.println("l made it");
 		pieces.setLocation(Dx, Dy);

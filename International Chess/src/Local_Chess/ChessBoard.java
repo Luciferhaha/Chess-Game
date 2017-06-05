@@ -622,7 +622,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 				if (label.getName()=="2King") {
 					label3=(JLabel) e.getSource();
 						rule.Castling(label,label3);
-						System.out.println(rule.hascasting);
+						
 						if (!rule.hascasting) {
 							label=label3;
 						}else {
@@ -757,6 +757,7 @@ public class ChessBoard extends JPanel implements MouseListener{
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
 					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
+						
 						JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
 								JOptionPane.WARNING_MESSAGE);
 					}
