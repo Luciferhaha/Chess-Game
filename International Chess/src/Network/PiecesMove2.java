@@ -30,8 +30,7 @@ public class PiecesMove2 {
 	public PiecesMove2(Point_Operation2 check) {
 		// TODO Auto-generated constructor stub
 		//总共32个棋子
-		start=new int[8][8];
-		end=new int[8][8];
+	
 		findPoint=check;
 
 	}
@@ -49,11 +48,12 @@ public class PiecesMove2 {
 		//black
 			case '1':
 				if (point.col()==1&&d1==2) {
+					if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
 					findPoint.isexisted[point.row()][point.col()]=0;
 					findPoint.isexisted[x][y]=1;
 					rightmove=true;
-					
+					}
 					
 				}//the piece can not come back
 				else if(d==-1){
@@ -66,11 +66,13 @@ public class PiecesMove2 {
 				//white
 			case '2':
 				if (point.col()==6&&d1==2) {
+					if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
 					findPoint.isexisted[point.row()][point.col()]=0;
 					findPoint.isexisted[x][y]=1;
 //					netthread.sendMessage(sndMessage);
 					rightmove=true;
+					}
 				}//the piece can not come back
 				else if (d==1) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
@@ -417,6 +419,7 @@ public class PiecesMove2 {
 		if (d1==3) {
 			//short distance casting
 			if (!Judgehaspieces(x1, y1, x2, y2)) {
+				System.out.println("short");
 				int x3=label.getLocation().x;
 				int y3=label.getLocation().y;
 				label.setLocation(label2.getLocation().x-side, label2.getLocation().y);
@@ -425,7 +428,7 @@ public class PiecesMove2 {
 			}
 		}else if(d1==-4){// long distance casting
 			if (!Judgehaspieces(x1, y1, x2, y2)) {
-				
+				System.out.println("long");
 				label.setLocation(label.getLocation().x-2*side, label.getLocation().y);
 				label2.setLocation(label2.getLocation().x+3*side, label2.getLocation().y);
 				hascasting=true;

@@ -1119,21 +1119,23 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				JOptionPane.showMessageDialog(null, "White King Is In AThreat Now","Warning",
 						JOptionPane.WARNING_MESSAGE);
 			}
-		}
-		for (int i = 0; i < 8; i++) {
-			if (paString.equals("1"+i+"Pawn")) {
-				pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
-				label5=pieces[1][i];
-				pieces[1][i].setName("4Queen");
-				this.repaint();
-				nq2=i;
-			}else if(paString.equals("2"+i+"Pawn")) {
-				pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
-				pieces[2][i].setName("3Queen");
-				label6=pieces[2][i];
-				this.repaint();
-				nq=i;
+		}if (paString.equals("Promotion")) {
+			for (int i = 0; i < 8; i++) {
+				if (paString.equals("1"+i+"Pawn")) {
+					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
+					label5=pieces[1][i];
+					pieces[1][i].setName("4Queen");
+					this.repaint();
+					nq2=i;
+				}else if(paString.equals("2"+i+"Pawn")) {
+					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
+					pieces[2][i].setName("3Queen");
+					label6=pieces[2][i];
+					this.repaint();
+					nq=i;
+				}
 			}
+			
 		}
 	
 	}

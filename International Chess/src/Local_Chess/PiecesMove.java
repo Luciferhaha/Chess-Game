@@ -40,11 +40,12 @@ public class PiecesMove {
 			//black piece
 			case '1':
 				if (point.col()==1&&d1==2) {
+					if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y+2*side);
 					findPoint.isexisted[point.row()][point.col()]=0;
 					findPoint.isexisted[x][y]=1;
 					rightmove=true;
-					
+					}
 					
 				}//the piece can not come back
 				else if(d==-1){
@@ -57,10 +58,12 @@ public class PiecesMove {
 				//white piece
 			case '2':
 				if (point.col()==6&&d1==2) {
+					if (!Judgehaspieces(point.row(), point.col(), x, y)) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-2*side);
 					findPoint.isexisted[point.row()][point.col()]=0;
 					findPoint.isexisted[x][y]=1;
 					rightmove=true;
+					}
 				}//the piece can not come back
 				else if (d==1) {
 					pieces.setLocation(pieces.getLocation().x, pieces.getLocation().y-side);
@@ -373,7 +376,7 @@ public class PiecesMove {
 			return false;
 		}else if (d1<0&&d2==0) {
 			for (int i = -1; i > d1; i--) {
-				System.out.println(findPoint.isexisted[x1+i][y1]);
+				
 				if (findPoint.isexisted[x1+i][y1]!=0) {
 					return true;
 				}
