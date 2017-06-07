@@ -528,7 +528,10 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 							// white queen eat pieces
 							if (label.equals(pieces[3][3])||(label.equals(pieces[2][nq])&&pieces[2][nq].getName()=="3Queen")) {
 								check.findChessPoint(label);
-								rule.QueenEatRule(label, label2);
+								if (label2!=null) {
+									rule.QueenEatRule(label, label2);
+									
+								}
 								
 								if (rule.haseaten==true) {
 									firThread.sendMessage("/" + chessPeerName + " /chess "
@@ -794,21 +797,23 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				int record =pieces[1][i].getLocation().y/side;
 				int record2=pieces[2][i].getLocation().y/side;
 				if (record==7) {
+					String pString1=pieces[1][i].getName();
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
 					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
 						firThread.sendMessage("/" + chessPeerName + " /chess "
-								+ "Promotion");
+								+ "Promotion"+" "+pString1);
 					}
 					nq2=i;
 					return true;
 				}
 				if (record2==0) {
+					String pString2=pieces[2][i].getName();
 					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 					pieces[2][i].setName("3Queen");
 					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
 						firThread.sendMessage("/" + chessPeerName + " /chess "
-								+ "Promotion");
+								+ "Promotion"+" "+pString2);
 					}
 					nq=i;
 					return true;
@@ -1068,7 +1073,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 			chessPlayClick=3;
 		}
 	}
-	public void arriveCastingmessage(String string, String string2) {
+	public void arriveCastingmessageAndPromotion(String string, String string2) {
 		// TODO Auto-generated method stub
 		System.out.println("arrived3");
 		int x3=pieces[0][4].getLocation().x;
@@ -1090,28 +1095,57 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				pieces[3][4].setLocation(pieces[3][7].getLocation().x-side, pieces[3][7].getLocation().y);
 				pieces[3][7].setLocation(x23+side, y3);
 			}
-		}{
+		}else if (string.equals("Promotion")) {
+			for (int i = 0; i < 8; i++) {
+				if (string2.equals("1"+i+"Pawn")) {
+					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
+					label5=pieces[1][i];
+					pieces[1][i].setName("4Queen");
+					System.out.println("4Queen");
+					this.repaint();
+					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
+					JOptionPane.showMessageDialog(null, "White King Is In A Threat Now","Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
+					nq2=i;
+				}else if(string2.equals("2"+i+"Pawn")) {
+					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
+					pieces[2][i].setName("3Queen");
+					label6=pieces[2][i];
+					System.out.println("3Queen");
+					this.repaint();
+					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
+						JOptionPane.showMessageDialog(null, "Black King Is In A Threat Now","Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
+					nq=i;
+				}
+			}
 			
 		}
+			
+		
 		if (isEnabled&&whoismaster.equals("Master")) {
 			chessPlayClick=2;
 		}else if(isEnabled&&whoismaster.equals("Guest")){
 			chessPlayClick=3;
 		}
+		
 	}
-	public void arrivePromotionandThreat(String  paString) {
+	public void arriveThreat(String  paString) {
 		// TODO Auto-generated method stub
 		System.out.println("arrived 4");
+		
 		if (paString.equals("Win")) {
 			if (isEnabled&&whoismaster.equals("Guest")) {
 				new wVictory();
 			}
-		}if (paString.equals("Win2")) {
+		}else if (paString.equals("Win2")) {
 			 if(isEnabled&&whoismaster.equals("Master")){
 				 new bVictory();
 			}
 		}
-		if (paString.equals("AThreat")) {
+		else if (paString.equals("AThreat")) {
 			if (isEnabled&&whoismaster.equals("Guest")) {
 				JOptionPane.showMessageDialog(null, "Black King Is In AThreat Now","Warning",
 						JOptionPane.WARNING_MESSAGE);
@@ -1119,23 +1153,6 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				JOptionPane.showMessageDialog(null, "White King Is In AThreat Now","Warning",
 						JOptionPane.WARNING_MESSAGE);
 			}
-		}if (paString.equals("Promotion")) {
-			for (int i = 0; i < 8; i++) {
-				if (paString.equals("1"+i+"Pawn")) {
-					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
-					label5=pieces[1][i];
-					pieces[1][i].setName("4Queen");
-					this.repaint();
-					nq2=i;
-				}else if(paString.equals("2"+i+"Pawn")) {
-					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
-					pieces[2][i].setName("3Queen");
-					label6=pieces[2][i];
-					this.repaint();
-					nq=i;
-				}
-			}
-			
 		}
 	
 	}

@@ -436,18 +436,6 @@ public class PiecesMove2 {
 		}
 		
 	}
-	boolean checkPawnPosition(JLabel label,int y){
-		if (label.getName().charAt(0)==1) {
-			if (y==7) {
-				return true;
-			}
-		}else {
-			if (y==0) {
-				return true;
-			}
-		}
-		return false;
-	}
 	public boolean Judgehaspieces(int x1,int y1, int x2, int y2) {
 		int d1=x2-x1;
 		int d2=y2-y1;

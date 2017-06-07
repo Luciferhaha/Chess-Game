@@ -67,11 +67,11 @@ public class FIRThread extends Thread
 					}
 					k++;
 				}
-				currPad.arriveCastingmessage(info3[0],info3[1]);
+				currPad.arriveCastingmessageAndPromotion(info3[0],info3[1]);
 			}else if (userMsgToken.countTokens()==2) {
 				System.out.println("l got it 4");
 				userMsgToken.nextToken(" ");
-				currPad.arrivePromotionandThreat(userMsgToken.nextToken(" "));
+				currPad.arriveThreat(userMsgToken.nextToken(" "));
 			}
 		}
 		else if (msgReceived.startsWith("/yourname "))
