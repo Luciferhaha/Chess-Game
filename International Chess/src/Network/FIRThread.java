@@ -109,7 +109,7 @@ public class FIRThread extends Thread
 				msgReceived = currPad.inputData.readUTF();
 				System.out.println(msgReceived);
 				dealWithMsg(msgReceived);
-				System.out.println("run");
+				
 			}
 		}
 		catch (IOException es){}

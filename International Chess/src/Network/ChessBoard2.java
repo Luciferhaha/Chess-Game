@@ -176,9 +176,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 										hThread.end();
 										firThread.sendMessage("/" + chessPeerName + " /chess "
 												+  check.Point.row()+ " " + check.Point.row() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-										if (PawnPromotion()) {
-											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
-										}
+										PawnPromotion();
 										if (rule.PawnThreat(label, pieces[0][4])) {
 											firThread.sendMessage("/" + chessPeerName + " /chess "
 												+ "AThreat");
@@ -287,9 +285,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 										hThread.end();
 										firThread.sendMessage("/" + chessPeerName + " /chess "
 												+  check.Point.row()+ " " + check.Point.col() + " " +label.getLocation().x+" "+label.getLocation().y+" "+ label.getName());
-										if (PawnPromotion()) {
-											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
-										}
+										PawnPromotion();
 										if (rule.PawnThreat(label, pieces[3][4])) {
 											firThread.sendMessage("/" + chessPeerName + " /chess "
 												+ "AThreat");
@@ -418,9 +414,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 										victory();
 										label2=null;
 										String pString=pieces[1][i].getName();
-										if (PawnPromotion()) {
-											firThread.sendMessage("/" + chessPeerName + " /chess "+pString);
-										}
+										PawnPromotion();
 										hThread.end();
 										rule.haseaten=false;
 //									chessPlayClick=2;
@@ -516,9 +510,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 										victory();
 										label2=null;
 										String pString2=pieces[2][i].getName();
-										if (PawnPromotion()) {
-											firThread.sendMessage("/" + chessPeerName + " /chess "+pString2);
-										}
+										PawnPromotion();
 										hThread.end();
 										rule.haseaten=false;
 //								chessPlayClick=3;
@@ -790,9 +782,8 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-	public boolean PawnPromotion() {
+	public void PawnPromotion() {
 		//when a pawn moving to the last line ,it will be turn to queen.
-		try {
 			for (int i = 0; i <8; i++) {
 				int record =pieces[1][i].getLocation().y/side;
 				int record2=pieces[2][i].getLocation().y/side;
@@ -800,32 +791,20 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 					String pString1=pieces[1][i].getName();
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
 					pieces[1][i].setName("4Queen");
-					if (rule.queenThreat(pieces[1][i], pieces[3][4])) {
-						firThread.sendMessage("/" + chessPeerName + " /chess "
-								+ "Promotion"+" "+pString1);
-					}
+					firThread.sendMessage("/" + chessPeerName + " /chess "
+							+ "Promotion"+" "+pString1);
 					nq2=i;
-					return true;
 				}
 				if (record2==0) {
 					String pString2=pieces[2][i].getName();
 					pieces[2][i].setIcon(new ImageIcon("src/Graph/Queen.png"));
 					pieces[2][i].setName("3Queen");
-					if (rule.queenThreat(pieces[2][i], pieces[0][4])) {
 						firThread.sendMessage("/" + chessPeerName + " /chess "
 								+ "Promotion"+" "+pString2);
-					}
 					nq=i;
-					return true;
 				}
 			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
 		}
-		return false;
-	}
 	public void victory() {
 		
 		if (label2.getName()=="1King") {
@@ -1096,6 +1075,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 				pieces[3][7].setLocation(x23+side, y3);
 			}
 		}else if (string.equals("Promotion")) {
+			System.out.println("in");
 			for (int i = 0; i < 8; i++) {
 				if (string2.equals("1"+i+"Pawn")) {
 					pieces[1][i].setIcon(new ImageIcon("src/Graph/BQueen.png"));
@@ -1135,7 +1115,7 @@ public class ChessBoard2 extends JPanel implements MouseListener{
 	public void arriveThreat(String  paString) {
 		// TODO Auto-generated method stub
 		System.out.println("arrived 4");
-		
+		System.out.println(paString);
 		if (paString.equals("Win")) {
 			if (isEnabled&&whoismaster.equals("Guest")) {
 				new wVictory();
